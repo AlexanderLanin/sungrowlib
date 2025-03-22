@@ -12,10 +12,6 @@ from typing import cast
 from result import Err, Ok, Result
 
 import sungrowlib.modbus_types
-from sungrowlib.connection_base import (
-    Connection,
-    DecodedSignalValues,
-)
 from sungrowlib.modbus_types import (
     MappedData,
     RawData,
@@ -27,6 +23,12 @@ from sungrowlib.signal_def import (
     RegisterType,
     SignalDefinition,
 )
+
+from .connection_base import (
+    Connection,
+    DecodedSignalValues,
+)
+from .transport import ModbusTransport
 
 logger = logging.getLogger(__name__)
 
@@ -177,7 +179,7 @@ def _map_raw_to_signals(
     }
 
 
-class ModbusConnection_Base:  # noqa: N801
+class AsyncModbusClient:  # noqa: N801
     """A pymodbus connection to a single slave."""
 
     @dataclass
@@ -188,32 +190,10 @@ class ModbusConnection_Base:  # noqa: N801
         retrieved_signals_success: int = 0
         retrieved_signals_failed: int = 0
 
-    def __init__(self, host: str, port: int):
-        self._host = host
-        self._port = port
-        self._stats = ModbusConnection_Base.Stats()
+    def __init__(self, transport: ModbusTransport):
+        self._transport = transport
+        self._stats = AsyncModbusClient.Stats()
         self._slave: int | None = None
-
-        # These signals are not supported by the inverter.
-        # This is required, as we read entire ranges at once and need to avoid having
-        # any of these within the range we reading.
-        self._problematic_registers: dict[RegisterType, list[int]] = {
-            RegisterType.READ: [],
-            RegisterType.HOLD: [],
-        }
-
-    @staticmethod
-    def default_port() -> int:
-        raise NotImplementedError
-
-    @property
-    def slave(self):
-        return self._slave
-
-    @slave.setter
-    def slave(self, value: int):
-        logger.debug(f"Setting slave to {value}")
-        self._slave = value
 
     @property
     def stats(self):
@@ -221,29 +201,23 @@ class ModbusConnection_Base:  # noqa: N801
 
     # Should be optional since we have the Protocol class?!
 
-    # async def connect(self) -> bool:
-    #     # Note: for proper stats, you need to increase self._stats.connections
-    #     raise NotImplementedError
+    async def connect(self) -> bool:
+        return await self._transport.connect()
 
-    # async def disconnect(self) -> None:
-    #     raise NotImplementedError
+    async def disconnect(self) -> None:
+        await self._transport.disconnect()
 
     @property
     def connected(self):
-        raise NotImplementedError
+        return self._transport.connected
 
     async def read(
-        self, query: list[signals.SignalDefinition]
+        self, query: list[SignalDefinition]
     ) -> Result[DecodedSignalValues, Exception]:
         """Pull data from inverter"""
 
-        # Downcast to base class to make mypy happy
-        signal_definitions_base = cast(list[modbus_types.SignalDefinition], query)
-
         pull_start = datetime.now()
-        raw_data_result = await self._read_raw_while_handling_disconnects(
-            signal_definitions_base
-        )
+        raw_data_result = await self._read_raw_while_handling_disconnects(query)
         elapsed = datetime.now() - pull_start
 
         if isinstance(raw_data_result, Ok):

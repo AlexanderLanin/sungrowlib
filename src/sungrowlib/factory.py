@@ -1,10 +1,41 @@
 import logging
 from dataclasses import dataclass
 from enum import StrEnum
-from typing import overload
+from typing import Protocol
 
-from .modbus_connection_http import ModbusConnection_Http
-from .modbus_connection_pymodbus import ModbusConnection_Pymodbus
+from .clients.HttpTransport import AsyncHttpClient
+from .clients.PymodbusTransport import PymodbusTransport
+from .deserialization import DecodedSignalValues
+from .signal_def import SignalDefinition, SignalDefinitions
+
+
+class AsyncSungrowInverter(Protocol):
+    def __init__(self, signals: SignalDefinitions): ...
+
+    async def connect(self): ...
+
+    async def disconnect(self): ...
+
+    @staticmethod
+    def default_port() -> int: ...
+
+    @property
+    def connected(self) -> bool:
+        """
+        Is the connection currently established?
+        """
+        ...
+
+    async def read(
+        self,
+        query: list[SignalDefinition],
+    ) -> DecodedSignalValues | Exception:
+        """
+        Note: this may return more signals than requested, as sometimes
+        the query is optimized to read more than requested.
+        """
+        ...
+
 
 logger = logging.getLogger(__name__)
 
@@ -19,19 +50,26 @@ class ConnectionMode(StrEnum):
 class ConnectionParams:
     host: str
     port: int | None
-    mode: ConnectionMode = ConnectionMode.ANY
+    client_class: AsyncSungrowInverter | None
 
 
-def _get_all_connection_variants(params: ConnectionParams):
+def _get_all_connection_variants(
+    host: str,
+    port: int | None,
+    mode: ConnectionMode = ConnectionMode.ANY,
+) -> list[ConnectionParams]:
     # If mode is already set, return the params as is
-    if params.mode != ConnectionMode.ANY:
-        return [params]
+    if mode != ConnectionMode.ANY:
+        cc = _get_connection_cls(mode)
+        return [ConnectionParams(host, cc.default_port(), cc)]
 
     # If port looks like a http port, assume http connection
-    if params.port == ModbusConnection_Http.default_port():
+    if params.port == AsyncHttpClient.default_port():
         return [
             ConnectionParams(
-                host=params.host, port=params.port, mode=ConnectionMode.HTTP_WEBSOCKET
+                host=params.host,
+                port=params.port or AsyncHttpClient.default_port(),
+                client_class=AsyncHttpClient,
             )
         ]
 
@@ -44,64 +82,57 @@ def _get_all_connection_variants(params: ConnectionParams):
         ]
 
     else:
-        # Undefined port and undefined mode... that's bad.
-        # Let's try standard modbus port and standard http port.
-        return [
-            ConnectionParams(
-                host=params.host,
-                port=ModbusConnection_Pymodbus.default_port(),
-                mode=ConnectionMode.MODBUS,
-            ),
-            ConnectionParams(
-                host=params.host,
-                port=ModbusConnection_Http.default_port(),
-                mode=ConnectionMode.HTTP_WEBSOCKET,
-            ),
-        ]
+        first = None
+
+    p1 = ConnectionParams(
+        host=params.host,
+        port=params.port or PymodbusTransport.default_port(),
+        client_class=PymodbusTransport,
+    )
+
+    p2 = ConnectionParams(
+        host=params.host,
+        port=ModbusConnection_Http.default_port(),
+        client_class=AsyncHttpClient,
+    )
+
+    return [p1, p2] if first is None else [first, p1]
 
 
-def _get_connection_cls(
-    connection: ConnectionMode,
-) -> type[ModbusConnection_Http | ModbusConnection_Pymodbus]:
+def _get_connection_cls(connection: ConnectionMode):
     return {
-        ConnectionMode.HTTP_WEBSOCKET: ModbusConnection_Http,
-        ConnectionMode.MODBUS: ModbusConnection_Pymodbus,
+        ConnectionMode.HTTP_WEBSOCKET: AsyncHttpClient,
+        ConnectionMode.MODBUS: PymodbusTransport,
     }[connection]
 
 
-@overload
-async def connect(
-    host: ConnectionParams,
-) -> ModbusConnection_Http | ModbusConnection_Pymodbus | None: ...
+async def _connect(
+    params: ConnectionParams,
+    signals: SignalDefinitions | None = None,
+) -> AsyncSungrowInverter | None:
+    cls = params.client_class
+    connection_obj = cls(params.host, params.port, signals)
+
+    logger.debug(
+        f"Trying to connect to inverter using {params.client_class} connection"
+    )
+    if await connection_obj.connect():
+        logger.debug("Successfully connected to inverter")
+        return connection_obj
 
 
-@overload
-async def connect(
-    host: str, port: int | None, mode: ConnectionMode = ConnectionMode.ANY
-) -> ModbusConnection_Http | ModbusConnection_Pymodbus | None: ...
-
-
-async def connect(
-    host: ConnectionParams | str,
-    port: int | None = None,
+async def create_async(
+    host: str,
+    port: int | None,
     mode: ConnectionMode = ConnectionMode.ANY,
-) -> AsyncSungrowClient | None:
-    if isinstance(host, ConnectionParams):
-        connection_params = host
-    else:
-        connection_params = ConnectionParams(host=host, port=port, mode=mode)
-
-    connection_variants = _get_all_connection_variants(connection_params)
+    signals: SignalDefinitions | None = None,
+) -> AsyncSungrowInverter | None:
+    connection_variants = _get_all_connection_variants(
+        ConnectionParams(host, port, _get_connection_cls(mode))
+    )
     for variant in connection_variants:
-        assert variant.mode != ConnectionMode.ANY
-
-        cls = _get_connection_cls(variant.mode)
-        connection_obj = cls(variant.host, variant.port)
-
-        logger.debug(f"Trying to connect to inverter using {variant.mode} connection")
-        if await connection_obj.connect():
-            logger.debug("Successfully connected to inverter")
-            return connection_obj
-
-    logger.debug("Failed to connect to inverter")
+        assert variant.client_class != ConnectionMode.ANY
+        connection = await _connect(variant, signals)
+        if connection:
+            return connection
     return None

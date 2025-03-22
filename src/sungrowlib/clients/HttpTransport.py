@@ -17,7 +17,7 @@ from typing import Any, cast
 import aiohttp
 from result import Err, Ok, Result
 
-import sungrowlib.modbus_connection_base
+import sungrowlib.clients.AsyncModbusClient
 from sungrowlib.modbus_types import RegisterRange
 
 logger = logging.getLogger(__name__)
@@ -64,7 +64,7 @@ AnyError = (
 )
 
 
-class HttpTransport(modbus_connection_base.ModbusConnection_Base):  # noqa: N801
+class AsyncHttpClient(modbus_connection_base.ModbusConnection_Base):  # noqa: N801
     def __init__(self, host: str, port: int | None = None):
         super().__init__(host, port or self.default_port())
 
@@ -266,10 +266,10 @@ class HttpTransport(modbus_connection_base.ModbusConnection_Base):  # noqa: N801
             parsed = _parse_sungrow_response(response.ok_value)
             if isinstance(parsed, Err):
                 _last_error = parsed.err_value
-                if isinstance(parsed.err_value, HttpTransport.TokenExpiredError):
+                if isinstance(parsed.err_value, AsyncHttpClient.TokenExpiredError):
                     logger.debug("Token expired, reconnecting")
                     await self.disconnect()
-                elif isinstance(parsed.err_value, HttpTransport.BusyError):
+                elif isinstance(parsed.err_value, AsyncHttpClient.BusyError):
                     logger.debug("Inverter busy, will retry after some delay")
                     await asyncio.sleep(5)
                 continue
@@ -299,11 +299,11 @@ def _parse_sungrow_response(response: dict[str, Any]) -> Result[dict, ErrorRespo
     if response["result_code"] == 1:
         return Ok(response["result_data"])
     elif response["result_code"] == 106:
-        return Err(HttpTransport.TokenExpiredError())
+        return Err(AsyncHttpClient.TokenExpiredError())
     elif response["result_code"] == 301:
         # Wild guess what 301 means. It's not in the official documentation.
         # Seems to work out if we retry after a reasonable delay.
-        return Err(HttpTransport.BusyError())
+        return Err(AsyncHttpClient.BusyError())
     else:
         return Err(
             modbus_connection_base.ModbusError(
