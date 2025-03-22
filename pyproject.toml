@@ -7,7 +7,10 @@ authors = [
     { name = "Alexander Lanin", email = "alex@lanin.de" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "aiohttp>=3.11.14",
+    "pymodbus>=3.8.6",
+]
 
 [build-system]
 requires = ["hatchling"]
