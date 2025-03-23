@@ -11,72 +11,39 @@ import asyncio
 import logging
 import os
 import time
-from enum import StrEnum
 from typing import Any, cast
+from warnings import deprecated
 
 import aiohttp
 from result import Err, Ok, Result
 
-import sungrowlib.clients.AsyncModbusClient
-from sungrowlib.modbus_types import RegisterRange
+from sungrowlib.clients.AsyncModbusClient import BusyError, ConnectionError
+from sungrowlib.signal_def import RegisterRange, RegisterType
+from sungrowlib.util import get_key
 
 logger = logging.getLogger(__name__)
-
-
-class BusyError(Err):
-    """Inverter is busy, retry later."""
-
-    ...
 
 
 class TokenExpiredError(Err):
     """Token expired, fetch a new token first."""
 
-    ...
-
-
-class TooManyRetriesError(Err):
-    """Too many retries, giving up."""
-
-    ...
-
-
-class InvalidResponseError(Err):
-    """Invalid response from inverter."""
-
     def __init__(self):
-        super().__init__("Invalid response from inverter")
+        super().__init__("Token expired, fetch a new token first")
 
 
-class GenericError(Err):
-    """Generic error."""
-
-    def __init__(self):
-        super().__init__("Generic error")
-
-
-AnyError = (
-    BusyError
-    | TokenExpiredError
-    | TooManyRetriesError
-    | InvalidResponseError
-    | GenericError
-)
-
-
-class AsyncHttpClient(modbus_connection_base.ModbusConnection_Base):  # noqa: N801
+class AsyncHttpClient:
     def __init__(self, host: str, port: int | None = None):
-        super().__init__(host, port or self.default_port())
+        if not port:
+            port = self.default_port()
+        self._host = host
+        self._port = port
 
+        # TODO: document why we keep an aiohttp.ClientSession around
         self._aio_client = aiohttp.ClientSession()
         self._ws: aiohttp.client.ClientWebSocketResponse | None = None
 
         self._token: str | None = None
         self._inverter: dict[str, str] | None = None
-
-    @property
-    def is_http(self) -> bool:
-        return True
 
     @staticmethod
     def default_port() -> int:
@@ -84,7 +51,8 @@ class AsyncHttpClient(modbus_connection_base.ModbusConnection_Base):  # noqa: N8
 
     async def _ws_query(self, query: dict[str, str | int]):
         # Potential services: connect, devicelist, state, statistics, runtime, real
-        assert self._ws is not None
+        if self._ws is None:
+            raise RuntimeError("Websocket not connected")
 
         try:
             await self._ws.send_json(query)
@@ -92,27 +60,31 @@ class AsyncHttpClient(modbus_connection_base.ModbusConnection_Base):  # noqa: N8
         except Exception as e:
             logger.error(f"Cannot send message to inverter: {e}")
             await self.disconnect()
-            return GenericError()
+            return ConnectionError()
 
-        return _parse_ws_response(response)
+        if (
+            isinstance(response, dict)
+            and response.get("result_code") == 1
+            and response.get("result_msg") == "success"
+            and response.get("result_data")  # is not None
+        ):
+            return Ok(response["result_data"])
+        else:
+            logger.error(f"Invalid websocket response from inverter: {response}")
+            return ConnectionError()
 
-    async def _get_new_token(self):
+    async def _get_new_token(self) -> Result[str, ConnectionError]:
         response = await self._ws_query(
             {"lang": "en_us", "token": "", "service": "connect"}
         )
-        if isinstance(response, Err):
-            return response
+        return get_key(response, "token", str) or ConnectionError()
 
-        val = response.ok_value
-        if isinstance(val, dict) and isinstance(val.get("token"), str):
-            return Ok(str(val.get("token")))
-        else:
-            logger.error("Invalid response from inverter: %s", response)
-            return InvalidResponseError()
+    def _debug(self, msg: str):
+        logger.debug(f"{self._host}:{self._port} {msg}")
 
     async def _get_connected_devices(
         self,
-    ) -> Result[list[dict[str, str]], ErrorResponse]:
+    ) -> Result[list, ConnectionError]:
         assert self._token is not None
 
         response = await self._ws_query(
@@ -124,7 +96,7 @@ class AsyncHttpClient(modbus_connection_base.ModbusConnection_Base):  # noqa: N8
                 "is_check_token": "0",
             }
         )
-        return response.and_then(lambda x: Ok(x.get("list")))
+        return get_key(response, "list", list) or ConnectionError()
 
     async def connect(self):
         """
@@ -140,36 +112,28 @@ class AsyncHttpClient(modbus_connection_base.ModbusConnection_Base):  # noqa: N8
         if self.connected:
             return True
 
-        logger.debug("Connecting to %s:%s", self._host, self._port)
-        self._stats.connections += 1
+        self._debug("Connecting...")
 
         endpoint = f"ws://{self._host}:{self._port}/ws/home/overview"
         try:
-            # We'll manage lifetime via connect/disconnect ourselfes
-            self._ws = await self._aio_client.ws_connect(endpoint).__aenter__()
+            self._ws = await self._aio_client.ws_connect(endpoint)
 
-            logger.debug("Connection to websocket server established")
-
-            token = await self._get_new_token()
-            self._token = token
+            self._token = (await self._get_new_token()).expect("Failed to get token")
 
             # The first device is always the inverter.
             # ToDo: can we do anything with the others?
-            self._inverter = (await self._get_connected_devices())[0]
+            devices = await self._get_connected_devices()
+            self._inverter = devices.expect("Failed to get devices")[0]
+
+            self._debug("Connection via websocket established")
 
             return True
-        except aiohttp.ClientError:
-            # Cannot connect
-            await self.disconnect()
-            return False
-        except Exception as e:
-            # Some other error
-            logger.debug(f"Connection failed: {e}", exc_info=True)
+        except Exception:
             await self.disconnect()
             return False
 
     async def disconnect(self):
-        logger.debug("Disconnecting from %s:%s", self._host, self._port)
+        self._debug("Disconnecting...")
 
         self._token = None
         self._inverter = None
@@ -185,23 +149,24 @@ class AsyncHttpClient(modbus_connection_base.ModbusConnection_Base):  # noqa: N8
     def connected(self) -> bool:
         return self._token is not None
 
-    async def _query(
+    async def _query_GET(
         self, url: str, params: dict[str, str | int]
-    ) -> Result[dict[str, Any], ErrorResponse]:
+    ) -> dict[str, Any] | ConnectionError:
         """Query the inverter via http GET."""
 
         try:
             async with await self._aio_client.get(url, params=params) as r:
                 if r.status == 200:
-                    return Ok(await r.json())
+                    return cast(dict, await r.json())
                 else:
                     logger.error(
                         "Invalid response from inverter: %s %s", r.status, r.text
                     )
-                    return Err(ErrorResponse.InvalidResponse)
-        except ErrorResponse as e:
+                    return ConnectionError()
+        except Exception as e:
             # e.g. response is not valid json
-            return Err(modbus_connection_base.ModbusError(f"Connection Failed: {e}"))
+            self._debug(f"Cannot query inverter: {e}")
+            return ConnectionError()
 
     def _build_http_request_for_register_query(
         self, rr: RegisterRange
@@ -209,10 +174,10 @@ class AsyncHttpClient(modbus_connection_base.ModbusConnection_Base):  # noqa: N8
         assert self._inverter
         assert self._token
 
-        param_types = {
-            modbus_connection_base.RegisterType.READ: 0,
-            modbus_connection_base.RegisterType.HOLD: 1,
-        }
+        param_type = {
+            RegisterType.READ: 0,
+            RegisterType.HOLD: 1,
+        }[rr.register_type]
 
         # Usually port 80, but we cannot use a hardcoded port in tests.
         # In tests we'll simply reuse the port of the websocket server.
@@ -230,56 +195,49 @@ class AsyncHttpClient(modbus_connection_base.ModbusConnection_Base):  # noqa: N8
             "type": "3",  # todo: Why 3?
             "param_addr": rr.start,
             "param_num": rr.length,
-            "param_type": param_types[rr.register_type],
+            "param_type": param_type,
             "token": self._token,
             "lang": "en_us",
             "time123456": int(time.time()),
         }
         return url, params
 
-    class BusyError(ErrorResponse):
-        pass
-
-    class TokenExpiredError(ErrorResponse):
-        pass
-
-    async def _query_http_json(self, rr: RegisterRange) -> Result[dict, ErrorResponse]:
-        _last_error = None
+    async def _query_http_json(
+        self, rr: RegisterRange
+    ) -> Result[dict, ConnectionError]:
         for attempt in range(3):
             if attempt > 0:
                 # Add 1 second delay before next attempt
                 await asyncio.sleep(1)
 
             if not await self.connect():
-                _last_error = modbus_connection_base.CannotConnectError()
                 continue
 
             # (Re-)build query with current token
             url, params = self._build_http_request_for_register_query(rr)
 
-            response = await self._query(url, params)
-            if isinstance(response, Err):
-                # connection failed
-                _last_error = response.err_value
+            response = await self._query_GET(url, params)
+            if isinstance(response, ConnectionError):
                 continue
 
-            parsed = _parse_sungrow_response(response.ok_value)
+            parsed = _parse_sungrow_response(response)
             if isinstance(parsed, Err):
-                _last_error = parsed.err_value
-                if isinstance(parsed.err_value, AsyncHttpClient.TokenExpiredError):
+                if isinstance(parsed.err_value, TokenExpiredError):
                     logger.debug("Token expired, reconnecting")
                     await self.disconnect()
-                elif isinstance(parsed.err_value, AsyncHttpClient.BusyError):
+                elif isinstance(parsed.err_value, BusyError):
                     logger.debug("Inverter busy, will retry after some delay")
                     await asyncio.sleep(5)
+                # in any case, we will retry
                 continue
             return parsed
 
-        # All retries exhausted
         # TODO: append last_error to error message?!
-        return Err(ErrorResponse.TooManyRetries)
+        return ConnectionError()
 
-    async def _read_range(self, rr: RegisterRange) -> Result[list[int], ErrorResponse]:
+    async def _read_range(
+        self, rr: RegisterRange
+    ) -> Result[list[int], ConnectionError]:
         # Note: websocket does not allow access to all possible registers.
         # Not quite clear whether it's worth the effort to query some via websocket and
         # only the rest via http.
@@ -294,27 +252,29 @@ class AsyncHttpClient(modbus_connection_base.ModbusConnection_Base):  # noqa: N8
         return f"http({self._host}:{self._port}, slave: {self._slave or 'unknown'})"
 
 
-def _parse_sungrow_response(response: dict[str, Any]) -> Result[dict, ErrorResponse]:
+def _parse_sungrow_response(
+    response: dict[str, Any],
+) -> Result[dict, ConnectionError | TokenExpiredError | BusyError]:
     logger.debug(f"Response: {response}")
     if response["result_code"] == 1:
         return Ok(response["result_data"])
     elif response["result_code"] == 106:
-        return Err(AsyncHttpClient.TokenExpiredError())
+        return TokenExpiredError()
     elif response["result_code"] == 301:
         # Wild guess what 301 means. It's not in the official documentation.
         # Seems to work out if we retry after a reasonable delay.
-        return Err(AsyncHttpClient.BusyError())
+        return BusyError()
     else:
-        return Err(
-            modbus_connection_base.ModbusError(
-                f"Unknown response from inverter: {response}"
-            )
+        logger.error(
+            f"Invalid response from inverter: {response}, "
+            f"result_code: {response['result_code']}"
         )
+        return ConnectionError()
 
 
 def _parse_modbus_data(
     response_json: dict[str, str], expected_length: int
-) -> Result[list[int], modbus_connection_base.ModbusError]:
+) -> Result[list[int], ConnectionError]:
     modbus_data = response_json["param_value"].split(" ")
     logger.debug(f"Got modbus data: {modbus_data}")
 
@@ -322,13 +282,12 @@ def _parse_modbus_data(
     modbus_data.pop()
 
     if len(modbus_data) != expected_length * 2:
-        return Err(
-            modbus_connection_base.ModbusError(
-                "Invalid response from inverter: "
-                f"{response_json} => {modbus_data}, "
-                f"expected length {expected_length}"
-            )
+        logger.error(
+            "Invalid response from inverter: "
+            f"{response_json} => {modbus_data}, "
+            f"expected length {expected_length}"
         )
+        return ConnectionError()
 
     data: list[int] = []
     # Merge two consecutive bytes into 16 bit integers, same as pymodbus.
@@ -337,18 +296,3 @@ def _parse_modbus_data(
     for i in range(0, len(modbus_data), 2):
         data.append(int(modbus_data[i], 16) * 256 + int(modbus_data[i + 1], 16))  # noqa: PERF401
     return Ok(data)
-
-
-def _parse_ws_response(
-    response: dict[str, Any],
-):
-    if (
-        isinstance(response, dict)
-        and response.get("result_code") == 1
-        and response.get("result_msg") == "success"
-        and response.get("result_data")  # is not None
-    ):
-        return Ok(response["result_data"])
-    else:
-        logger.error(f"Invalid websocket response from inverter: {response}")
-        return InvalidResponseError()

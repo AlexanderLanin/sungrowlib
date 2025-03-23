@@ -45,6 +45,16 @@ class CannotConnectError(ModbusError):
     pass
 
 
+class ConnectionError(Err):
+    def __init__(self):
+        super().__init__("Some problem with the connection")
+
+
+class BusyError(Err):
+    def __init__(self):
+        super().__init__("Inverter is busy, please try again later")
+
+
 class UnsupportedRegisterQueriedError(ModbusError):
     """
     WiNet: ALL queried registers are unsupported.

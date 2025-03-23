@@ -113,10 +113,10 @@ class PymodbusTransport:  # noqa: N801
     """A pymodbus connection to a single slave."""
 
     def __init__(self, host: str, port: int | None):
-        self._repr = f"{host}:{port}"
-
         if not port:
             port = self.default_port()
+
+        self._repr = f"{host}:{port}"
 
         self._client = pymodbus.client.AsyncModbusTcpClient(
             host=host, port=port, timeout=2, retries=2
@@ -141,6 +141,7 @@ class PymodbusTransport:  # noqa: N801
     def _debug(self, msg: str):
         logger.debug(f"{self._repr}: {msg}")
 
+    # Move to TransportBase ABC class?
     async def _add_delay_between_API_calls(self):
         MIN_DELAY = timedelta(seconds=2)
 
@@ -190,11 +191,15 @@ class PymodbusTransport:  # noqa: N801
         Note: each register is 16 bits, so `address_count` is the number of registers,
         not bytes.
         """
+        assert self._slave is not None, "Slave ID must be set before reading"  # TODO
+
         self._debug(f"read_range({register_range=})...")
         if not await self.connect():
             return Err(CannotConnectError("Cannot connect to inverter for reading"))
 
-        return await __call_pymodbus_client_read(self._client, slave, register_range)
+        return await __call_pymodbus_client_read(
+            self._client, self._slave, register_range
+        )
 
     def __str__(self):
         return f"modbus({self._repr}, slave: {self._slave or 'unknown'})"
