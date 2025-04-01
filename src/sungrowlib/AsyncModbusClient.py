@@ -53,7 +53,7 @@ class UnsupportedRegisterQueriedError(ModbusError):
 def _generate_query_batches(
     signals: list[SignalDefinition],
     max_registers_per_range: int,
-) -> list[list[SignalDefinition]]:
+) -> list[tuple[RegisterRange, list[SignalDefinition]]]:
     """
     Split the list of signals into ranges.
     Each range is guaranteed to:
@@ -73,9 +73,18 @@ def _generate_query_batches(
             key=lambda s: s.registers.start,
         )
 
+    def range_and_signals(signals: list[SignalDefinition]):
+        if not signals:
+            raise ValueError("current_range is empty")
+        return RegisterRange(
+            signals[0].registers.register_type,
+            signals[0].registers.start,
+            signals[-1].registers.end - signals[0].registers.start,
+        ), signals
+
     # We need to build the ranges for read and hold separately, as they can't be
     # mixed/combined.
-    ranges: list[list[SignalDefinition]] = []
+    ranges: list[tuple[RegisterRange, list[SignalDefinition]]] = []
 
     for register_type in RegisterType:
         current_range: list[SignalDefinition] = []
@@ -84,11 +93,11 @@ def _generate_query_batches(
             if can_add(current_range, signal, max_registers_per_range):
                 current_range.append(signal)
             else:
-                ranges.append(current_range)
+                ranges.append(range_and_signals(current_range))
                 current_range = [signal]
 
         if current_range:
-            ranges.append(current_range)
+            ranges.append(range_and_signals(current_range))
 
     return ranges
 
@@ -173,20 +182,8 @@ class AsyncModbusClient:  # noqa: N801
     ) -> AsyncGenerator[tuple[SignalDefinition, DatapointValueType], None]:
         """Pull data from inverter"""
 
-        pull_start = datetime.now()
         async for signal, raw_value in self._read_raw(signals):
-            elapsed = datetime.now() - pull_start
-            logger.debug(
-                f"Inverter: Pulled signal in {elapsed.seconds}.{elapsed.microseconds} secs"
-            )
-
             yield (signal, decode_signal(signal, raw_value) if raw_value else None)
-
-        elapsed = datetime.now() - pull_start
-        logger.debug(
-            f"Inverter: pull of {len(signals)} signals in "
-            f"{elapsed.seconds}.{elapsed.microseconds} secs, but was interrupted"
-        )
 
     async def _read_raw(
         self,
@@ -199,6 +196,8 @@ class AsyncModbusClient:  # noqa: N801
 
         Will RAISE an exception if the connection fails.
         """
+
+        pull_start = datetime.now()
 
         if not await self.connect():
             raise CannotConnectError("Cannot connect to inverter for reading")
@@ -215,24 +214,31 @@ class AsyncModbusClient:  # noqa: N801
         else:
             logger.debug(f"read_raw(single range: {[s.name for s in query]})")
 
-        for query_batch in query_batches:
-            query_range = RegisterRange(
-                query_batch[0].registers.register_type,
-                query_batch[0].registers.start,
-                query_batch[-1].registers.end - query_batch[0].registers.start,
-            )
+        for query_range, query_batch in query_batches:
+            raw = (await self._read_range(query_range)).expect("Failed to read range")
+
             # query_range may contain more signals than query_batch, as some signals
             # may be queried by accident due to generation of query ranges.
-            signals_in_query_batch = (
+            all_signals_in_query_range = (
                 self._all_signals.get_all_signals_contained_in_registers(query_range)
             )
-
-            raw = (await self._read_range(query_range)).expect("Failed to read range")
-            for s in signals_in_query_batch:
+            for s in all_signals_in_query_range:
                 if s not in query_batch:
                     # Let's see how often this happens... TODO
                     logger.warning(f"Signal {s.name} queried, but not in query")
+
+                elapsed = datetime.now() - pull_start
+                logger.debug(
+                    f"Inverter: Pulled signal in {elapsed.seconds}.{elapsed.microseconds} secs"
+                )
+
                 yield (s, _extract_signal_value_from_raw(raw, s))
+
+        elapsed = datetime.now() - pull_start
+        logger.debug(
+            f"Inverter: pull of {len(query)} signals in "
+            f"{elapsed.seconds}.{elapsed.microseconds} secs, but was interrupted"
+        )
 
     async def __aenter__(self):
         """Called on 'async with' enter."""
