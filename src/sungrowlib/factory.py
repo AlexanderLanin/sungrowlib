@@ -1,41 +1,12 @@
 import logging
 from dataclasses import dataclass
 from enum import StrEnum
-from typing import Protocol
 
-from .clients.HttpTransport import AsyncHttpClient
-from .clients.PymodbusTransport import PymodbusTransport
-from .deserialization import DecodedSignalValues
-from .signal_def import SignalDefinition, SignalDefinitions
+from sungrowlib.HttpTransport import HttpTransport
+from sungrowlib.PymodbusTransport import PymodbusTransport
 
-
-class AsyncSungrowInverter(Protocol):
-    def __init__(self, signals: SignalDefinitions): ...
-
-    async def connect(self): ...
-
-    async def disconnect(self): ...
-
-    @staticmethod
-    def default_port() -> int: ...
-
-    @property
-    def connected(self) -> bool:
-        """
-        Is the connection currently established?
-        """
-        ...
-
-    async def read(
-        self,
-        query: list[SignalDefinition],
-    ) -> DecodedSignalValues | Exception:
-        """
-        Note: this may return more signals than requested, as sometimes
-        the query is optimized to read more than requested.
-        """
-        ...
-
+from .AsyncModbusClient import AsyncModbusClient, AsyncModbusTransport
+from .signal_def import SignalDefinitions
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +21,7 @@ class ConnectionMode(StrEnum):
 class ConnectionParams:
     host: str
     port: int | None
-    client_class: AsyncSungrowInverter | None
+    mode: ConnectionMode | None
 
 
 def _get_all_connection_variants(
@@ -64,75 +35,72 @@ def _get_all_connection_variants(
         return [ConnectionParams(host, cc.default_port(), cc)]
 
     # If port looks like a http port, assume http connection
-    if params.port == AsyncHttpClient.default_port():
+    if port == HttpTransport.default_port():
         return [
             ConnectionParams(
-                host=params.host,
-                port=params.port or AsyncHttpClient.default_port(),
-                client_class=AsyncHttpClient,
+                host=host,
+                port=port or HttpTransport.default_port(),
+                mode=ConnectionMode.HTTP_WEBSOCKET,
             )
         ]
 
-    elif params.port is not None:
+    elif port is not None:
         # Non http port can only mean modbus proxy
-        return [
-            ConnectionParams(
-                host=params.host, port=params.port, mode=ConnectionMode.MODBUS
-            )
-        ]
+        return [ConnectionParams(host=host, port=port, mode=ConnectionMode.MODBUS)]
 
     else:
         first = None
 
     p1 = ConnectionParams(
-        host=params.host,
-        port=params.port or PymodbusTransport.default_port(),
-        client_class=PymodbusTransport,
+        host=host,
+        port=port or PymodbusTransport.default_port(),
+        mode=ConnectionMode.MODBUS,
     )
 
     p2 = ConnectionParams(
-        host=params.host,
-        port=ModbusConnection_Http.default_port(),
-        client_class=AsyncHttpClient,
+        host=host,
+        port=HttpTransport.default_port(),
+        mode=ConnectionMode.HTTP_WEBSOCKET,
     )
 
     return [p1, p2] if first is None else [first, p1]
 
 
 def _get_connection_cls(connection: ConnectionMode):
-    return {
-        ConnectionMode.HTTP_WEBSOCKET: AsyncHttpClient,
-        ConnectionMode.MODBUS: PymodbusTransport,
-    }[connection]
+    if connection == ConnectionMode.HTTP_WEBSOCKET:
+        return HttpTransport
+    if connection == ConnectionMode.MODBUS:
+        return PymodbusTransport
+    raise ValueError(f"Unsupported connection mode: {connection}")
 
 
 async def _connect(
     params: ConnectionParams,
     signals: SignalDefinitions | None = None,
-) -> AsyncSungrowInverter | None:
-    cls = params.client_class
-    connection_obj = cls(params.host, params.port, signals)
+) -> AsyncModbusTransport | None:
+    assert params.mode and params.mode != ConnectionMode.ANY
+    cls = _get_connection_cls(params.mode)
+    transport = cls(params.host, params.port)
 
-    logger.debug(
-        f"Trying to connect to inverter using {params.client_class} connection"
-    )
-    if await connection_obj.connect():
+    logger.debug(f"Trying to connect to inverter using {params.mode} connection")
+    if await transport.connect():
         logger.debug("Successfully connected to inverter")
-        return connection_obj
+        return transport
 
 
+# TODO: move this to AsyncModbusClient.__init__?!!!??
 async def create_async(
     host: str,
     port: int | None,
     mode: ConnectionMode = ConnectionMode.ANY,
     signals: SignalDefinitions | None = None,
-) -> AsyncSungrowInverter | None:
-    connection_variants = _get_all_connection_variants(
-        ConnectionParams(host, port, _get_connection_cls(mode))
-    )
+) -> AsyncModbusClient | None:
+    assert signals  # TODO
+
+    connection_variants = _get_all_connection_variants(host, port, mode)
     for variant in connection_variants:
-        assert variant.client_class != ConnectionMode.ANY
-        connection = await _connect(variant, signals)
-        if connection:
-            return connection
+        assert variant.mode != ConnectionMode.ANY
+        transport = await _connect(variant, signals)
+        if transport:
+            return AsyncModbusClient(transport, signals)
     return None

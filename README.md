@@ -21,4 +21,4 @@ Existing libraries lack some features that I consider important:
 ## Comparable projects
 
 * [SungrowClient](https://github.com/bohdan-s/SungrowClient) supports modbus, http and encrypted-modbus connection.
-* todo
+* TODO

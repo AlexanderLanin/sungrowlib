@@ -25,6 +25,7 @@ def is_zero(v):
         return v == 0
 
 
+# TODO: It's never list of None?!
 DatapointBaseValueType = bool | int | float | str | None
 DatapointValueType = DatapointBaseValueType | list[DatapointBaseValueType]
 

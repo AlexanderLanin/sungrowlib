@@ -12,12 +12,11 @@ import logging
 import os
 import time
 from typing import Any, cast
-from warnings import deprecated
 
 import aiohttp
 from result import Err, Ok, Result
 
-from sungrowlib.clients.AsyncModbusClient import BusyError, ConnectionError
+from sungrowlib.AsyncModbusClient import BusyError, ConnectionError
 from sungrowlib.signal_def import RegisterRange, RegisterType
 from sungrowlib.util import get_key
 
@@ -31,7 +30,7 @@ class TokenExpiredError(Err):
         super().__init__("Token expired, fetch a new token first")
 
 
-class AsyncHttpClient:
+class HttpTransport:
     def __init__(self, host: str, port: int | None = None):
         if not port:
             port = self.default_port()
@@ -103,10 +102,7 @@ class AsyncHttpClient:
         Establish permanent websocket connection to the WiNet dongle
         and retrieve a token.
 
-        No (clasic) http connection is established!
-
         Returns true/false on success/failure.
-        Raises modbus.CannotConnectError on WiNet misbehavior.
         """
 
         if self.connected:
@@ -114,20 +110,25 @@ class AsyncHttpClient:
 
         self._debug("Connecting...")
 
-        endpoint = f"ws://{self._host}:{self._port}/ws/home/overview"
+        ws_endpoint = f"ws://{self._host}:{self._port}/ws/home/overview"
         try:
-            self._ws = await self._aio_client.ws_connect(endpoint)
+            self._ws = await self._aio_client.ws_connect(ws_endpoint)
 
             self._token = (await self._get_new_token()).expect("Failed to get token")
 
             # The first device is always the inverter.
-            # ToDo: can we do anything with the others?
-            devices = await self._get_connected_devices()
-            self._inverter = devices.expect("Failed to get devices")[0]
-
-            self._debug("Connection via websocket established")
-
-            return True
+            # TODO: can we do anything with the others?
+            devices = (await self._get_connected_devices()).expect(
+                "Failed to get devices"
+            )
+            self._debug(f"Connected devices: {devices}")
+            if not devices:
+                self._debug("Inverter reports no devices are connected")
+                return False
+            else:
+                self._inverter = devices[0]
+                self._debug("Connection via websocket established")
+                return True
         except Exception:
             await self.disconnect()
             return False
@@ -192,7 +193,7 @@ class AsyncHttpClient:
             "dev_id": self._inverter["dev_id"],
             "dev_type": self._inverter["dev_type"],
             "dev_code": self._inverter["dev_code"],
-            "type": "3",  # todo: Why 3?
+            "type": "3",  # TODO: Why 3?
             "param_addr": rr.start,
             "param_num": rr.length,
             "param_type": param_type,
@@ -240,7 +241,7 @@ class AsyncHttpClient:
     ) -> Result[list[int], ConnectionError]:
         # Note: websocket does not allow access to all possible registers.
         # Not quite clear whether it's worth the effort to query some via websocket and
-        # only the rest via http.
+        # only the rest via http. Potentially better error messages??
 
         json = await self._query_http_json(rr)
         if isinstance(json, Ok):
@@ -249,7 +250,7 @@ class AsyncHttpClient:
             return json
 
     def __str__(self):
-        return f"http({self._host}:{self._port}, slave: {self._slave or 'unknown'})"
+        return f"http({self._host}:{self._port})"
 
 
 def _parse_sungrow_response(

@@ -16,15 +16,14 @@ from sungrowlib.signal_def import (
     SignalDefinition,
 )
 
-DecodedSignalValues = dict[SignalDefinition, DatapointValueType]
 
-
-def __deserialize(registers: list[int], signal: SignalDefinition):
-    # TODO: use signal.something instead of len. It's faster. Add an assert for length?
-    if len(registers) == 1:
+def __extract_integer_from_registers(registers: list[int], signal: SignalDefinition):
+    if signal.registers == 1:
+        assert len(registers) == 1
         int_value = registers[0]
         na = 0xFFFF
-    elif len(registers) == 2:
+    elif signal.registers == 2:
+        assert len(registers) == 2
         int_value = registers[0] + registers[1] << 16
         na = 0xFFFFFFFF
     else:
@@ -50,9 +49,8 @@ def _deserialize_and_decode_int_signal(
     Error cases:
     * returns None when signal is N/A
     * returns original int when signal cannot be decoded
-    TODO: consider using `result`
     """
-    int_value = __deserialize(registers, signal)
+    int_value = __extract_integer_from_registers(registers, signal)
     if int_value is None:
         return None
 
@@ -68,7 +66,7 @@ def _deserialize_and_decode_int_signal(
 
     # "decoded" is used to decode values like "1" to "ON" or "0" to "OFF"
     elif signal.decoding_table:
-        # ToDo: better error handling.
+        # TODO: better error handling.
         # Exception is not an option, as it would be nice to e.g. support
         # unknown inverters.
         if value := signal.decoding_table.get(int_value, None):
@@ -109,8 +107,8 @@ def decode_signal(
 def decode_signals(
     signal_list: list[SignalDefinition],
     raw_signals: MappedData,
-) -> DecodedSignalValues:
-    decoded: DecodedSignalValues = {}
+):
+    decoded: dict[SignalDefinition, DatapointValueType] = {}
     for signal in signal_list:
         value = raw_signals[signal.name]
         decoded[signal] = decode_signal(signal, value) if value else None

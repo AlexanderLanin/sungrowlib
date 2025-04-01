@@ -14,7 +14,7 @@ import pymodbus.framer.base
 import pymodbus.pdu
 from result import Err, Ok, Result
 
-from sungrowlib.clients.AsyncModbusClient import (
+from sungrowlib.AsyncModbusClient import (
     CannotConnectError,
     InvalidSlaveError,
     ModbusError,
@@ -62,6 +62,7 @@ async def __call_pymodbus_client_read(
     register_range: RegisterRange,
 ) -> Result[list[int], Exception]:
     """Low level pymodbus abstraction, mostly for error handling."""
+
     read_registers = {
         RegisterType.READ: client.read_input_registers,
         RegisterType.HOLD: client.read_holding_registers,
@@ -110,7 +111,11 @@ async def __call_pymodbus_client_read(
 
 
 class PymodbusTransport:  # noqa: N801
-    """A pymodbus connection to a single slave."""
+    """
+    Transport layer for pymodbus.
+
+    Note: multiple slaves are currently not supported.
+    """
 
     def __init__(self, host: str, port: int | None):
         if not port:
