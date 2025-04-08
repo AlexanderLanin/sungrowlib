@@ -6,6 +6,13 @@ from typing import AsyncGenerator, Protocol
 from result import Err, Ok, Result
 
 from sungrowlib.deserialization import decode_signal
+from sungrowlib.factory import (
+    ConnectionMode,
+    ConnectionParams,
+    _connect_specific_transport,
+    _get_all_connection_variants,
+    connect_transport,
+)
 from sungrowlib.modbus_types import RawData
 from sungrowlib.signal_def import (
     DatapointValueType,
@@ -158,8 +165,16 @@ class AsyncModbusClient:  # noqa: N801
         retrieved_signals_success: int = 0
         retrieved_signals_failed: int = 0
 
-    def __init__(self, transport: AsyncModbusTransport, all_signals: SignalDefinitions):
-        self._transport = transport
+    async def __init__(
+        self,
+        transport_or_params: AsyncModbusTransport | ConnectionParams,
+        all_signals: SignalDefinitions,
+    ):
+        if isinstance(transport_or_params, ConnectionParams):
+            self._transport = await connect_transport(transport_or_params, all_signals)
+        else:
+            self._transport = transport_or_params
+
         self._stats = AsyncModbusClient.Stats()
         self._all_signals = all_signals
 

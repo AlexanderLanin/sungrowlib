@@ -5,10 +5,6 @@ from sungrowlib.signal_def import SignalDefinition, Supported
 logger = logging.getLogger(__name__)
 
 
-def query_individually(supported: Supported) -> bool:
-    return supported == Supported.UNKNOWN_FROM_MULTI_SIGNAL_QUERY
-
-
 def get_new_supported_value(
     self: SignalDefinition, old_value: Supported, new_value: Supported
 ):
