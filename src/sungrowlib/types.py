@@ -5,7 +5,6 @@ It does NOT know about modbus (except for "RegisterType").
 """
 
 import logging
-from collections import defaultdict
 from collections.abc import Mapping
 from dataclasses import dataclass
 from enum import StrEnum
@@ -13,21 +12,30 @@ from enum import StrEnum
 logger = logging.getLogger(__name__)
 
 
-def is_zero(v):
-    if v is None:
-        return True
+# def is_zero(v):
+#     if v is None:
+#         return True
 
-    if isinstance(v, list):
-        return not any(v)
-    elif isinstance(v, dict):
-        return not any(v.values())
-    else:
-        return v == 0
+#     if isinstance(v, list):
+#         return not any(v)
+#     elif isinstance(v, dict):
+#         return not any(v.values())
+#     else:
+#         return v == 0
 
 
 # TODO: It's never list of None?!
 DatapointBaseValueType = bool | int | float | str | None
 DatapointValueType = DatapointBaseValueType | list[DatapointBaseValueType]
+
+# In case the register is not supported, the value is None
+# e.g. {0: 123, 1: 456: 2: None}
+RawData = dict[int, int | None]
+
+# In case the signal is not supported, the value is None
+# e.g. {"ac_power": [123, 456], "ac_current": None}
+# TODO: use SignalDefinition instead of str?
+MappedData = dict[str, list[int] | None]
 
 
 class Supported(StrEnum):
@@ -80,24 +88,6 @@ class RegisterRange:
             and other.start >= self.start
             and other.end <= self.end
         )
-
-
-def get_supported_state_based_on_value(
-    sigdef: "SignalDefinition",
-    value: DatapointBaseValueType,
-    was_queried_individually: bool,
-):
-    if value is None:
-        return Supported.NO
-
-    if value != sigdef.value_with_no_meaning:
-        return Supported.YES
-
-    # Unknown, but which one?
-    if was_queried_individually:
-        return Supported.CONFIRMED_UNKNOWN
-    else:
-        return Supported.UNKNOWN_FROM_MULTI_SIGNAL_QUERY
 
 
 @dataclass

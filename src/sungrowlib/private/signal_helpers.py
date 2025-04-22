@@ -1,11 +1,29 @@
 import logging
 
-from sungrowlib.signal_def import SignalDefinition, Supported
+from sungrowlib.types import DatapointBaseValueType, SignalDefinition, Supported
 
 logger = logging.getLogger(__name__)
 
 
-def get_new_supported_value(
+def get_supported_state_based_on_value(
+    sigdef: SignalDefinition,
+    value: DatapointBaseValueType,
+    was_queried_individually: bool,
+):
+    if value is None:
+        return Supported.NO
+
+    if value != sigdef.value_with_no_meaning:
+        return Supported.YES
+
+    # Unknown, but which one?
+    if was_queried_individually:
+        return Supported.CONFIRMED_UNKNOWN
+    else:
+        return Supported.UNKNOWN_FROM_MULTI_SIGNAL_QUERY
+
+
+def evaluate_signal_support(
     self: SignalDefinition, old_value: Supported, new_value: Supported
 ):
     assert new_value != Supported.NEVER_ATTEMPTED
@@ -40,13 +58,3 @@ def get_new_supported_value(
                 s = "supported" if new_value == Supported.YES else "not supported"
                 logger.debug(f"Signal {self.name} is {s}.")
         return new_value
-
-
-# In case the register is not supported, the value is None
-# e.g. {0: 123, 1: 456: 2: None}
-RawData = dict[int, int | None]
-
-# In case the signal is not supported, the value is None
-# e.g. {"ac_power": [123, 456], "ac_current": None}
-# TODO: use SignalDefinition instead of str?
-MappedData = dict[str, list[int] | None]

@@ -17,7 +17,7 @@ import aiohttp
 from result import Err, Ok, Result
 
 from sungrowlib.AsyncModbusClient import BusyError, ConnectionError
-from sungrowlib.signal_def import RegisterRange, RegisterType
+from sungrowlib.types import RegisterRange, RegisterType
 from sungrowlib.util import get_key
 
 logger = logging.getLogger(__name__)

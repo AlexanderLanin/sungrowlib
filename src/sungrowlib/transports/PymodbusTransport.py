@@ -18,10 +18,9 @@ from sungrowlib.AsyncModbusClient import (
     CannotConnectError,
     InvalidSlaveError,
     ModbusError,
-    RegisterType,
     UnsupportedRegisterQueriedError,
 )
-from sungrowlib.signal_def import RegisterRange
+from sungrowlib.types import RegisterRange, RegisterType
 
 logger = logging.getLogger(__name__)
 

@@ -7,14 +7,30 @@ Provided functions:
 * decode_signals: Converts a list of raw signals to a list of decoded signals.
 """
 
-from sungrowlib.modbus_types import (
-    MappedData,
-)
-from sungrowlib.signal_def import (
+from sungrowlib.types import (
     DatapointBaseValueType,
     DatapointValueType,
+    MappedData,
+    RawData,
     SignalDefinition,
 )
+
+
+def extract_signal_value_from_raw(r: RawData, signal: SignalDefinition):
+    # We'll use the first register to check if signal is supported.
+    if r[signal.registers.start] is None:
+        return None
+    else:
+        result: list[int] = []
+        for i in range(signal.registers.length):
+            v = r[signal.registers.start + i]
+            # This can never happen, as there is just no way for a None to appear
+            # in the middle of a range.
+            # Ranges are cut at signal borders.
+            # Each signal is either fully supported or not at all.
+            assert v is not None
+            result.append(v)
+        return result
 
 
 def __extract_integer_from_registers(registers: list[int], signal: SignalDefinition):

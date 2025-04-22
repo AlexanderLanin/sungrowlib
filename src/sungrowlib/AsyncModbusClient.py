@@ -1,23 +1,24 @@
 import logging
 from dataclasses import dataclass
 from datetime import datetime
-from typing import AsyncGenerator, Protocol
+from typing import AsyncGenerator
 
 from result import Err, Ok, Result
 
-from sungrowlib.deserialization import decode_signal
-from sungrowlib.factory import (
-    ConnectionMode,
-    ConnectionParams,
-    _connect_specific_transport,
-    _get_all_connection_variants,
-    connect_transport,
+from sungrowlib.private.deserialization import (
+    decode_signal,
+    extract_signal_value_from_raw,
 )
-from sungrowlib.modbus_types import RawData
-from sungrowlib.signal_def import (
+from sungrowlib.private.factory import (
+    PartialConnectionParams,
+    initialize_transport,
+)
+from sungrowlib.private.generate_query_batches import generate_query_batches
+from sungrowlib.transports import AsyncModbusTransport
+from sungrowlib.types import (
     DatapointValueType,
+    RawData,
     RegisterRange,
-    RegisterType,
     SignalDefinition,
     SignalDefinitions,
 )
@@ -57,103 +58,6 @@ class UnsupportedRegisterQueriedError(ModbusError):
     """
 
 
-def _generate_query_batches(
-    signals: list[SignalDefinition],
-    max_registers_per_range: int,
-) -> list[tuple[RegisterRange, list[SignalDefinition]]]:
-    """
-    Split the list of signals into ranges.
-    Each range is guaranteed to:
-    - not exceed the max_registers_per_range
-    - be sorted by address
-    - only contain signals of the same register type
-    """
-
-    def can_add(cr: list[SignalDefinition], signal: SignalDefinition, max: int):
-        return not cr or signal.registers.end - cr[0].registers.start <= max
-
-    def sorted_and_filtered(
-        signals: list[SignalDefinition], register_type: RegisterType
-    ) -> list[SignalDefinition]:
-        return sorted(
-            filter(lambda s: s.registers.register_type == register_type, signals),
-            key=lambda s: s.registers.start,
-        )
-
-    def range_and_signals(signals: list[SignalDefinition]):
-        if not signals:
-            raise ValueError("current_range is empty")
-        return RegisterRange(
-            signals[0].registers.register_type,
-            signals[0].registers.start,
-            signals[-1].registers.end - signals[0].registers.start,
-        ), signals
-
-    # We need to build the ranges for read and hold separately, as they can't be
-    # mixed/combined.
-    ranges: list[tuple[RegisterRange, list[SignalDefinition]]] = []
-
-    for register_type in RegisterType:
-        current_range: list[SignalDefinition] = []
-
-        for signal in sorted_and_filtered(signals, register_type):
-            if can_add(current_range, signal, max_registers_per_range):
-                current_range.append(signal)
-            else:
-                ranges.append(range_and_signals(current_range))
-                current_range = [signal]
-
-        if current_range:
-            ranges.append(range_and_signals(current_range))
-
-    return ranges
-
-
-def _extract_signal_value_from_raw(r: RawData, signal: SignalDefinition):
-    # We'll use the first register to check if signal is supported.
-    if r[signal.registers.start] is None:
-        return None
-    else:
-        result: list[int] = []
-        for i in range(signal.registers.length):
-            v = r[signal.registers.start + i]
-            # This can never happen, as there is just no way for a None to appear
-            # in the middle of a range.
-            # Ranges are cut at signal borders.
-            # Each signal is either fully supported or not at all.
-            assert v is not None
-            result.append(v)
-        return result
-
-
-class AsyncModbusTransport(Protocol):
-    def __init__(self, signals: SignalDefinitions): ...
-
-    async def connect(self) -> bool: ...
-
-    async def disconnect(self): ...
-
-    @staticmethod
-    def default_port() -> int: ...
-
-    @property
-    def connected(self) -> bool:
-        """
-        Is the connection currently established?
-        """
-        ...
-
-    async def read_range(
-        self,
-        register_range: RegisterRange,
-    ) -> Result[list[int], Exception]:
-        """
-        Note: this may return more signals than requested, as sometimes
-        the query is optimized to read more than requested.
-        """
-        ...
-
-
 class AsyncModbusClient:  # noqa: N801
     """A pymodbus connection to a single slave."""
 
@@ -167,11 +71,15 @@ class AsyncModbusClient:  # noqa: N801
 
     async def __init__(
         self,
-        transport_or_params: AsyncModbusTransport | ConnectionParams,
-        all_signals: SignalDefinitions,
+        transport_or_params: AsyncModbusTransport | PartialConnectionParams,
+        all_signals: SignalDefinitions | None,
     ):
-        if isinstance(transport_or_params, ConnectionParams):
-            self._transport = await connect_transport(transport_or_params, all_signals)
+        """
+        If you provide all_signals, the client will report 'accidentally' queried signals
+        that are not in the query.
+        """
+        if isinstance(transport_or_params, PartialConnectionParams):
+            self._transport = await initialize_transport(transport_or_params)
         else:
             self._transport = transport_or_params
 
@@ -220,7 +128,7 @@ class AsyncModbusClient:  # noqa: N801
         # We cannot query all signals at once, as the inverter will not respond.
         # So we split the signals into ranges and query each range separately.
         # Build as few ranges as possible:
-        query_batches = _generate_query_batches(query, max_combined_registers)
+        query_batches = generate_query_batches(query, max_combined_registers)
 
         if len(query_batches) > 1 or len(query) > 5:
             logger.debug(
@@ -234,9 +142,14 @@ class AsyncModbusClient:  # noqa: N801
 
             # query_range may contain more signals than query_batch, as some signals
             # may be queried by accident due to generation of query ranges.
-            all_signals_in_query_range = (
-                self._all_signals.get_all_signals_contained_in_registers(query_range)
-            )
+            if self._all_signals:
+                all_signals_in_query_range = (
+                    self._all_signals.get_all_signals_contained_in_registers(
+                        query_range
+                    )
+                )
+            else:
+                all_signals_in_query_range = query_batch
             for s in all_signals_in_query_range:
                 if s not in query_batch:
                     # Let's see how often this happens... TODO
@@ -247,7 +160,7 @@ class AsyncModbusClient:  # noqa: N801
                     f"Inverter: Pulled signal in {elapsed.seconds}.{elapsed.microseconds} secs"
                 )
 
-                yield (s, _extract_signal_value_from_raw(raw, s))
+                yield (s, extract_signal_value_from_raw(raw, s))
 
         elapsed = datetime.now() - pull_start
         logger.debug(
