@@ -16,11 +16,19 @@ from typing import Any, cast
 import aiohttp
 from result import Err, Ok, Result
 
-from sungrowlib.AsyncModbusClient import BusyError, ConnectionError, ModbusError
+from sungrowlib.AsyncModbusClient import (
+    CannotConnectError,
+    ConnectionError,
+    GenericError,
+)
 from sungrowlib.types import RegisterRange, RegisterType
 from sungrowlib.util import get_key
 
 logger = logging.getLogger(__name__)
+
+
+class BusyError:
+    pass
 
 
 class TokenExpiredError(Err):
@@ -48,7 +56,9 @@ class HttpTransport:
     def default_port() -> int:
         return 8082
 
-    async def _ws_query(self, query: dict[str, str | int]):
+    async def _ws_query(
+        self, query: dict[str, str | int]
+    ) -> Result[dict, ConnectionError]:
         # Potential services: connect, devicelist, state, statistics, runtime, real
         if self._ws is None:
             raise RuntimeError("Websocket not connected")
@@ -59,7 +69,7 @@ class HttpTransport:
         except Exception as e:
             logger.error(f"Cannot send message to inverter: {e}")
             await self.disconnect()
-            return ConnectionError()
+            return Err(ConnectionError())
 
         if (
             isinstance(response, dict)
@@ -70,13 +80,13 @@ class HttpTransport:
             return Ok(response["result_data"])
         else:
             logger.error(f"Invalid websocket response from inverter: {response}")
-            return ConnectionError()
+            return Err(ConnectionError())
 
     async def _get_new_token(self) -> Result[str, ConnectionError]:
         response = await self._ws_query(
             {"lang": "en_us", "token": "", "service": "connect"}
         )
-        return get_key(response, "token", str) or ConnectionError()
+        return get_key(response, "token", str) or Err(CannotConnectError())
 
     def _debug(self, msg: str):
         logger.debug(f"{self._host}:{self._port} {msg}")
@@ -95,7 +105,7 @@ class HttpTransport:
                 "is_check_token": "0",
             }
         )
-        return get_key(response, "list", list) or ConnectionError()
+        return get_key(response, "list", list) or Err(ConnectionError())
 
     async def connect(self):
         """
@@ -233,10 +243,10 @@ class HttpTransport:
                 continue
             return parsed
 
-        # TODO: append last_error to error message?!
-        return ConnectionError()
+        # Append last_error to error message?!
+        return Err(ConnectionError("Repeatedly failed to query inverter"))
 
-    async def read_range(self, rr: RegisterRange) -> Result[list[int], ModbusError]:
+    async def read_range(self, rr: RegisterRange) -> Result[list[int], GenericError]:
         # Note: websocket does not allow access to all possible registers.
         # Not quite clear whether it's worth the effort to query some via websocket and
         # only the rest via http. Potentially better error messages??
@@ -262,13 +272,13 @@ def _parse_sungrow_response(
     elif response["result_code"] == 301:
         # Wild guess what 301 means. It's not in the official documentation.
         # Seems to work out if we retry after a reasonable delay.
-        return BusyError()
+        return Err(BusyError())
     else:
         logger.error(
             f"Invalid response from inverter: {response}, "
             f"result_code: {response['result_code']}"
         )
-        return ConnectionError()
+        return Err(ConnectionError())
 
 
 def _parse_modbus_data(

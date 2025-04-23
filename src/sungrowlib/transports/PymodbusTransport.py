@@ -16,8 +16,8 @@ from result import Err, Ok, Result
 
 from sungrowlib.AsyncModbusClient import (
     CannotConnectError,
+    GenericError,
     InvalidSlaveError,
-    ModbusError,
     UnsupportedRegisterQueriedError,
 )
 from sungrowlib.types import RegisterRange, RegisterType
@@ -75,10 +75,10 @@ async def __call_pymodbus_client_read(
         return Err(CannotConnectError(f"{type(e).__name__}: {e}"))
     except pymodbus.exceptions.ModbusIOException as e:
         return Err(
-            ModbusError(f"Unknown IO Error in pymodbus: {type(e).__name__}: {e}")
+            GenericError(f"Unknown IO Error in pymodbus: {type(e).__name__}: {e}")
         )
     except Exception as e:
-        return Err(ModbusError(f"Unknown error in pymodbus: {type(e).__name__}: {e}"))
+        return Err(GenericError(f"Unknown error in pymodbus: {type(e).__name__}: {e}"))
 
     if rr.isError():
         if isinstance(rr, pymodbus.pdu.ExceptionResponse):
@@ -94,13 +94,13 @@ async def __call_pymodbus_client_read(
                 logger.warning(
                     "Unexpected error response: %s. Please inform the developer.", rr
                 )
-                return Err(ModbusError(f"Error response code: {rr.exception_code}"))
+                return Err(GenericError(f"Error response code: {rr.exception_code}"))
         else:
-            return Err(ModbusError(f"Unknown error response: {rr}"))
+            return Err(GenericError(f"Unknown error response: {rr}"))
 
     if len(rr.registers) != register_range.length:
         return Err(
-            ModbusError(
+            GenericError(
                 f"Mismatched number of registers "
                 f"(requested {register_range}) and responded {len(rr.registers)})"
             )
@@ -189,7 +189,7 @@ class PymodbusTransport:  # noqa: N801
         self,
         register_range: RegisterRange,
     ) -> Result[
-        list[int], CannotConnectError | ModbusError | UnsupportedRegisterQueriedError
+        list[int], CannotConnectError | GenericError | UnsupportedRegisterQueriedError
     ]:
         """
         Reads `address_count` registers of type `register_type` starting at

@@ -26,29 +26,23 @@ from sungrowlib.types import (
 logger = logging.getLogger(__name__)
 
 
-class ModbusError(Exception):
-    """Generic error for all modbus related errors."""
+class GenericError(Exception):
+    """Generic error for all sungrowlib related errors."""
 
 
-class InvalidSlaveError(ModbusError):
+class InvalidSlaveError(GenericError):
     pass
 
 
-class CannotConnectError(ModbusError):
+class ConnectionError(GenericError):
     pass
 
 
-class ConnectionError(Err):
-    def __init__(self):
-        super().__init__("Some problem with the connection")
+class CannotConnectError(ConnectionError):
+    pass
 
 
-class BusyError(Err):
-    def __init__(self):
-        super().__init__("Inverter is busy, please try again later")
-
-
-class UnsupportedRegisterQueriedError(ModbusError):
+class UnsupportedRegisterQueriedError(GenericError):
     """
     WiNet: ALL queried registers are unsupported.
 
