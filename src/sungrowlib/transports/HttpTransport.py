@@ -16,7 +16,7 @@ from typing import Any, cast
 import aiohttp
 from result import Err, Ok, Result
 
-from sungrowlib.AsyncModbusClient import BusyError, ConnectionError
+from sungrowlib.AsyncModbusClient import BusyError, ConnectionError, ModbusError
 from sungrowlib.types import RegisterRange, RegisterType
 from sungrowlib.util import get_key
 
@@ -236,9 +236,7 @@ class HttpTransport:
         # TODO: append last_error to error message?!
         return ConnectionError()
 
-    async def _read_range(
-        self, rr: RegisterRange
-    ) -> Result[list[int], ConnectionError]:
+    async def read_range(self, rr: RegisterRange) -> Result[list[int], ModbusError]:
         # Note: websocket does not allow access to all possible registers.
         # Not quite clear whether it's worth the effort to query some via websocket and
         # only the rest via http. Potentially better error messages??

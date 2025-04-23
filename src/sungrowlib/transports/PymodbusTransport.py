@@ -188,7 +188,9 @@ class PymodbusTransport:  # noqa: N801
     async def read_range(
         self,
         register_range: RegisterRange,
-    ) -> Result[list[int], Exception]:
+    ) -> Result[
+        list[int], CannotConnectError | ModbusError | UnsupportedRegisterQueriedError
+    ]:
         """
         Reads `address_count` registers of type `register_type` starting at
         `address_start`.
