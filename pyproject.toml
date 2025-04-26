@@ -3,21 +3,16 @@ name = "sungrowlib"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-authors = [
-    { name = "Alexander Lanin", email = "alex@lanin.de" }
-]
+authors = [{ name = "Alexander Lanin", email = "alex@lanin.de" }]
 requires-python = ">=3.13"
-dependencies = [
-    "aiohttp>=3.11.14",
-    "pymodbus>=3.8.6",
-]
+dependencies = ["aiohttp>=3.11.14", "pymodbus>=3.8.6"]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [dependency-groups]
-dev = [
-    "basedpyright>=1.29.1",
-    "pytest-asyncio>=0.26.0",
-]
+dev = ["basedpyright>=1.29.1", "pytest-asyncio>=0.26.0"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
