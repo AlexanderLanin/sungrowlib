@@ -1,19 +1,14 @@
 from typing import Protocol
 
-from result import Result
-
-from sungrowlib.types import (
-    RegisterRange,
-    SignalDefinitions,
-)
+from sungrowlib.types import RegisterRange
 
 
 class AsyncModbusTransport(Protocol):
-    def __init__(self, signals: SignalDefinitions): ...
+    async def connect(self) -> None:
+        """Throws a ConnectionError if the connection cannot be established."""
+        ...
 
-    async def connect(self) -> bool: ...
-
-    async def disconnect(self): ...
+    async def disconnect(self) -> None: ...
 
     @staticmethod
     def default_port() -> int: ...
@@ -28,9 +23,11 @@ class AsyncModbusTransport(Protocol):
     async def read_range(
         self,
         register_range: RegisterRange,
-    ) -> Result[list[int], Exception]:
+    ) -> list[int]:
         """
         Note: this may return more signals than requested, as sometimes
         the query is optimized to read more than requested.
+
+        Can throw an GenericError or a subclass of it.
         """
         ...

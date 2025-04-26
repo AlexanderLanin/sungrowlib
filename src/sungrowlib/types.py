@@ -38,6 +38,55 @@ RawData = dict[int, int | None]
 MappedData = dict[str, list[int] | None]
 
 
+class GenericError(Exception):
+    """Generic error for all sungrowlib related errors."""
+
+
+class SungrowlibRuntimeError(GenericError):
+    """A runtime error in sungrowlib. Should never happen."""
+
+    # TODO: remove this class and use RuntimeError instead?
+
+    pass
+
+
+class InvalidSlaveError(GenericError):
+    """The slave address is invalid."""
+
+    pass
+
+
+class ConnectionError(GenericError):
+    """Network related error."""
+
+    pass
+
+
+class InvalidResponseError(GenericError):
+    """Inverter responded with unexpected data."""
+
+    pass
+
+
+class CannotConnectError(ConnectionError):
+    # TODO: technically not all cannot connect errors are network related.
+    # Sometimes it's indeed an invalid response!
+    pass
+
+
+class InternalError(GenericError):
+    """
+    Internal error in sungrowlib.
+    It will never be thrown to the user.
+    """
+
+
+class UnsupportedRegisterQueriedError(GenericError):
+    """
+    Note: this exception is used only internally and will never be thrown to the user.
+    """
+
+
 class Supported(StrEnum):
     NEVER_ATTEMPTED = "never_attempted"  # Initial state
 

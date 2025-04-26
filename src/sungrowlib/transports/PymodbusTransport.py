@@ -10,17 +10,17 @@ from datetime import datetime, timedelta
 import pymodbus
 import pymodbus.client
 import pymodbus.exceptions
-import pymodbus.framer.base
 import pymodbus.pdu
-from result import Err, Ok, Result
 
-from sungrowlib.AsyncModbusClient import (
+from sungrowlib.types import (
     CannotConnectError,
     GenericError,
+    InvalidResponseError,
     InvalidSlaveError,
+    RegisterRange,
+    RegisterType,
     UnsupportedRegisterQueriedError,
 )
-from sungrowlib.types import RegisterRange, RegisterType
 
 logger = logging.getLogger(__name__)
 
@@ -59,7 +59,7 @@ async def __call_pymodbus_client_read(
     client: pymodbus.client.ModbusBaseClient,
     slave: int,
     register_range: RegisterRange,
-) -> Result[list[int], Exception]:
+) -> list[int]:
     """Low level pymodbus abstraction, mostly for error handling."""
 
     read_registers = {
@@ -72,41 +72,38 @@ async def __call_pymodbus_client_read(
             register_range.start - 1, count=register_range.length, slave=slave
         )
     except pymodbus.exceptions.ConnectionException as e:
-        return Err(CannotConnectError(f"{type(e).__name__}: {e}"))
+        raise CannotConnectError(f"{type(e).__name__}: {e}")
     except pymodbus.exceptions.ModbusIOException as e:
-        return Err(
-            GenericError(f"Unknown IO Error in pymodbus: {type(e).__name__}: {e}")
-        )
+        raise GenericError(f"Unknown IO Error in pymodbus: {type(e).__name__}: {e}")
+
     except Exception as e:
-        return Err(GenericError(f"Unknown error in pymodbus: {type(e).__name__}: {e}"))
+        raise GenericError(f"Unknown error in pymodbus: {type(e).__name__}: {e}")
 
     if rr.isError():
         if isinstance(rr, pymodbus.pdu.ExceptionResponse):
             if rr.exception_code == pymodbus.pdu.ExceptionResponse.GATEWAY_NO_RESPONSE:
-                return Err(InvalidSlaveError(f"Slave ID {slave} is invalid"))
+                raise InvalidSlaveError(f"Slave ID {slave} is invalid")
             elif rr.exception_code == pymodbus.pdu.ExceptionResponse.ILLEGAL_ADDRESS:
-                return Err(
-                    UnsupportedRegisterQueriedError(
-                        f"Inverter does not support {register_range}: {rr}"
-                    )
+                raise UnsupportedRegisterQueriedError(
+                    f"Inverter does not support {register_range}: {rr}"
                 )
             else:
                 logger.warning(
-                    "Unexpected error response: %s. Please inform the developer.", rr
+                    "Unknown error response: %s. Please inform the developer.", rr
                 )
-                return Err(GenericError(f"Error response code: {rr.exception_code}"))
+                raise GenericError(f"Error response code: {rr.exception_code}")
         else:
-            return Err(GenericError(f"Unknown error response: {rr}"))
+            raise RuntimeError(f"Unknown error response: {rr}")
 
     if len(rr.registers) != register_range.length:
-        return Err(
-            GenericError(
+        raise (
+            InvalidResponseError(
                 f"Mismatched number of registers "
                 f"(requested {register_range}) and responded {len(rr.registers)})"
             )
         )
 
-    return Ok(rr.registers)
+    return rr.registers
 
 
 class PymodbusTransport:  # noqa: N801
@@ -156,17 +153,11 @@ class PymodbusTransport:  # noqa: N801
         self._next_allowed_call = datetime.now() + MIN_DELAY
 
     async def connect(self):
-        if self._client.connected:
-            return True
-        else:
+        if not self._client.connected:
             self._debug("Connecting...")
             await self._add_delay_between_API_calls()
-            result = await self._client.connect()
-            if result:
-                logger.debug("Connected")
-            else:
-                logger.debug("Failed to connect")
-            return result
+            if not await self._client.connect():
+                raise CannotConnectError("Cannot connect to inverter")
 
     async def disconnect(self):
         # The _client has a 'reconnect_task' which it will cancel and delete on close().
@@ -188,9 +179,7 @@ class PymodbusTransport:  # noqa: N801
     async def read_range(
         self,
         register_range: RegisterRange,
-    ) -> Result[
-        list[int], CannotConnectError | GenericError | UnsupportedRegisterQueriedError
-    ]:
+    ) -> list[int]:
         """
         Reads `address_count` registers of type `register_type` starting at
         `address_start`.
@@ -200,8 +189,7 @@ class PymodbusTransport:  # noqa: N801
         assert self._slave is not None, "Slave ID must be set before reading"  # TODO
 
         self._debug(f"read_range({register_range=})...")
-        if not await self.connect():
-            return Err(CannotConnectError("Cannot connect to inverter for reading"))
+        await self.connect()
 
         return await __call_pymodbus_client_read(
             self._client, self._slave, register_range

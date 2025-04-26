@@ -2,19 +2,19 @@ import logging
 from dataclasses import dataclass
 from enum import StrEnum
 
-from sungrowlib.AsyncModbusClient import CannotConnectError
 from sungrowlib.transports import AsyncModbusTransport, HttpTransport, PymodbusTransport
+from sungrowlib.types import CannotConnectError
 
 logger = logging.getLogger(__name__)
 
 
 class ConnectionMode(StrEnum):
-    HTTP_WEBSOCKET = "http"
+    HTTP = "http"
     MODBUS = "modbus"
 
 
 @dataclass
-class PartialConnectionParams:
+class ConnectionParams:
     host: str
     port: int | None
     mode: ConnectionMode | None
@@ -28,33 +28,34 @@ class ResolvedConnectionParams:
 
 
 def _assemble_connection_variants(
-    params: PartialConnectionParams,
+    params: ConnectionParams,
 ) -> list[ResolvedConnectionParams]:
-    # If mode is already set, return the params as is
     if params.mode:
-        cc = _get_connection_cls(params.mode)
-        return [ResolvedConnectionParams(params.host, cc.default_port(), cc)]
+        if params.port:
+            return [ResolvedConnectionParams(params.host, params.port, params.mode)]
+        else:
+            cc = _get_connection_cls(params.mode)
+            return [
+                ResolvedConnectionParams(params.host, cc.default_port(), params.mode)
+            ]
 
     # If port looks like a http port, assume http connection
-    if params.port == HttpTransport.default_port():
+    if params.port and params.port == HttpTransport.default_port():
         return [
             ResolvedConnectionParams(
                 host=params.host,
-                port=params.port or HttpTransport.default_port(),
-                mode=ConnectionMode.HTTP_WEBSOCKET,
+                port=params.port,
+                mode=ConnectionMode.HTTP,
             )
         ]
 
-    elif params.port is not None:
-        # Non http port can only mean modbus proxy
+    # If port looks like a modbus port, assume modbus connection
+    elif params.port and params.port is PymodbusTransport.default_port():
         return [
             ResolvedConnectionParams(
                 host=params.host, port=params.port, mode=ConnectionMode.MODBUS
             )
         ]
-
-    else:
-        first = None
 
     p1 = ResolvedConnectionParams(
         host=params.host,
@@ -64,19 +65,21 @@ def _assemble_connection_variants(
 
     p2 = ResolvedConnectionParams(
         host=params.host,
-        port=HttpTransport.default_port(),
-        mode=ConnectionMode.HTTP_WEBSOCKET,
+        port=params.port or HttpTransport.default_port(),
+        mode=ConnectionMode.HTTP,
     )
 
-    return [p1, p2] if first is None else [first, p1]
+    # Let's try both connections
+    # TODO: which one should be first?
+    return [p1, p2]
 
 
 def _get_connection_cls(connection: ConnectionMode):
-    if connection == ConnectionMode.HTTP_WEBSOCKET:
-        return HttpTransport
-    if connection == ConnectionMode.MODBUS:
-        return PymodbusTransport
-    raise ValueError(f"Unsupported connection mode: {connection}")
+    match connection:
+        case ConnectionMode.HTTP:
+            return HttpTransport
+        case ConnectionMode.MODBUS:
+            return PymodbusTransport
 
 
 async def _connect_specific_transport(
@@ -86,13 +89,17 @@ async def _connect_specific_transport(
     transport = cls(params.host, params.port)
 
     logger.debug(f"Trying to connect to inverter using {params.mode} connection")
-    if await transport.connect():
+    try:
+        await transport.connect()
         logger.debug("Successfully connected to inverter")
         return transport
+    except CannotConnectError:
+        logger.debug("Failed to connect to inverter")
+        return None
 
 
 async def initialize_transport(
-    params: PartialConnectionParams,
+    params: ConnectionParams,
 ):
     connection_variants = _assemble_connection_variants(params)
     for variant in connection_variants:
