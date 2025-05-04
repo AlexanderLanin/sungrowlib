@@ -1,3 +1,9 @@
 {
-  "basedpyright.analysis.diagnosticMode": "workspace"
+  "basedpyright.analysis.diagnosticMode": "workspace",
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": [
+    "-n",
+    "auto"
+  ]
 }

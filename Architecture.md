@@ -1,5 +1,7 @@
 # Architecture
 
+:warning: Outdated :warning:
+
 ```mermaid
 ---
   config:

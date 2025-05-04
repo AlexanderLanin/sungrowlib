@@ -98,7 +98,7 @@ async def _connect_specific_transport(
         return None
 
 
-async def initialize_transport(
+async def create_transport(
     params: ConnectionParams,
 ):
     connection_variants = _assemble_connection_variants(params)

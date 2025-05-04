@@ -9,7 +9,8 @@ from typing import cast
 import pymodbus.datastore
 import pymodbus.datastore.store
 import pymodbus.server
-import pytest_socket  # pyright: ignore[reportMissingTypeStubs]
+
+# import pytest_socket  # pyright: ignore[reportMissingTypeStubs]
 import yaml
 from pymodbus.server.server import ModbusTcpServer
 
@@ -61,14 +62,14 @@ def enable_socket(ip: str):
     Temporarily enable sockets for the given IP address.
     """
     # Block connect() to all hosts except localhost
-    pytest_socket.socket_allow_hosts(ip)  # pyright: ignore[reportUnknownMemberType]
+    # pytest_socket.socket_allow_hosts(ip)  # pyright: ignore[reportUnknownMemberType]
     # Restore sockets in general
-    pytest_socket.enable_socket()
+    # pytest_socket.enable_socket()
 
     yield
 
     # Re-Disable sockets after the test case
-    pytest_socket.disable_socket()
+    # pytest_socket.disable_socket()
 
 
 @dataclass

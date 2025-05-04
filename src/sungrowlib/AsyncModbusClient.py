@@ -7,12 +7,12 @@ from sungrowlib.private.deserialization import (
     decode_signal,
     extract_signal_value_from_raw,
 )
-from sungrowlib.private.factory import (
-    ConnectionParams,
-    initialize_transport,
-)
 from sungrowlib.private.generate_query_batches import generate_query_batches
-from sungrowlib.transports import AsyncModbusTransport
+from sungrowlib.transports import (
+    AsyncModbusTransport,
+    ConnectionParams,
+    create_transport,
+)
 from sungrowlib.types import (
     CannotConnectError,
     DatapointValueType,
@@ -27,7 +27,7 @@ from sungrowlib.types import (
 logger = logging.getLogger(__name__)
 
 
-class AsyncModbusClient:
+class SungrowClient:
     """A pymodbus connection to a single slave."""
 
     @dataclass
@@ -48,24 +48,24 @@ class AsyncModbusClient:
         that are not in the query.
         """
         self._transport = transport
-        self._stats = AsyncModbusClient.Stats()
+        self._stats = SungrowClient.Stats()
         self._all_signals = all_signals
 
     @staticmethod
     async def create(
         transport_or_params: AsyncModbusTransport | ConnectionParams,
         all_signals: SignalDefinitions | None,
-    ) -> "AsyncModbusClient":
+    ) -> "SungrowClient":
         """
         If you provide all_signals, the client will report 'accidentally' queried signals
         that are not in the query.
         """
         if isinstance(transport_or_params, ConnectionParams):
-            transport = await initialize_transport(transport_or_params)
+            transport = await create_transport(transport_or_params)
         else:
             transport = transport_or_params
 
-        return AsyncModbusClient(transport, all_signals)
+        return SungrowClient(transport, all_signals)
 
     @property
     def stats(self):

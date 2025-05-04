@@ -40,7 +40,8 @@ class HttpTransport:
         self._port = port
 
         # TODO: document why we keep an aiohttp.ClientSession around
-        self._aio_client = aiohttp.ClientSession()
+        timeout = aiohttp.ClientTimeout(total=10)
+        self._aio_client = aiohttp.ClientSession(timeout=timeout)
         self._ws: aiohttp.client.ClientWebSocketResponse | None = None
 
         self._token: str | None = None
@@ -131,6 +132,9 @@ class HttpTransport:
         except ConnectionError:
             await self.disconnect()
             raise
+        except TimeoutError as e:
+            await self.disconnect()
+            raise ConnectionError("Timeout while connecting to inverter") from e
         except Exception as e:
             await self.disconnect()
             raise ConnectionError() from e
