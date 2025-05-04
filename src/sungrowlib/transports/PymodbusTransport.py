@@ -163,8 +163,10 @@ class PymodbusTransport:  # noqa: N801
         # The _client has a 'reconnect_task' which it will cancel and delete on close().
         # So we beed to fetch it before closing the connection.
         logger.debug("Disconnecting...")
-        reconnect_task = self._client.reconnect_task  # type: ignore
+
         await self._add_delay_between_API_calls()
+        # Fetch the reconnect_task before closing the connection.
+        reconnect_task: asyncio.Task[object] | None = self._client.ctx.reconnect_task  # pyright: ignore[reportUnknownVariableType, reportUnknownMemberType]
         self._client.close()
         if reconnect_task:
             # Catch CancelledError, as this is expected.
