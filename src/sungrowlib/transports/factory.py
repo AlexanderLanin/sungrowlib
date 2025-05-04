@@ -1,8 +1,14 @@
 import logging
 from dataclasses import dataclass
 from enum import StrEnum
+from pprint import pprint
 
-from sungrowlib.transports import AsyncModbusTransport, HttpTransport, PymodbusTransport
+from sungrowlib.transports import (
+    # Doesn't work for some reason...
+    AsyncModbusTransport,  # , HttpTransport, PymodbusTransport
+)
+from sungrowlib.transports.HttpTransport import HttpTransport
+from sungrowlib.transports.PymodbusTransport import PymodbusTransport
 from sungrowlib.types import CannotConnectError
 
 logger = logging.getLogger(__name__)
@@ -86,6 +92,9 @@ async def _connect_specific_transport(
     params: ResolvedConnectionParams,
 ) -> AsyncModbusTransport | None:
     cls = _get_connection_cls(params.mode)
+    pprint(f"*** PymodbusTransport: {PymodbusTransport}")
+    pprint(f"*** PymodbusTransport type: {type(PymodbusTransport)}")
+    pprint(f"*** cls: {cls}")
     transport = cls(params.host, params.port)
 
     logger.debug(f"Trying to connect to inverter using {params.mode} connection")

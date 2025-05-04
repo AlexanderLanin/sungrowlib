@@ -1,6 +1,5 @@
 import pytest
 from attr import dataclass
-from simulation import simulate_modbus_inverter
 
 from sungrowlib import (
     AsyncModbusTransport,
@@ -9,6 +8,7 @@ from sungrowlib import (
     ConnectionParams,
     SungrowClient,
 )
+from tests.simulation import simulate_modbus_inverter
 
 
 @dataclass
