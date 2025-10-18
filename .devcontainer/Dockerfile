@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/python:3.13
+FROM mcr.microsoft.com/devcontainers/python:3.14
 USER vscode
 # TODO: the version will not be updated by dependabot, but it's still a good idea to
 # freeze the version.
