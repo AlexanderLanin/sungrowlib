@@ -1,10 +1,10 @@
 # sungrowlib
 
-Multi-language monorepo for Sungrow inverter communication.
+Multi-language monorepo for Sungrow inverter communication. Two primary products: the register catalog and the library implementations.
 
 ## Structure
 
-- `shared/` — canonical register catalog (`registers-sungrow.json`), used by all implementations
+- `registers/` — canonical register catalog (`registers-sungrow.json`), standalone product usable from any language
 - `conformance/` — language-agnostic test suite (Python runner + Modbus simulator)
 - `ts/` — TypeScript implementation (library + CLI)
 - `python/` — Python implementation (placeholder)
@@ -49,4 +49,4 @@ All implementations must provide a CLI with these commands and `--format json` o
 
 ## Register Catalog
 
-`shared/registers-sungrow.json` — 311 registers (229 input, 82 holding). Edit this file for register changes; conformance tests validate correctness across all implementations.
+`registers/registers-sungrow.json` — 311 registers (229 input, 82 holding). This is a standalone product: the JSON file can be consumed directly by any tool or language. See `registers/README.md` for the schema. Edit this file for register changes; conformance tests validate correctness across all implementations.

@@ -5,7 +5,7 @@ import type { CatalogRegister, CatalogDataType, RegisterType } from '../core/typ
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rawRegisters = JSON.parse(
-  readFileSync(resolve(__dirname, '../../../shared/registers-sungrow.json'), 'utf-8'),
+  readFileSync(resolve(__dirname, '../../../registers/registers-sungrow.json'), 'utf-8'),
 );
 
 export interface RawJsonEntry {

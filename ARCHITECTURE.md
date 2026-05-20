@@ -4,7 +4,7 @@
 
 ```mermaid
 graph TD
-    shared["shared/<br/>registers-sungrow.json<br/>(311 registers)"]
+    shared["registers/<br/>Register Catalog<br/>(311 registers)"]
     conformance["conformance/<br/>17 YAML scenarios<br/>Simulator + Runner"]
     ts["ts/<br/>TypeScript implementation"]
     py["python/<br/>Python implementation"]
@@ -15,7 +15,7 @@ graph TD
     conformance -->|validates CLI| py
 ```
 
-Each implementation lives in its own directory with its own build/test configuration. The shared register JSON (`shared/registers-sungrow.json`) is the canonical data source. The conformance tests (`conformance/`) validate all implementations against the same standard.
+Each implementation lives in its own directory with its own build/test configuration. The register catalog (`registers/registers-sungrow.json`) is the canonical data source. The conformance tests (`conformance/`) validate all implementations against the same standard.
 
 ---
 
@@ -632,7 +632,7 @@ ts/src/
     computed.ts                     ComputedRegister (timestamp, alarm, MPPT power)
   inverter/                         Single inverter
     inverter.ts                     SungrowInverter
-shared/
+registers/
   registers-sungrow.json            Complete register catalog (311 registers)
 ```
 

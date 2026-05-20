@@ -1,6 +1,14 @@
 # sungrowlib
 
-Multi-language library and CLI for communicating with Sungrow solar inverters via Modbus TCP or HTTP/WebSocket (WiNet-S dongle).
+Two things in one repo:
+
+1. **[Register Catalog](registers/)** — machine-readable JSON database of 311 Sungrow inverter registers (SH/SG series), audited against official Sungrow communication protocols. Usable from any language.
+
+2. **Library + CLI** — multi-language implementations that use the catalog to communicate with Sungrow inverters via Modbus TCP or HTTP/WebSocket (WiNet-S).
+
+## Register Catalog
+
+[`registers/registers-sungrow.json`](registers/registers-sungrow.json) is the canonical register definition file. See the [register catalog README](registers/README.md) for the full schema, field reference, and usage from any language.
 
 ## Implementations
 
@@ -9,20 +17,16 @@ Multi-language library and CLI for communicating with Sungrow solar inverters vi
 | [TypeScript](ts/README.md) | Complete | `ts/` |
 | [Python](python/README.md) | Placeholder | `python/` |
 
-Both implementations share the same register catalog and must pass the same conformance test suite.
+Both implementations load the shared register catalog and must pass the same conformance test suite.
 
 ## Repository Structure
 
 ```
-shared/           Shared data (register catalog: 311 registers)
+registers/        Register catalog (311 registers, JSON)
 conformance/      Language-agnostic test suite (17 scenarios, 148 checks)
 ts/               TypeScript implementation (library + CLI)
 python/           Python implementation (library + CLI)
 ```
-
-## Register Catalog
-
-`shared/registers-sungrow.json` contains the canonical register definitions for Sungrow SH/SG series inverters. All implementations load this file. Changes to register definitions are made here and validated across all implementations via the conformance suite.
 
 ## Conformance Tests
 
