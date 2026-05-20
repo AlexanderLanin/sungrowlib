@@ -1,0 +1,1770 @@
+                                                             Open
+
+
+
+
+                Communication Protocol of Residential Hybrid Inverter
+
+
+
+                                                        Version: V1.1.11
+                                                  Release Date: 2025-11-17
+
+
+
+
+Without the authorization of Sungrow Power Supply Co., Ltd., the relevant content of this document shall not be distributed, copied or
+forwarded to third parties, and shall not be uploaded to third-party platforms such as public networks.
+                                            Open
+
+
+
+
+                                            Changes
+Version   Date         Change Description
+V1.1.6    2024-12-31   The following changes have been made based on V1.1.5:
+                       1. Added the usage description of power regulation parameters.
+                       2. Optimized adaptive model information.
+V1.1.7    2025-05-09   The following changes have been made based on V1.1.6:
+                       1. Added Firmware Version (13250~13369);
+                       2. Added Active Power Limitation (13089) and Active Power Limit Ratio (13090);
+                       3. Added Feed-in Limitation Ratio (13088);
+                       4. Added Meter Active Power (5601);
+                       5. Add remarks for read-only registers (5603、5605、5607、4954~4983);
+                       6. Add Forced Startup Under Low SOC Standby (13017);
+                       7. Modify the Protocol No (4950~4951) to reserved items;
+                       8. Add Meter Channel 2 Data (13200-13207);
+V1.1.8    2025-05-20   The following changes have been made based on V1.1.7:
+                       1. Add new valid device types: MG5RL、MG6RL;
+V1.1.9    2025-06-20   The following changes have been made based on V1.1.8:
+                       1. Update the remark information for Firmware Information (13250~13369) and
+                           Meter Channel 2 Data (13200-13207);
+V1.1.10   2025-07-25   The following changes have been made based on V1.1.9:
+                       1、 Add a RW Register “PV power limitation” (13018);
+                       2、 Update the note information of the register "PV power limitation" (13018);
+V1.1.11   2025-11-17   The following changes have been made based on V1.1.10:
+                       1、Add new valid device types: MG8RL、MG10RL;
+                       2、Supplement the remark information for Firmware Information (13250~13369);
+                                                                                      Open
+
+
+
+
+                                                                                      Contents
+Changes ................................................................................................................................................................................. 2
+Contents ................................................................................................................................................................................ 3
+1 Introduction ................................................................................................................................................................... 4
+    1.1       Abbreviations .................................................................................................................................................... 4
+    1.2       System Requirements ........................................................................................................................................ 4
+2 Register Definition ........................................................................................................................................................ 6
+    2.1       Running Information Variable........................................................................................................................... 6
+    2.2       Parameter Setting Definition ........................................................................................................................... 12
+3 Function Settings ........................................................................................................................................................ 15
+    3.1       Export Power Limitation ................................................................................................................................. 15
+          3.1.1           Disabling Export Limitation ............................................................................................................... 15
+          3.1.2           Setting Export Power Limitation ..................................................................................................... 16
+    3.2       Charging/Discharging Control ........................................................................................................................ 17
+          3.2.1           Stopping Charging/Discharging....................................................................................................... 17
+          3.2.2           Enabling Charging/Discharging ...................................................................................................... 17
+    3.3       Off-grid Control .............................................................................................................................................. 18
+          3.3.1           Disabling Off-grid ............................................................................................................................. 18
+          3.3.2           Enabling Off-grid .............................................................................................................................. 18
+    3.4       Load Control ................................................................................................................................................... 18
+          3.4.1           DO Configuration.............................................................................................................................. 19
+          3.4.2           Setting Timing Mode ......................................................................................................................... 19
+          3.4.3           Setting ON/OFF Mode ...................................................................................................................... 20
+          3.4.4           Setting Power Optimized Mode ....................................................................................................... 20
+    3.5       Setting Energy Management Mode ................................................................................................................. 20
+4 Examples ..................................................................................................................................................................... 22
+    4.1       Acquire One Piece of Running Information ................................................................................................... 22
+    4.2       Acquire Multiple Running Information .......................................................................................................... 22
+    4.3       Read One Setting Datum................................................................................................................................. 22
+    4.4       Read Multiple Setting Data ............................................................................................................................. 22
+    4.5       Set One Datum ................................................................................................................................................ 22
+    4.6       Set Multiple Data ............................................................................................................................................ 23
+    4.7       Acquire SN...................................................................................................................................................... 23
+    4.8       Read Device Running Information ................................................................................................................. 23
+5 Appendix ..................................................................................................................................................................... 24
+    Appendix 1 Adaptive Inverter Models ................................................................................................................... 24
+    Appendix 2 Running State ...................................................................................................................................... 25
+    Appendix 3 Power Flow State ................................................................................................................................ 27
+    Appendix 4 Fault Codes ......................................................................................................................................... 27
+    Appendix 5 Load Control Mode ............................................................................................................................. 33
+    Appendix 6 Energy Management Mode ................................................................................................................. 33
+                                                        Open
+
+
+
+
+1 Introduction
+
+The Modbus RTU protocol is a widely used communication protocol in the industrial field, through which the inverter
+can communicate with other devices via the communication link (such as RS485 bus). This protocol applies to the
+communication between Sungrow hybrid inverters (SH-inverter) and third-party upper computer monitoring software.
+
+Note: The third-party upper computer monitoring software can read the real-time running data and fault data of the
+inverter through this protocol. The communication should be transmitted by the RS485 interface on the inverter or the
+Ethernet interface of WiNet-S/WiNet-S2/Logger1000, but not by iHomeManger or other communication modules.
+
+
+1.1 Abbreviations
+
+                                               Table 1 Abbreviations
+
+       Name                  Definition
+                             In question-and-answer communication, the party that initiates the communication
+       Host station
+                             becomes the host station, such as a third-party upper computer monitoring system.
+                             In question-and-answer communication, the party that responds passively to the
+       Slave station
+                             command becomes the slave station, such as an inverter.
+                             The value is fixed to 0. Through the broadcast address, you can set all slave stations
+       Broadcast address
+                             on the communication link execute a command.
+       Register address      A register address corresponds to 2 bytes of data.
+                             String data，the high-byte data is in the front and the low-byte data is at back.
+       UTF8
+                             Example: Transmission order of UTF-8 data ABCD is A, B, C, D.
+                             16-bit unsigned integer, big-endian.
+       U16
+                             Example: Transmission order of U16 data 0x0102 is 01, 02.
+       S16                   16-bit signed integer, big-endian.
+                             32-bit unsigned integer; little-endian for double-word data. Big-endian for byte data.
+       U32
+                             Example: Transmission order of U32 data 0x01020304 is 03, 04, 01, 02
+       S32                   32-bit signed integer; little-endian for double-word data. Big-endian for byte data.
+
+
+1.2 System Requirements
+
+1. Communication Interface RS485
+
+                                   Table 2 Communication Interface Definition
+
+       Parameter                 Default setting
+       Slave station             Inverter: 1 - 247 settable, 1 by default
+       Baud rate                 9600 bit/s
+       Check bit                 Null or settable
+       Data bit                  8
+       Stop bit                  1
+       Mode                      RTU
+       Appliance interface       RS485-2W cable connection
+                                                               Open
+
+
+
+2. Ethernet (optional), Modbus TCP, Default DHCP Enable, Port: 502.
+3. For adapted inverter models, See Appendix 1 Adaptive Inverter Models.
+
+4. Data Requirements：
+
+     1)     Visit all registers by subtracting 1 from the register address.
+
+            Example: if the register is 5000 –5001, visit it using address 4999 –5000.
+
+            Entering “01 04 1387 00 02 + CRC” to check the data of address 5000 –5001.
+
+     2)     Verify type: CRC16 generates polynomial 0xA001, little-endian.
+
+     3)     The decimal parameters are transmitted as integer after expansion.
+
+            Example: 10.333 kW is transmitted as 10333, 800.5 V is transmitted as 8005.
+
+     4)     Negative numbers are transmitted as complement.
+
+            Example: 0xFFFF signifying -1.
+
+     5)     Unavailable register cannot be viewed or set. The return of unsigned number is F,
+
+            Example: “0xFFFF” is the return for U16, “0xFFFFFFFF” is the return for U32;
+
+            The return of signed number is the max. positive number,
+
+            Example: “0x7FFF” for S16, “0x7FFFFFFF” for S32; 0x00 for UTF-8.
+
+            UTF-8 occupies 1 byte, the length of odd number is complemented by 0x00.
+
+6)        The RW (Read-Write) registers deacribed in section 2.2 Parameter Setting Definition do not support frequent periodic
+
+          reading and setting when it is forwarded through communication modules such as WiNet-S/WiNet-S2/Logger1000.
+
+7)        Minimum Request period (RS485 Time out): 1000 ms
+
+          After sending an unicast request, before receiving a respond from the inverter, the host station should wait for up to
+
+          1000ms to send a new unicast request to inverter. If no respond is received from the inverter after waiting for 1000
+
+          ms, the host station should regard this request as a timeout.
+                                                       Open
+
+
+
+
+2 Register Definition
+
+2.1 Running Information Variable
+
+       Table 3 Running Information Variable（RO (read-only) register, Support Modbus Command 0x04）
+
+ No.    Name                           Register      Data type   Data range   Unit/Ratio   Remarks
+
+ 1.     Reserved                       4950~4951     U32
+
+                                                                                           For example, 0x01010700
+                                                                                           represents the protocol version
+ 2.     Protocol version               4952~4953     U32                                   V1.1.7;
+                                                                                           Forwarding via Logger is not
+                                                                                           supported.
+        Certification version of ARM                                                       Certified version information
+ 3.                                    4954 - 4968   UTF-8
+        Software                                                                           after finalizing functions such as
+                                                                                           electrical, safety regulations,
+        Certification version of DSP
+ 4.                                    4969 - 4983   UTF-8                                 and standards for the whole
+        Software
+                                                                                           machine.
+
+ 5.     Reserved                       4984-4989
+
+ 6.     SN                             4990~4999     UTF-8
+
+                                                                                           See Appendix 1
+ 7.     Device type code               5000          U16
+                                                                                           Adaptive Inverter Models
+ 8.     Nominal output power           5001          U16                      0.1kW
+
+                                                                 0—Single；
+ 9.     Output type                    5002          U16         1—3P4L；
+                                                                 2—3P3L
+
+ 10.    Daily Output Energy            5003          U16                      0.1kWh       Power generation of active
+                                                                                           output (including PV power
+
+ 11.    Total Output Energy            5004～5005     U32                      0.1kWh       generation and battery
+                                                                                           discharge)
+
+ 12.    Reserved                       5006～5007
+
+ 13.    Inside Temperature             5008          S16                      0.1℃
+
+ 14.    Reserved                       5009~5010
+
+ 15.    MPPT 1 Voltage                 5011          U16                      0.1V
+
+ 16.    MPPT 1 Current                 5012          U16                      0.1A
+
+ 17.    MPPT 2 Voltage                 5013          U16                      0.1V         See Appendix 1
+ 18.    MPPT 2 Current                 5014          U16                      0.1A         Adaptive Inverter Models
+
+ 19.    MPPT 3 Voltage                 5015          U16                      0.1V
+
+ 20.    MPPT 3 Current                 5016          U16                      0.1A
+
+ 21.    Total DC power                 5017～5018     U32                      1W           Total PV power
+                                                     Open
+
+
+
+
+No.   Name                             Register    Data type   Data range   Unit/Ratio   Remarks
+
+      A-B line voltage/phase A                                                           Refer to Output type (address:
+22.                                    5019        U16                      0.1V
+      voltage                                                                            5002)
+      B-C line voltage/phase B                                                           0: phase voltage;
+23.                                    5020        U16                      0.1V
+      voltage                                                                            1: phase voltage;
+24.   C-A line voltage/phase voltage   5021        U16                      0.1V         2: line voltage
+
+25.   Reserved                         5022~5030
+
+26.   Reactive power                   5033~5034   S32                      1Var
+
+                                                                                         > 0 means leading
+27.   Power factor                     5035        S16                      0.001
+                                                                                         < 0 means lagging
+                                                                                         Compared with “Grid
+28.   Grid frequency                   5036        U16                      0.1Hz        frequency” 5242, only the
+                                                                                         resolution is different.
+
+29.   MPPT 4 Voltage                   5115        U16                      0.1V         See Appendix 1 Adaptive
+30.   MPPT 4 Current                   5116        U16                      0.1A         Inverter Models
+                                                                                         It is recommended to use this
+31.   Battery power                    5214-5215   S32                      1W
+                                                                                         register instead of 13022.
+                                                                                         It is recommended to use this
+32.   Grid Frequency                   5242        U16                      0.01Hz
+                                                                                         register instead of 5036.
+
+33.   Meter Active Power               5601        S32                      1W           Only valid when the inverter is
+                                                                                         directly connected to the smart
+34.   Meter Phase A Active Power       5603        S32                      1W
+                                                                                         energy meter. (See note 1);
+35.   Meter Phase B Active Power       5605        S32                      1W
+                                                                                         ＞0 buy from grid;
+36.   Meter Phase C Active Power       5607        S32                      1W           ＜0 sell to grid;
+      Min. Feed-in Power Limitation
+37.                                    5622        U16                      0.01kW
+      Value
+      Max. Feed-in Power Limitation
+38.                                    5623        U16                      0.01kW
+      Value
+
+39.   BDC rated power                  5628        U16                      0.1kW
+
+                                                                                         It is recommended to use this
+40.   Battery Current                  5631        S16                      0.1A
+                                                                                         register instead of 13021.
+
+41.   Max. Charging Current (BMS)      5635        U16                      1A
+
+      Max. Discharging Current
+42.                                    5636        U16                      1A
+      (BMS)
+      Battery Capacity- High                                                             The precision is different from
+43.                                    5639        U16                      0.01kWh
+      precision                                                                          register 13039.
+
+44.   Phase A Backup Current           5720        S16                      0.1A
+
+45.   Phase B Backup Current           5721        S16                      0.1A
+
+46.   Phase C Backup Current           5722        S16                      0.1A
+
+47.   Phase A Backup Power             5723        S16                      1W
+
+48.   Phase B Backup Power             5724        S16                      1W
+                                                     Open
+
+
+
+
+No.   Name                            Register     Data type   Data range     Unit/Ratio   Remarks
+
+49.   Phase C Backup Power            5725         S16                        1W
+
+50.   Total Backup Power              5726-5727    S32                        1W
+
+51.   Phase A Backup Voltage          5731         U16                        0.1V
+
+52.   Phase B Backup Voltage          5732         U16                        0.1V
+
+53.   Phase C Backup Voltage          5733         U16                        0.1V
+
+54.   Backup Frequency                5734         U16                        0.01Hz
+
+55.   PV Power of today               6100~6195    U16                        1W
+
+56.   Daily PV energy yields          6196~6226    U16                        0.1kWh
+
+57.   Monthly PV energy yields        6227~6238    U16                        0.1kWh
+
+58.   Reserved                        6239~6243
+
+                                                               Valid for 15
+59.   Yearly PV energy yields         6250~6289    U32*20                     0.1kWh
+                                                               years
+                                                                                           WiNet-S/S2 and Logger is not
+      Direct power consumption of
+60.                                   6290~6385    U16*96                     1W           supported
+      today from PV
+      Daily direct energy
+61.                                   6386~6416    U16*31                     0.1kWh       Applicable types:
+      consumption from PV
+                                                                                           SH5.0-10.0RT
+      Monthly direct energy
+62.                                   6417~6428    U16*12                     0.1kWh
+      consumption from PV
+      Yearly direct energy                                     Valid for 15
+63.                                   6429~6468    U32*20                     0.1kWh
+      consumption from PV                                      years
+
+64.   Export power from PV of today   6469~6564    U16*96                     1W
+
+65.   Daily export energy from PV     6565~6595    U16*31                     0.1kWh
+
+66.   Monthly export energy from PV   6596~6607    U16*12                     0.1kWh
+
+                                                               Valid for 15
+67.   Yearly export energy from PV    6608~6647    U32*20                     0.1kWh
+                                                               years
+
+68.   Battery charge power of today   6648~6743    U16*96                     1W
+
+      Daily battery charge energy
+69.                                   6744~6774    U16*31                     0.1kWh
+      from PV
+      Monthly battery charge energy
+70.                                   6775~6786    U16*12                     0.1kWh
+      from PV
+      Yearly battery charge energy                             Valid for 15
+71.                                   6787~6826    U32*20                     0.1kWh
+      from PV                                                  years
+
+72.   Reserved                        6827-6849
+
+73.   Reserved                        6862-12999
+
+74.   Running state                   13000        U16                                     See Appendix 2 Running State
+
+                                                                                           See Appendix 3 Power Flow
+75.   Power Flow Status               13001        U16
+                                                                                           State
+                                                        Open
+
+
+
+
+No.   Name                              Register      Data type   Data range   Unit/Ratio   Remarks
+
+                                                                                            Daily electricity generated by
+76.   Daily PV Generation               13002         U16                      0.1kWh       the inverter through the PV
+                                                                                            modules.
+                                                                                            Accumulated electricity
+77.   Total PV Generation               13003~13004   U32                      0.1kWh       generated by the inverter
+                                                                                            through the PV modules.
+                                                                                            Daily export electricity to the
+78.   Daily export power from PV        13005         U16                      0.1kWh       grid from PV generation (See
+                                                                                            note 1)
+
+                                                                                            Accumulated export electricity
+79.   Total export energy from PV       13006~13007   U32                      0.1kWh       to the grid from PV generation
+                                                                                            (See note 1)
+                                                                                            Power consumed by loads (See
+80.   Load power                        13008~13009   S32                      1W
+                                                                                            note 1)
+
+                                                                                            Power delivered by the inverter
+81.   Export power                      13010~13011   S32                      1W
+                                                                                            to the grid (See note 1)
+                                                                                            Daily electricity that the
+      Daily battery charge energy
+82.                                     13012         U16                      0.1kWh       inverter charges the batteries
+      from PV
+                                                                                            through the PV modules.
+                                                                                            Accumulated electricity that the
+      Total battery charge energy
+83.                                     13013~13014   U32                      0.1kWh       inverter charges the batteries
+      from PV
+                                                                                            through the PV modules.
+      Daily direct energy                                                                   Daily electricity taken from PV
+84.                                     13017         U16                      0.1kWh
+      consumption                                                                           modules by loads (See note 1)
+                                                                                            Accumulated electricity taken
+85.   Total direct energy consumption   13018~13019   U32                      0.1kWh       from PV modules by the
+                                                                                            inverter. (See note 1)
+
+86.   Battery voltage                   13020         U16                      0.1V
+
+87.   Battery current                   13021         U16                      0.1A         The data type for SH3.0-6.0RS
+                                                                                            and SH8.0-10RS is S16. It is
+
+88.   Battery power                     13022         U16                      1W           recommended to use registers
+                                                                                            5631 and 5214-5215.
+
+89.   Battery SOC                       13023         U16                      0.1%
+
+90.   Battery SOH                       13024         U16                      0.1%
+
+91.   Battery temperature               13025         S16                      0.1℃
+
+92.   Daily battery discharge energy    13026         U16                      0.1kWh
+
+93.   Total battery discharge energy    13027~13028   U32                      0.1kWh
+
+94.   Self-consumption of today         13029         U16                      0.1%
+
+95.   Reserved                          13030         U16                      -
+
+
+96.   Phase A current                   13031         S16                      0.1A         Output type (address 5002) is
+                                                  Open
+
+
+
+
+No.    Name                       Register      Data type   Data range   Unit/Ratio   Remarks
+
+                                                                                      0: only phase A current is
+97.    Phase B current            13032         S16                      0.1A
+                                                                                      uploaded;
+                                                                                      1 or 2: current of corresponding
+98.    Phase C current            13033         S16                      0.1A
+                                                                                      phases is uploaded
+
+99.    Total active power         13034~13035   S32                      1W
+
+100.   Daily Import Energy        13036         U16                      0.1kWh
+
+101.   Total Import Energy        13037~13038   U32                      0.1kWh
+
+                                                                                      Li-ion：0.1kWh；
+                                                                                      Lead-acid： 1Ah
+                                                                         0.1kWh or    Applicable types：
+102.   Battery Capacity           13039         U16
+                                                                         1Ah          SH5.0-10RT
+                                                                                      SH3.0-6.0RS
+                                                                                      SH8.0-10RS
+                                                                                      Total charge of batteries on the
+103.   Daily Charge Energy        13040         U16                      0.1kWh
+                                                                                      day
+                                                                                      Accumulated charge of
+104.   Total Charge Energy        13041~13042   U32                      0.1kWh
+                                                                                      batteries
+                                                            1~9:
+                                                            DRM0~DR
+                                                            M8
+105.   DRM State                  13043         U16
+                                                            Other
+                                                            Value :
+                                                            Invalid
+
+106.   Reserved                   13044
+
+                                                                                      Daily electricity delivered by
+                                                                                      the inverter to the grid through
+107.   Daily export energy        13045         U16                      0.1kWh
+                                                                                      PV modules or batteries. (See
+                                                                                      note 1)
+
+                                                                                      Accumulated electricity
+                                                                                      delivered by the inverter to the
+108.   Total export energy        13046~13047   U32                      0.1kWh
+                                                                                      grid through PV modules or
+                                                                                      batteries. (See note 1)
+
+109.   Reserved                   13048~13049
+
+110.   Inverter alarm             13050~13051   U32
+
+111.   Grid-side fault            13052~13053   U32
+
+112.   System fault 1             13054~13055   U32
+
+113.   System fault 2             13056~13057   U32
+                                                                                      See Appendix 4 Fault Codes
+114.   DC-side fault              13058~13059   U32
+
+115.   Permanent fault            13060~13061   U32
+
+116.   BDC-side fault             13062~13063   U32
+
+117.   BDC-side permanent fault   13064~13065   U32
+                                                                  Open
+
+
+
+
+  No.    Name                                Register           Data type     Data range      Unit/Ratio      Remarks
+
+ 118.    Battery fault                       13066~13067        U32
+
+ 119.    Battery alarm                       13068~13069        U32
+
+ 120.    BMS alarm                           13070~13071        U32
+
+ 121.    BMS protection                      13072~13073        U32
+                                                                                                              See Appendix 4 Fault Codes.
+ 122.    BMS fault 1                         13074~13075        U32
+                                                                                                              See note 2 under the table.
+ 123.    BMS fault 2                         13076~13077        U32
+
+ 124.    BMS alarm 2                         13078~13079        U32
+
+ 125.    Channel 2 Total Active Power        13200-13201        S32                           1W                The data from Channel 2 is
+         Channel 2 Phase A Active                                                                              only valid when the inverter is
+ 126.                                        13202-13203        S32                           1W
+         Power                                                                                                  connected to a dual-channel
+
+         Channel 2 Phase B Active                                                                               meter (e.g., DTSU666-20).
+ 127.                                        13204-13205        S32                           1W
+         Power
+         Channel 2 Phase C Active                                                                              SH3.0-10RS and MG5-10RL
+ 128.                                        13206-13207        S32                           1W
+         Power                                                                                                       are not supported.
+
+ 129.    Inverter Firmware Information       13250-13264        UTF-8
+
+         Communication Module
+ 130.                                        13265-13279        UTF-8
+         Firmware Information
+
+ 131.    Battery Firmware Information        13280-13294        UTF-8
+                                                                                                               SH3.0-10RS and MG5-10RL
+ 132.    Reserved 1                          13295-13309        UTF-8
+                                                                                                                     are not supported.
+ 133.    Reserved 2                          13310-13324        UTF-8                                            See note 3 under the table.
+
+ 134.    Reserved 3                          13325-13339        UTF-8
+
+ 135.    Reserved 4                          13340-13354        UTF-8
+
+ 136.    Reserved 5                          13355-13369        UTF-8
+
+Note 1: Data related to the grid or load is only valid when the inverter is directly connected to a smart energy meter. Registers 5603-5607 are
+valid only when a three-phase meter is connected. These registers represent the power values of each phase (A, B, C). Data is invalid for single-
+phase meters.
+
+Note 2: The data is the fault alarm information of the batteries connected to the inverter. If the data is obtained through the RS485 port of the
+inverter, the address is the battery communication address. For example, if 4 batteries in parallel are connected, the communication address of
+the batteries is 200-203. If the data is obtained through TCP/IP forwarding via the Ethernet port on WiNet, the battery communication address
+will be the WiNet internal forwarding address, which is displayed in the "Device List" on the embedded Web of WiNet. Logger is not supported.
+
+Note 3: Only indicates sub-function optimization (such as adding communication points); data updates will not affect functions including
+electrical, safety regulations, and standards for the whole machine.
+                                                      Open
+
+
+
+
+2.2 Parameter Setting Definition
+
+       Table 4 Parameter Setting Definition (RW (Read-Write) Register, Support Modbus Command 0x03/0x06/0x10)
+
+ No.    Name                     Register      Data type     Data range                      Unit/Ratio   Remarks
+ 1.     System clock: Year       5000          U16           2000~2099                                    Receive time
+ 2.     System clock: Month      5001          U16           1~12                                         synchronization
+ 3.     System clock: Day        5002          U16           1~31                                         setting of the
+ 4.     System clock: Hour       5003          U16           0~23                                         monitoring system
+
+ 5.     System clock: Minute     5004          U16           0~59
+ 6.     System clock: Second     5005          U16           0~59
+ 7.     Reserved                 5006-12999
+ 8.     Start/Stop               13000         U16           0xCF: Boot
+                                                             0xCE: Shutdown
+
+
+ 9.     DO Configuration         13001         U16           0: Off                                       SH3.0-10RS are
+                                                             1: Load Control Mode                         not supported.
+                                                             2: Grounding Fault Indication
+                                                             3: Micro Grid System Mode
+ 10.    Load Control Mode        13002         U16           0: Timing mode;                              See Appendix 5
+                                                             1: ON/OFF mode;                              Load Control
+                                                             2: Power optimized mode                      Mode
+                                                             3: Disable
+ 11.    Load timing period 1:    13003         U16           0~23                            1h
+        Start hour
+ 12.    Load timing period 1:    13004         U16           0~59                            1min
+        Start minute
+ 13.    Load timing period 1:    13005         U16           0~23                            1h
+        End hour
+ 14.    Load timing period 1:    13006         U16           0~59                            1min
+        End minute
+ 15.    Load timing period 2:    13007         U16           0~23                            1h
+        Start hour
+ 16.    Load timing period 2:    13008         U16           0~59                            1min
+        Start minute
+ 17.    Load timing period 2:    13009         U16           0~23                            1h
+        End hour
+ 18.    Load timing period 2:    13010         U16           0~59                            1min
+        End minute
+ 19.    Load ON/OFF mode         13011         U16           0xAA (ON)
+                                                             0x55 (OFF)
+ 20.    Load power optimized     13012         U16           0~23                            1h
+        mode: Start hour
+ 21.    Load power optimized     13013         U16           0~59                            1min
+        mode: Start minute
+                                                     Open
+
+
+
+22.   Load power optimized       13014         U16          0~23                           1h
+      mode: End hour
+23.   Load power optimized       13015         U16          0~59                           1min
+      mode: End minute
+24.   Optimized power of load    13016         U16          0~60000                        1W
+25.   Forced Startup Under Low   13017         U16          0xAA：Forced Startup                   See note 1 under
+      SOC Standby                                                                                 the table
+26.   PV power limitation        13018         U16          0xAA: Limit PV                        Only SHT are
+                                                            0x55: Allow PV                        supported
+27.   Reserved                   13019~13049
+28.   EMS mode selection         13050         U16          0: Self-consumption mode (by          See Appendix 6
+                                                            default)                              Energy
+                                                            2: Compulsory mode                    Management
+                                                            3: External EMS mode                  Mode
+                                                            4: VPP
+29.   Charge/discharge command   13051         U16          0xAA: Charge；
+                                                            0xBB: Discharge
+                                                            0xCC: Stop
+30.   Charge/discharge power     13052         U16                                         1W     0-100% of BDC
+                                                                                                  rated power (RO
+                                                                                                  register 5628)
+31.   Reserved                   13053~13054
+32.   Max. SOC                   13058         U16          50.0~100.0                     0.1%
+33.   Min. SOC                   13059         U16          0.0~50.0                       0.1%
+34.   Reserved                   13064
+35.   Feed-in Limitation Value   13074         U16                                         1W
+36.   Off-grid option            13075         U16          0xAA: Enable
+                                                            0x55: Disable
+37.   Reserved                   13076~13079   -
+38.   External EMS heartbeat     13080         U16          0~1000                         1s     Default: 20s
+39.   Reserved                   13081~13082
+40.   Meter Comm. Detection      13086         U16          0xAA: Enable
+                                                            0x55: Disable
+41.   Feed-in Limitation         13087         U16          0xAA: Enable
+                                                            0x55: Disable
+42.   Feed-in Limitation Ratio   13088         U16          0-1000                         0.1%   See note 2 under
+                                                                                                  the table
+                                                                                                  MG5-10RL is not
+                                                                                                  supported.
+43.   Active Power Limitation    13089         U16          0xAA: Enable                          MG5-10RL is not
+                                                            0x55: Disable                         supported.
+44.   Active Power Limit Ratio   13090         U16          0-1000                         0.1%
+45.   Reserved                   13085~13099
+46.   Reserved SOC for backup    13100         U16          0~100                          %
+                                                                    Open
+
+
+
+ 47.     Charge Cutoff Voltage –         33042             U16                                              0.1V
+         Wide range
+ 48.     Max. Charging Power             33047             U16                                              0.01kW
+ 49.     Max. Discharging Power          33048             U16                                              0.01kW
+ 50.     Charging/Discharging            33148             U16                                              0.01kW
+         Power –Wide range
+ 51.     Feed-in Limitation value–       31222             U16                                              0.01kW
+         Wide range
+ 52.     Forced Charging                 33208             U16             0xAA: Enable                                     MG5-10RL is not
+                                                                           0x55: Disable                                    supported.
+ 53.     Forced Charging Valid           33209             U16             0: Weekday
+         Time                                                              1: Every Day
+ 54.     Forced Charging Start Time      33210             U16             0~23                             h
+         1(h)
+ 55.     Forced Charging Start Time      33211             U16             0~59                             min
+         1(min)
+ 56.     Forced Charging End Time        33212             U16             0~23                             h
+         1(h)
+ 57.     Forced Charging End Time        33213             U16             0~59                             min
+         1(min)
+ 58.     Forced Charging Target          33214             U16             0~100                            %
+         SOC1
+ 59.     Forced Charging Start Time      33215             U16             0~23                             h
+         2(h)
+ 60.     Forced Charging Start Time      33216             U16             0~59                             min
+         2(min)
+ 61.     Forced Charging End Time        33217             U16             0~23                             h
+         2(h)
+ 62.     Forced Charging End Time        33218             U16             0~59                             min
+         2(min)
+ 63.     Forced Charging Target          33219             U16             0~100                            %
+         SOC 2
+ 64.     Load Rated Power                33274             U16             0~600.00                         0.01kW
+
+Note 1：In scenarios without PV (photovoltaic) input, such as during nighttime, when the battery SOC falls below the lower SOC limit and
+the inverter is in standby mode, it will only automatically start up once sufficient PV energy becomes available. By setting the "Forced Startup
+Under Low SOC Standby" configuration point to "0xAA", the inverter can be manually initiated without waiting for adequate PV energy. This
+function is only active when the inverter is in grid-connected mode (i.e., connected to the grid) and does not work in off-grid scenarios.
+
+Note 2：This tag is equivalent in meaning to tag 13074 (with the difference that tag 13074 uses W units while this tag uses percentage units).
+When both are configured, the value of this tag takes precedence.
+                                                                   Open
+
+
+
+
+3 Function Settings
+
+3.1 Export Power Limitation
+
+                                          Table 5 Export Power Limitation Parameters
+
+ No.       Name                             Register         Data type       Data range                  Unit/Ratio        Remarks
+           Min. Feed-in Power
+ 1.                                         5622             U16                                         0.01kW            Read-only
+           Limitation Value
+           Max. Feed-in Power
+ 2.                                         5623             U16                                         0.01kW            Read-only
+           Limitation Value
+ 3.        Feed-in Limitation Value         13074            U16                                         1W                Read-Write
+                                                                             0xAA: Enable
+ 4.        Feed-in Limitation               13087            U16                                                           Read-Write
+                                                                             0x55: Disable
+ 5.        Feed-in Limitation Ratio         13088            U16             0-1000                      0.1%              Read-Write
+           Feed-in Limitation value–
+ 6.                                         31222            U16                                         0.01kW            Read-Write
+           Wide range
+                                                                             0xAA: Enable
+ 7.        Active Power Limitation          13089            U16                                                           Read-Write
+                                                                             0x55: Disable
+ 8.        Active Power Limit Ratio         13090            U16             0-1000                      0.1%              Read-Write
+
+Note1：The Feed-in Limitation Function (related registers: Feed-in Limitation Ratio [13088], Feed-in Limitation Value [13074/31222]) differs
+from the Power Limiting Function (related register: Active Power Limit Ratio [13090]) in their control points for restricting inverter grid-
+connected power. As shown in Figure 1, Point A represents the control point of the Feed-in Limitation Function [grid connection point], while
+Point B represents the control point of the Power Limiting Function [inverter's AC output port]. Generally, the Feed-in Limitation Function
+requires the configuration of a grid gateway meter.
+
+
+                                                         B                                                    A
+
+
+
+
+                                              Inverter                                           Meter              Grid
+
+                                                               RS485
+
+
+
+
+                                                                                      Load
+
+
+
+
+                                       Figure 1 Schematic diagram of active power control points
+
+
+3.1.1 Disabling Export Limitation
+
+The inverter will not receive any derating command.
+
+Method:
+
+           1. Set the " Feed-in Limitation " (register 13087) to 0x55 (disabled).
+                                                                  Open
+
+
+
+
+            2. Set the " Active Power Limitation " (register 13089) to 0x55 (disabled).
+
+            3. If the value of the " Active Power Limitation " (Register 13089) is set to 0xAA, then the value of the " Active
+
+                 Power Limit Ratio " (Register 13090) needs to be set to 1000.
+
+
+
+3.1.2     Setting Export Power Limitation
+
+1. The Feed-in Limitation Function: The master inverter directly issues the target value of Feed-in limitation. The
+
+     command is an absolute power value. The settable range is from " Max. Feed-in Power Limitation Value " (register
+
+     5623) to " Max. Feed-in Power Limitation Value " (register 5622) .
+
+Method:
+            1. Set the "Feed-in limitation" (register 13087) to 0xAA.
+            2. If using absolute value control, set "Feed-in limitation value" (register 13074) to the target value. The unit is
+
+              W and the adjustment accuracy is 1W. If you set "Feed-in Limitation value–Wide range" (register 31222), the
+
+              unit is kW and the adjustment accuracy is 0.01kW.
+
+            3. If using percentage control, set "Feed-in Limitation Ratio" (register 13088) to the target value. The unit is %
+
+              and the adjustment accuracy is 0.1.
+
+Note2: If the inverter is connected to the smart energy meter, the power limitation control point is the power at the grid-connected point
+monitored by the smart energy meter. If the inverter is not connected to a smart energy meter, the power limitation control point is the inverter
+power of the inverter AC port.
+
+Note3: If the "Export power limitation value" (register 13074) exceeds the maximum value in U16, i.e. 65.535kW, the " Feed-in Limitation
+value - Wide Range" (register 31222) can be used.
+
+Note4: For multi-inverter (master/slave) systems, this parameter only needs to be issued to the master.
+
+
+
+2. The Power Limiting Function: The master inverter directly issues the target value of Active Power Limitation. The
+
+     command is in percentage form of rated power. The range is 0-100.0%.
+
+Method:
+            1. Set the "Active Power Limitation" (register 13089) to 0xAA.
+            2. Set "Active Power Limit Ratio" (register 13090) to the target value. The unit is % and the adjustment accuracy
+
+              is 0.1.
+Note5: If both the "Feed-in Limitation Function" and "Power Limitation Function" have their set values activated simultaneously, the inverter
+will execute according to the most stringent output power requirement.
+        For example:
+        When the "Feed-in Limitation Ratio" is set to 0%,
+        "Active Power Limit Ratio" is set to 50%,
+        With a rated inverter power of 10 kW
+        Scenario: When the load is 8 kW.
+                                                                      Open
+
+
+
+           1. To meet the 0% Feed-in Limitation requirement, the inverter's output power will be limited to 8 kW (matching the load power).
+           2. To meet the 50% Active Power Limit requirement, the inverter's output power will be limited to 5 kW (50% of 10 kW rated power).
+           Result: The inverter will ultimately implement the stricter 5 kW output power limitation.
+
+
+3.2 Charging/Discharging Control
+
+                                      Table 6 Charging/Discharging Control Parameters
+
+     No.       Name                     Register          Data type           Data range               Unit/Ratio      Remarks
+     1.        BDC rated power          5628              U16                                          0.1kW           Read-only
+                                                                              0xAA: Charge；
+               Charge/discharge
+     2.                                 13051             U16                 0xBB: Discharge                          Read-Write
+               command
+                                                                              0xCC: Stop；
+               Charge/discharge
+     3.                                 13052             U16                                          1W              Read-Write
+               power
+     4.        Max. SOC                 13058             U16                 50.0-100.0               0.1%            Read-Write
+     5.        Min. SOC                 13059             U16                 0.0-50.0                 0.1%            Read-Write
+     6.        Max. Charging Power      33047             U16                                          0.01kW          Read-Write
+               Max. Discharging
+     7.                                 33048             U16                                          0.01kW          Read-Write
+               Power
+               Charging/Discharging
+     8.                                 33148             U16                                          0.01kW          Read-Write
+               Power –Wide range
+
+
+
+3.2.1        Stopping Charging/Discharging
+
+The battery does not output power and is in the stopped state.
+
+Method:
+
+              Set "Charge/discharge command" (register 13051) to 0xCC. It is the default setting.
+
+
+
+3.2.2        Enabling Charging/Discharging
+
+Set battery charging or discharging, where the charging and discharging power range is from 0 to "BDC rated power" (register 5628). Also,
+the charge and discharge power range can also be defined by "Max. Charging Power" (register 33047) and "Max. Discharging Power"
+(register 33048).
+
+Method:
+
+             1. Set "Charge/discharge command" (register 13051) to 0xAA for charging or to 0xBB for discharging。
+             2. Set "Charge/discharge power" (register 13052) to a target value. The unit is W and the adjustment accuracy is 1W. If you set
+              "Charging/Discharging Power –Wide range" (register 33148), the unit is kW and the adjustment accuracy is 0.01kW.
+Note:
+
+1.        Battery charging/discharging is limited by battery SOC. If battery SOC is higher than the "SOC upper limit" (register 13058),
+          the battery will stop charging. If the battery SOC is lower than "SOC Lower Limit" (register 13059), the battery will stop
+          discharging.
+2.        The battery charging/discharging power is limited by several parameters (including "BDC rated power, maximum charging
+          power, maximum discharging power"), battery SOC, ambient temperature, etc. The battery discharge power is also affected by
+          the "Export power Limitation value" (register 13074) or "Feed-in Limit value - wide range" (register 31222), and it cannot
+                                                                    Open
+
+
+
+           exceed this value.
+3.         For multi-inverter (master/slave) systems, this parameter only needs to be issued to the master.
+
+
+3.3 Off-grid Control
+
+                                                        Table 7 Off-grid Parameters
+
+      No.       Name                            Register         Data type          Data range                 Unit/Ratio     Remarks
+                                                                                    0xAA: Enable
+      1.        Off-grid option                 13075            U16                                                          Read-Write
+                                                                                    0x55: Disable
+      2.        Reserved SOC for backup         13100            U16                0-100                      %              Read-Write
+
+
+
+3.3.1          Disabling Off-grid
+
+The off-grid function is disabled and the BACKUP port has no power output.
+
+Method:
+
+               Set "Off-grid option" (register 13075）to 0x55 (disabled). It is 0xAA (enabled) by default.
+
+
+
+3.3.2          Enabling Off-grid
+
+Set Reserved SOC for backup. When the SOC is lower than Reserved SOC for backup, the battery will enter emergency charging in grid-
+
+connected conditions until the SOC is not lower than Reserved SOC for backup. This parameter controls the minimum battery Reserved SOC
+
+for backup in grid-connected conditions.
+
+Method:
+
+               1. Set "Off-grid option" (register 13075) to 0xAA (enabled).
+               2. Set "Reserved SOC for backup" (register 13100) to a target value. The unit is % and the adjustment accuracy is 1%.
+
+Note: For multi-inverter (master/slave) systems, this parameter only needs to be issued to the master.
+
+
+3.4 Load Control
+
+                                                    Table 8 Load Control Parameters
+
+ No.            Name                                  Register     Data type     Data range                    Unit/Ratio     Remarks
+ 1.             DO Configuration                      13001        U16           0: Off                                       Read-Write
+                                                                                 1: Load Control Mode
+                                                                                 2: Grounding Fault
+                                                                                 Indication
+                                                                                 3: Micro Grid System Mode
+ 2.             Load Control Mode                     13002        U16           0: Timing mode;                              Read-Write
+                                                                                 1: ON/OFF mode;
+                                                                                 2: Power optimized mode
+                                                                                 3: Disable
+                                                          Open
+
+
+
+ 3.        Load timing period 1: Start hour     13003     U16         0-23                       1h            Read-Write
+ 4.        Load timing period 1: Start minute   13004     U16         0-59                       1min          Read-Write
+ 5.        Load timing period 1: End hour       13005     U16         0-23                       1h            Read-Write
+ 6.        Load timing period 1: End minute     13006     U16         0-59                       1min          Read-Write
+ 7.        Load timing period 2: Start hour     13007     U16         0-23                       1h            Read-Write
+ 8.        Load timing period 2: Start minute   13008     U16         0-59                       1min          Read-Write
+ 9.        Load timing period 2: End hour       13009     U16         0-23                       1h            Read-Write
+ 10.       Load timing period 2: End minute     13010     U16         0-59                       1min          Read-Write
+ 11.       Load ON/OFF mode                     13011     U16         0xAA (On)                                Read-Write
+                                                                      0x55 (Off)
+ 12.       Load power optimized mode: Start     13012     U16         0-23                       1h            Read-Write
+           hour
+ 13.       Load power optimized mode: Start     13013     U16         0-59                       1min          Read-Write
+           minute
+ 14.       Load power optimized mode: End       13014     U16         0-23                       1h            Read-Write
+           hour
+ 15.       Load power optimized mode: End       13015     U16         0-59                       1min          Read-Write
+           minute
+ 16.       Optimized power of load              13016     U16         0-60000                    1W            Read-Write
+ 17.       Load Rated Power                     33274     U16         0-600.00                   0.01kW        Read-Write
+
+
+
+3.4.1      DO Configuration
+
+Configure the inverter DO port from "normally open" to "normally closed". There are three functions for "normally
+
+closed".
+
+⚫      Load control mode: the DO port is used to control load access.
+
+⚫      Grounding fault indication: the DO port is used to indicate the occurrence of a grounding fault.
+
+⚫      Micro grid system mode: the DO port is used to communicate with generator and the system is currently running
+
+       in micro grid mode.
+
+Method:
+
+       Set "DO Configuration" (register 13001) to 1, which stands for Load control.
+
+
+
+3.4.2      Setting Timing Mode
+
+Set the load timing mode to enable the load in the specified time period and disable the load in other time periods.
+
+Method:
+
+            1. Set "Load Control Mode" (register 13002) to 0, which stands for timing mode.
+
+            2. Set "Load timing period" (register 13003-13010) to target time periods, two time periods are available.
+                                                                   Open
+
+
+
+
+3.4.3         Setting ON/OFF Mode
+
+Set the load ON/OFF mode to turn on or turn off the load.
+
+Method:
+
+               1. Set "Load Control Mode" (register13002) to 1, which stands for on/off mode。
+               2. Set "Load ON/OFF mode" (register13011) as required. 0xAA will turn on the load, while 0x55 will turn off
+                  the load.
+
+
+3.4.4         Setting Power Optimized Mode
+
+Set the power optimized mode to control the load starting condition: In self-consumption mode, when the export power
+
+is higher than load optimization power and the time is within the set time period, the DO relay will be automatically
+
+closed to power on the load. It will make full use of the remaining PV power and improve the self-consumption rate.
+
+Method:
+
+               1. Set "Load Control Mode" (register 13002) to 2, which stands for power optimized mode。
+               2. The threshold to determine whether the load can be turned on can be set via "Optimized power of load
+                  (register 13016)" or "Load rated Power" (register 33274). The two parameters have different maximum
+                  limits. If the value is higher than 60 kW, "Load rated Power" (register 33274) is recommended ".
+               3. Set "Load power optimized mode" (register 13012-13015) to target time period.
+               4. when the export power is higher than load optimization power and the time is within the set time period, the
+                  DO relay will be automatically closed to power on the load for at least 20 minutes.
+
+Note:
+
+1.        For load control, the load power supply is actually controlled by the inverter DO port. So the "DO Configuration" (register 13001)
+          should be set to 1.
+
+2.        For multi-inverter (master/slave) systems, this parameter only needs to be issued to the master.
+
+
+3.5 Setting Energy Management Mode
+
+                                              Table 9 Energy Management Parameters
+
+     No.          Name                              Register     Data type     Data range                 Unit/Ratio        Remarks
+                                                                               0: Self-consumption
+                                                                               mode
+     1.           EMS mode selection                13050        U16           2: Compulsory mode                           Read-Write
+                                                                               3: External EMS mode
+                                                                               4: VPP
+     2.           External EMS heartbeat            13080        U16           0-1000                     1s                Read-Write
+                                                                               0xAA: Charge；
+     3.           Charge/discharge command          13051        U16           0xBB: Discharge                              Read-Write
+                                                                               0xCC: Stop
+     4.           Charge/discharge power            13052        U16                                                        Read-Write
+                                                                       Open
+
+
+
+    No.          Name                                  Register       Data type      Data range                   Unit/Ratio          Remarks
+                                                                                     0xAA: Enable
+    5.           Forced Charging Valid Time            33208          U16                                                             Read-Write
+                                                                                     0x55: Disable
+                                                                                     0: Weekday
+    6.           Forced Charging Start Time 1(h)       33209          U16                                                             Read-Write
+                                                                                     1: Everyday
+                 Forced Charging Start Time
+    7.                                                 33210          U16            0-23                         h                   Read-Write
+                 1(min)
+    8.           Forced Charging End Time 1(h)         33211          U16            0-59                         min                 Read-Write
+                 Forced Charging End Time
+    9.                                                 33212          U16            0-23                         h                   Read-Write
+                 1(min)
+    10.          Forced Charging Target SOC1           33213          U16            0-59                         min                 Read-Write
+    11.          Forced Charging Start Time 2(h)       33214          U16            0-100                        %                   Read-Write
+                 Forced Charging Start Time
+    12.                                                33215          U16            0-23                         h                   Read-Write
+                 2(min)
+    13.          Forced Charging End Time 2(h)         33216          U16            0-59                         min                 Read-Write
+                 Forced Charging End Time
+    14.                                                33217          U16            0-23                         h                   Read-Write
+                 2(min)
+    15.          Forced Charging Target SOC 2          33218          U16            0-59                         min                 Read-Write
+    16.          Forced Charging Valid Time            33219          U16            0-100                        %                   Read-Write
+
+
+Four Energy Management Modes are available.
+
+⚫        Self-consumption mode: the inverter dispatches itself, if the PV is sufficient, the load will take priority, if the PV is insufficient, the
+
+         battery will discharge for supplement, to maximize the green electricity utilization rate.
+
+⚫        Compulsory mode: The inverter controls battery charge and discharge as much as possible based on the set mandatory charge and
+
+         discharge power. This mode is used for general maintenance.
+
+⚫        External EMS mode: The external energy management system controls the inverter via Modbus RTU or TCP.
+
+⚫        VPP: The same as External EMS mode.
+
+
+
+
+Method:
+
+              1. Set "EMS mode selection" (register 13050) as required, 0 for Self-consumption mode for example.
+
+               2. If the "EMS mode selection" (register 13050) is set to 2 (Forced mode), you can continue to set the battery
+                  "Charging/discharging Command" (register 13051) and the charging/discharging Power" (register 13052).
+
+               3. If the "EMS mode selection" (register 13050) is set to 3 (External EMS mode) or 4 (VPP), the inverter is fully scheduled by
+                  the external energy management system or VPP system. The scheduling command is delivered via Modbus protocol. Deliver
+                  the heartbeat value within the timeout period of "External EMS Heartbeat" (register 13080). If the heartbeat value is not
+                  delivered within the timeout period, the inverter returns to self-consumption mode. For example, if External EMS Heartbeat is
+                  set to 20s, you are advised to set the value to 20 every 10 seconds on average.
+
+               4. If you need to redefine the battery discharge and charge time period based on the electricity price difference or load usage
+                  period in self-consumption mode, you can set forced charging and its time period (register 33208-33219).
+
+Note: For multi-inverter (master/slave) systems, this parameter only needs to be issued to the master.
+                                                               Open
+
+
+
+
+4 Examples
+
+4.1 Acquire One Piece of Running Information
+
+      Supposed that the inverter address is 1, it needs to acquire data from address 5000 of 3x address type.
+      The PC sends (HEX):
+      01 04 13 87 00 01 85 67
+      The inverter replies (HEX):
+
+       01 04 02 0E 28 BD 4E
+      Note: The type code of inverter is 0xE28
+
+
+4.2 Acquire Multiple Running Information
+
+      Supposed that the inverter address is 1, it needs to acquire 10 data from address starting from 5000 of 3x address type
+      The PC sends (HEX):
+      01 04 13 87 00 0A C4 A0
+      The inverter replies (HEX):
+
+        01 04 14 0E 28 00 FA 00 01 03 5C 2B F6 00 0B 00 00 00 00 01A9 00 00 3F 05
+      Note: The type code of inverter is 0xE28. The nominal output power is 25.0 kW, three-phase four-wire. Daily power generation is
+ 86.0kWh. The total power generation is 73215.0 kWh. The internal temperature is 42.5℃.
+
+
+4.3 Read One Setting Datum
+
+      Supposed that the inverter address is 1, it needs to read data from address 5000 of 4x address type.
+      The PC sends (HEX):
+      01 03 13 87 00 01 30 A7
+      The inverter replies (HEX):
+      01 03 02 07 D8 BA 2E
+      Note: the data read out is year 2008.
+
+
+4.4 Read Multiple Setting Data
+
+      Supposed that the inverter address is 1, it needs to read 10 data from address starting from 5000 of 4x address type.
+      The PC sends (HEX):
+      01 03 13 87 00 06 71 65
+      The inverter replies (HEX):
+
+   01 03 0C 07 DA 00 0A 00 1E 00 09 00 28 00 25 F2 D3
+      Note: The data are October 30th, 2010, 09:40:37.
+
+
+4.5 Set One Datum
+
+      Supposed that the inverter address is 1, it needs to set data from address 5000 of 4x address type.
+
+
+      The PC sends (HEX):
+      01 10 13 87 00 01 02 07 DA 19 4D
+                                                                    Open
+
+
+
+          The inverter replies (HEX):
+          01 10 13 87 00 01 B5 64
+          Or
+          The PC sends (HEX):
+          01 06 13 87 07 DA BE CC
+          The inverter replies (HEX):
+          01 06 13 87 07 DA BE CC
+          Note: The setting data is year 2010
+
+
+4.6 Set Multiple Data
+
+          Supposed that the inverter address is 1, it needs to set 10 data to address starting from 5000 of 4x address type.
+          The PC sends (HEX):
+
+      01 10 13 87 00 06 0C 07 D9 00 0A 00 1E 00 09 00 10 00 00 FA 81
+          The inverter replies (HEX):
+
+      01 10 13 87 00 06 F4 A6
+          Note: The data are October 30th, 2009, 09:16:00.
+
+
+4.7 Acquire SN
+
+          Supposed that the inverter address is 1, it needs to acquire 10 data from address starting from 4990 of 3x address type
+          The PC sends (HEX):
+          01 04 13 7D 00 0A E4 91
+          The inverter replies (HEX):
+          01 04 14 31 32 31 32 31 32 30 30 31 00 00 00 00 00 00 00 00 00 00 00 9B 56
+          Note:
+          1. SN data type is UTF-8;
+          2. Serial number is: 121212001
+
+
+4.8 Read Device Running Information
+
+        Supposed that the inverter address is 1. It needs to acquire 2 data from address starting from 13000 of RO (Read-Only)
+type.
+        The PC sends (HEX):
+      01 04 32 C7 00 02 CE 8E
+
+      The inverter replies (HEX):
+
+      01 04 04 40 00 00 0D 2F 81
+
+          Note:
+        1. The running state of the inverter is external EMS mode (0x4000).
+        2. Power flow status: PV generation, battery discharging, load power (0x0D, corresponding to BIT0, BIT2, BIT3 is
+1).
+                                                            Open
+
+
+
+
+5 Appendix
+
+Appendix 1 Adaptive Inverter Models
+
+Note: String/MPPT means the string number in a MPPT. For example, the string/MPPT of SH8.0RS is 1;1;1;1, which means that the
+inverter has a total of 4 strings, one string per MPPT.
+
+                                                 Table 10 Adaptive Inverter Models
+
+ Series                         Specific model            Device type code           MPPT      String/MPPT
+                                SH3.0RS                   0xD17                      2         1;1
+                                SH3.6RS                   0xD0D                      2         1;1
+ SH3.0-6.0RS                    SH4.0RS                   0xD18                      2         1;1
+                                SH5.0RS                   0xD0F                      2         1;1
+                                SH6.0RS                   0xD10                      2         1;1
+                                SH8.0RS                   0xD1A                      4         1;1;1;1
+ SH8.0-10RS
+                                SH10RS                    0xD1B                      4         1;1;1;1
+                                SH5.0RT                   0xE00                      2         1;1
+                                SH6.0RT                   0xE01                      2         1;1
+                                SH8.0RT                   0xE02                      2         1;1
+                                SH10RT                    0xE03                      2         1;1
+                                SH5.0RT-20                0xE10                      2         1;1
+                                SH6.0RT-20                0xE11                      2         1;1
+                                SH8.0RT-20                0xE12                      2         1;1
+                                SH10RT-20                 0xE13                      2         1;1
+ SH5.0-10RT
+                                SH5.0RT-V112              0xE0C                      2         1;1
+                                SH6.0RT-V112              0xE0D                      2         1;1
+                                SH8.0RT-V112              0xE0E                      2         1;1
+                                SH10RT-V112               0xE0F                      2         1;1
+                                SH5.0RT-V122              0xE08                      2         1;1
+                                SH6.0RT-V122              0xE09                      2         1;1
+                                SH8.0RT-V122              0xE0A                      2         1;1
+                                SH10RT-V122               0xE0B                      2         1;1
+                                SH5T                      0xE20                      2         1;1
+                                SH6T                      0xE21                      2         1;1
+                                SH8T                      0xE22                      2         1;1
+                                SH10T                     0xE23                      2         2;1
+ SH5-25T
+                                SH12T                     0xE24                      2         2;1
+                                SH15T                     0xE25                      3         2;2;1
+                                SH20T                     0xE26                      3         2;2;1
+                                SH25T                     0xE28                      3         2;2;1
+                                MG5RL                     0xD27                      2         1;1
+                                MG6RL                     0xD28                      2         1;1
+ MG5-10RL
+                                MG8RL                     0xD29                      3         1;1;1
+                                MG10RL                    0xD2A                      3         1;1;1
+                                                           Open
+
+
+
+
+Appendix 2 Running State
+
+                                                                                                                       Power
+State                 Register value   Explanation
+                                                                                                                       generation
+                                       After being energized, inverter tracks the PV arrays’ maximum power point
+Running (On-grid)     0x0000/0x0040    (MPP) and converts the DC power into AC power. This is the normal                    √
+                                       operation mode.
+Microgrid Operation   0x0014           The inverter is running with the generator.                                          √
+Running in maintain                    Battery needs maintenance and the inverter will discharge the battery to             √
+                      0x0400
+mode                                   empty first and then fully charge the battery.
+Running in                             The inverter is in the energy management state that charge or discharge the          √
+compulsory mode       0x0800
+                                       battery forcibly.
+                                       The inverter works in off-grid mode and supplies power to the load through           √
+Running (off-grid)    0x1000
+                                       the backup port.
+Open loop             0x2000           The test mode for inverter interior and it is used to detect the inverter.           ×
+Running in External                                                                                                         √
+                      0x4000           The inverter is receiving external energy scheduling.
+EMS mode
+Emergency Charging                                                                                                          √
+                      0x4001           The inverter is performing emergency battery charging.
+Operation
+                                       The inverter is not initialized. The grid-connected standard has not been set        ×
+Uninitialized         0x1111
+                                       and the inverter cannot be connected to the grid yet.
+Stop                  0x8000/0x0001    The inverter is stopped.                                                             ×
+                                       The inverter will stop operation by manually “stop” via app. In this way,            ×
+Key stop              0x1300/0x0002
+                                       inverter internal DSP stops. To restart the inverter, manually start via app.
+                                       When the dry contact signal of the inverter is triggered by external device,         ×
+                                       the inverter performs an emergency shutdown and the inverter is in stop
+Emergency Stop        0x1500/0x0004
+                                       state. This function is supported only when the inverter has dry contact
+                                       terminal in hardware.
+                                       Inverter enters standby mode when DC side input is insufficient. In this             ×
+Standby               0x1400/0x0008
+                                       mode inverter will wait.
+Initial standby       0x1200/0x0010    The inverter is in the initial power-on standby state.                               ×
+Starting              0x1600/0x0020    The inverter is initializing and synchronizing with the grid.                        ×
+                                       The PV optimizer or PV rapid shutdown equipment configured with the                  ×
+Intelligent Station                    inverter is during the process of creating a plant. This feature is only
+                      0x1800
+Building Status                        supported by inverters that support optimizers or PV rapid shutdown
+                                       equipment.
+Warn Running          0x9100           Warning information is detected.                                                     √
+                                       The inverter derates actively due to environmental factors such as                   √
+Derating Running      0x8100/0x0080
+                                       temperature or altitude.
+                                       The inverter runs according to the scheduling instructions received from the         √
+Dispatch Running      0x8200
+                                       monitoring background. The active power is set to less than 100%.
+                                       If a fault occurs, inverter will automatically stop operation, and disconnect        ×
+                                       the AC relay. The fault information will be displayed in the app. Once the
+Fault                 0x5500/0x0100
+                                       fault is removed in recovery time, inverter will automatically resume
+                                       running.
+AFCI self-test                                                                                                              ×
+                      0x1700           AFCI self-test detects the arc and the inverter is shutdown.
+shutdown
+                                       The DC side voltage of the inverter is shut down within the safe voltage             ×
+Safe Mode             0x1900
+                                       range
+                                       When off-grid operation, the battery SOC is low and the inverter directly            ×
+Off-grid Charge       0x0041
+                                       charges the battery through PV.
+                                                        Open
+
+
+
+                                                                                                                 Power
+State               Register value   Explanation
+                                                                                                                 generation
+Update Failed       0x0200           The inverter firmware fails to upgrade.                                          ×
+                                     The internal communication between the ARM and DSP of the inverter fails,
+Communicate fault   0x2500                                                                                       Unconfirmed
+                                     and the ARM cannot obtain the status of the DSP running information.
+Restarting          0x2501           The inverter is restarting.                                                      ×
+                                                                    Open
+
+
+
+
+Appendix 3 Power Flow State
+
+                                                              Power Flow State
+                                                                Bit0 == 0         No power generated from PV
+ Bit0                         PV power
+                                                                Bit0 == 1         Power generated from PV
+                                                                Bit1 == 0         Not charging
+ Bit1                         Battery charging
+                                                                Bit1 == 1         Charging
+                                                                Bit2 == 0         Not discharging
+ Bit2                         Battery discharging
+                                                                Bit2 == 1         Discharging
+                                                                Bit3 == 0         No load power
+ Bit3                         Positive load power
+                                                                Bit3 == 1         With load power
+                                                                Bit4 == 0         No power feed-in the grid
+ Bit4                         Feed-in power
+                                                                Bit4 == 1         Power feed-in the grid
+                                                                Bit5 == 0         No power imported from the grid
+ Bit5                         Import power from grid
+                                                                Bit5 == 1         Importing power from grid
+ Bit6                         Reserved                          /                 /
+                                                                Bit7 == 0         No power generated from “Load”
+ Bit7 (retrofitting system)   Negative load power
+                                                                Bit7== 1          Power generated from “Load”
+
+
+
+
+Appendix 4 Fault Codes
+
+Bit-based fault analysis of inverter:
+                              Bit0                  Fan Alarm
+                              Bit1                  Lightning Protection Alarm on AC Side
+                              Bit2                  Lightning Protection Alarm on DC Side
+                              Bit3                  Bypass Switch Abnormal
+                              Bit4                  Communication Alarm
+                              Bit5                  Parallel Communication Alarm
+                              Bit6                  Device Abnormality
+                              Bit7                  Junction Box leakage Protector Alarm
+                              Bit8                  PV1 Abnormal Warn
+                              Bit9                  PV2 Abnormal Warn
+                              Bit10                 PV3 Abnormal Warn
+ Inverter alarm
+                              Bit11                 PV4 Abnormal Warn
+                              Bit12                 Fan 2 Rotate Low Speed Alarm
+                              Bit13                 Fan 2 Stall Alarm
+                                                    The energy meter input and output ports are reversed, or the meter is connected to other
+                              Bit14                 wrong terminals
+                              Bit15                 Software Version Mismatch
+                              Bit16                 SPD or Fuse Alarm
+                              Bit17                 FRAM Read Alarm
+                              Bit18                 SPI Com Alarm
+                              Bit19                 Ambient Temperature Sensor Open Circuit Alarm
+                              Bit20                 Ambient Temperature Sensor Short Circuit Alarm
+                                       Open
+
+
+
+                  Bit21   Inversion T Sensor Open Circuit Alarm
+                  Bit22   Inversion T Sensor Short Circuit Alarm
+                  Bit23   Boost T Sensor Open Circuit Alarm
+                  Bit24   Boost T Sensor Short Circuit Alarm
+                  Bit25   Input Cfg Alarm In DC Source Mode Or Clock Reset Abnormal Alarm
+                  Bit26   PV HV Flt
+                  Bit27   Ambient Low Temperature Sensor Open Circuit Alarm
+                  Bit28   Fan 1 Low Rotation Speed Alarm
+                  Bit29   Fan 1 Stall Alarm
+                  Bit30   Meter Communication Alarm
+                  Bit31   BOOST Short Circuit Alarm
+                  Bit0    Grid Overvoltage
+                  Bit1    Grid Transient V-over
+                  Bit2    Grid Under-voltage
+                  Bit3    Grid V-low
+                  Bit4    Reserved
+                  Bit5    AC C-over
+                  Bit6    Grid Over-frequency
+                  Bit7    Grid Under-frequency
+                  Bit8    Grid Power Outage
+                  Bit9    Device Abnormality
+                  Bit10   Excessive Leakage Current
+                  Bit11   Grid Abnormal
+                  Bit12   10 Minutes Grid Overvoltage
+                  Bit13   High Grid Voltage
+                  Bit14   Output Overload
+                  Bit15   Grid Voltage Imbalance
+Grid-side fault
+                  Bit16   Inversion C-over Hardware Flt
+                  Bit17   High Grid Frequency
+                  Bit18   Grid F-low
+                  Bit19   V-Grid Uniform Fault
+                  Bit20   Grid Frequency Uniform Fault
+                  Bit21   Network Side Protection Self-test Failed
+                  Bit22   Grounding Cable Fault
+                  Bit23   Inversion V DC Ject V-over Flt
+                  Bit24   AC Side Under-voltage
+                  Bit25   AC Side Overvoltage
+                  Bit26   AC Side Under-frequency
+                  Bit27   AC Side Over-frequency
+                  Bit28   Vac Unbal
+                  Bit29   Bypass Instantaneous Overcurrent
+                  Bit30   Bypass Switch Over Current
+                  Bit31   Reserved
+                  Bit0    Inversion Switch Tube Over-temperature
+System fault 1
+                  Bit1    BOOST Switch Tube T-over
+                                               Open
+
+
+
+                 Bit2            PV IR Flt
+                 Bit3            Bypass Switch Fault
+                 Bit4            EPS Relay Failure
+                 Bit5            Junction Box Relay Fault
+                 Bit6            Input and Output Mismatch Fault
+                 Bit7            PV HV P-over Alarm or Prot
+                 Bit8            Redundancy Fault
+                 Bit9            R-phase inverter voltage sampling channel abnormal
+                 Bit10           S-phase inverter voltage sampling channel abnormal
+                 Bit11           T-phase inverter voltage sampling channel abnormal
+                 Bit12           R-phase DC component sampling channel abnormal
+                 Bit13           S-phase DC component sampling channel abnormal
+                 Bit14           T-phase DC component sampling channel abnormal
+                 Bit15           PV 1 current sampling channel abnormal
+                 Bit16           PV 2 current sampling channel abnormal
+                 Bit17           PV 1 MPPT current sampling channel abnormal
+                 Bit18           PV 2 MPPT current sampling channel abnormal
+                 Bit19           Control Board Power Supply Under-voltage Fault
+                 Bit20           Leak Current CT Self-detection Fault
+                 Bit21           SPI Com Flt
+                 Bit22           LCD and Main DSP Communication Fault
+                 Bit23           Reserved
+                 Bit24           PV3 current sampling channel failure
+                 Bit25           N-wire current sampling channel abnormal
+                 Bit26           Balance bridge current sampling channel abnormal
+                 Bit27- Bit31    Reserved
+                 Bit0            Module Over-temperature
+                 Bit1            Excessively High Ambient Temperature
+                 Bit2            Device Abnormality
+                 Bit3            Low System Insulation Resistance
+                 Bit4 - Bit6     Device Abnormality
+System fault 2   Bit7            Low Ambient Temperature
+                 Bit8 - Bit10    Device Abnormality
+                 Bit11           Input Configuration Abnormality
+                 Bit12 - Bit14   Device Abnormality
+                 Bit15           Backup Load Overpower Fault
+                 Bit16 - Bit31   Reserved
+                 Bit0 - Bit3     Device Abnormality
+                 Bit4            PV Access Failure
+                 Bit5 – Bit6     Device Abnormality
+                 Bit7 - Bit8     Reserved
+DC-side fault
+                 Bit9            PV1 Reverse Connection Fault
+                 Bit10           PV2 Reverse Connection Fault
+                 Bit11 – Bit15   Device Abnormality
+                 Bit16           Bus Overvoltage Hardware Fault
+                                               Open
+
+
+
+                  Bit17           Busbar Average Under-voltage
+                  Bit18           PV Hardware Overcurrent Fault
+                  Bit19           PV Voltage Exceeds Bus Voltage
+                  Bit20           BOOST1 Short Circuit Fault
+                  Bit21           BOOST2 Short Circuit Fault
+                  Bit22           DC C-over
+                  Bit23           PV3 Overcurrent
+                  Bit24           PV3 Reverse Connection Fault
+                  Bit25           BOOST3 short circuit fault
+                  Bit26           Half-bus overvoltage hardware fault
+                  Bit27           Balance bridge overcurrent hardware fault
+                  Bit28           PV4 Reverse Connection Fault
+                  Bit29 - Bit31   Reserved
+                  Bit0            PV Overcurrent Permanent Fault
+                  Bit1            Inversion Overcurrent Permanent Fault
+                  Bit2            High DC Injection Permanent Fault
+                  Bit3            Bus V-over Perm. Flt
+                  Bit4            Relay Perm Fault
+                  Bit5            PV1 Self-check Permanent Fault
+Permanent fault   Bit6            PV2 Self-check Permanent Fault
+                  Bit7            Inversion Open-loop Self-detection Perm. Flt
+                  Bit8            Entire Temperature Sensor Failure
+                  Bit9            BOOST3 open-loop self-check permanent fault
+                  Bit10           Balance bridge overcurrent permanent fault
+                  Bit11           Half-bus overvoltage permanent fault
+                  Bit12 - Bit31   Reserved
+                  Bit0            BDC Charge Transient I-over
+                  Bit1            BDC Discharge Transient I-over
+                  Bit2            Clamping Capacitance V-low Fault
+                  Bit3            Clamping Capacitance Transient V-over
+                  Bit4            Reserved
+                  Bit5            Battery Pre-charge Relay Failure
+                  Bit6 - Bit7     Reserved
+                  Bit8            BDC Self-detect Flt
+                  Bit9 - Bit11    Reserved
+BDC-side fault    Bit12           BDC T-over Flt
+                  Bit13 - Bit15   Reserved
+                  Bit16           BDC Hardware I-over
+                  Bit17 - Bit19   Reserved
+                  Bit20           BDC Current Sampling Channel Abnormality
+                  Bit21           Reserved
+                  Bit22           Leakage Current Sampling Channel Abnormality
+                  Bit23           Secondary DSP Communication Fault
+                  Bit24           BDC Soft Start Flt
+                  Bit25 - Bit31   Reserved
+                                                          Open
+
+
+
+                            Bit0             BDC I-over Perm. Flt
+                            Bit1             Reserved
+                            Bit2             Battery Overvoltage Permanent Fault
+ BDC-side permanent         Bit3             Reserved
+ fault                      Bit4             BDC Self-detect Permanent Flt
+                            Bit5 - Bit6      Reserved
+                            Bit7             BDC Soft Start Perm. Flt
+                            Bit8 - Bit31     Reserved
+                            Bit0 - Bit2      Reserved
+                            Bit3             Battery Average Under-voltage Fault
+                            Bit4 - Bit6      Reserved
+                            Bit7             Battery Over-temperature Fault
+                            Bit8             Battery Low Temperature Fault
+                            Bit9 - Bit10     Reserved
+                            Bit11            Battery Transient Overvoltage
+ Battery fault
+                            Bit12            Battery Average Overvoltage Fault
+                            Bit13            Reserved
+                            Bit14            BMS Communication Fault
+                            Bit15            Battery Hardware Overvoltage
+                            Bit16            Abnormal Battery Connection(Reversed Polarity）
+                            Bit17            BMS and Battery Fault
+                            Bit18 - Bit31    Reserved
+                            Bit0             BDC T Sensor Open Circuit Alarm
+ Battery alarm              Bit1             BDC T Sensor Short Circuit Alarm
+                            Bit2 - Bit31     Reserved
+
+
+
+Bit-based fault analysis of individual battery:
+                           Bit0               Overvoltage Alarm
+                           Bit1               Over-temperature Alarm
+                           Bit2               Low Temperature Alarm
+                           Bit3               Charge/Discharge Overcurrent Alarm
+                           Bit4               Reserved
+                           Bit5               Battery Voltage Unbalance
+                           Bit6               Reserved
+ BMS alarm
+                           Bit7               Under-voltage Alarm
+                           Bit8               Abnormal SD Card
+                           Bit9               Cell Voltage Imbalance Alarm
+                           Bit10              Cell Temperature Difference Alarm
+                           Bit11              Battery Module Inconsistency Alarm
+                           Bit12              Mixed Cell Alarm
+                           Bit13 - Bit31      Reserved
+                           Bit0               Overvoltage Protection
+                           Bit1               Over-temperature Protection
+ BMS protection
+                           Bit2               Low Temperature Protection
+                           Bit3               Charge/Discharge Overcurrent Protection
+                                           Open
+
+
+
+              Bit4            Over Charge Power Limit Fault
+              Bit5            Over Discharge Power Limit Fault
+              Bit6            Reserved
+              Bit7            Low Voltage Protection
+              Bit8            Slave Battery Fault
+              Bit9            Pre-Charge Failed
+              Bit10           Abnormal External Power Line Status
+              Bit11           Current Sampling Fault
+              Bit12           Temperature Sampling Fault
+              Bit13           Voltage Sampling Fault
+              Bit14           Battery Internal Communication Failure
+              Bit15           DC Contactor Failure
+              Bit16 - Bit31   Reserved
+              Bit0            FET Failure/Battery Switch Failure
+              Bit1            Failure in Battery Internal Hardware
+              Bit2            Overcurrent Fault
+              Bit3            Battery Short Circuit Fault
+              Bit4            Internal Communication Fault
+              Bit5            Input Overvoltage
+BMS fault 1   Bit6            Reserved
+              Bit7            Software Version Mismatch Fault
+              Bit8            Heating Alarm
+              Bit9            Heating Circuit Abnormal
+              Bit10 - Bit11   Reserved
+              Bit12           Battery Self-test Fault
+              Bit13 - Bit31   Reserved
+BMS fault 2   Bit0 – Bit31    Reserved
+              Bit0            BMS Internal Alarm
+BMS alarm 2
+              Bit1 - Bit31    Reserved
+                                                     Open
+
+
+
+
+Appendix 5 Load Control Mode
+
+ Load Control Mode               Description
+ 0: Timing mode                  Turn no the load within the set time period.
+ 1: ON/OFF mode                  Control the load according to the set switch state.
+ 2: Power optimized mode         In the self-consumption mode, the feed power is > the rated power of the load. The DO
+                                 relay automatically pulls in within the set time frame, thus the surplus PV power can be
+                                 fully utilized to increase the self-consumption rate;
+                                 Tips:
+                                 (1) It is forbidden to enable this function in off-grid mode or inverter fault state;
+                                 (2) When the intelligent mode is enabled, the DO will run for at least 20 minutes after DO
+                                 relay closed;
+                                 (3) When the communication of the smart energy meter is abnormal, maintain the original
+                                 DO state before the abnormality until the intelligent mode time is over, and then disconnect
+                                 DO;
+
+
+Appendix 6 Energy Management Mode
+
+ Energy Management Mode          Description
+
+ 0: Self-Consumption (Default)   Inverter self-scheduling.
+
+                                 The inverter is devised to charge or discharge the battery with the charging and discharging
+ 2: Compulsory Mode
+                                 power as much as practicable.
+
+ 3: External EMS Mode            The external energy management system controls the inverter via Modbus RTU or TCP.
+
+ 4: VPP                          The inverter receives charge and discharge commands from an external VPP system.
+

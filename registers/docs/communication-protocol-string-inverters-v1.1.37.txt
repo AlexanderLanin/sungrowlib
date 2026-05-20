@@ -1,0 +1,1905 @@
+                                                                                        Public
+
+
+
+Communication Protocol of PV Grid-Connected String Inverters
+                                        V1.1.37
+      Version      Date                                      Note
+      number
+    V1.1.0      2016-4-11    Initial version.
+                             Unofficial version(V1.0.13) is no longer used.
+    V1.1.1      2016-5-13    modify the register address and some related content:
+                             5039–Power limitation adjustment
+                             5040–Reactive power adjustment
+    V1.1.2      2017-5-13    Add Inverter model :
+                             SG36KTL-M、SG10KTL-M、
+                             SG12KTL-M、SG80KTL、SG80KTL-M、
+                             SG125HV
+    V1.1.3      2017-6-10    Add Inverter model:SG33K3J、
+                             “Fault run” change to “Fault”
+                             Add country code: UAE, Israel, Hungary
+    V1.1.4      2017-6-15    AddSG125HV the number of MPPT and combiner board
+                             information
+    V1.1.5      2017-6-20    Add Inverter data point :
+                             State setting
+    V1.1.6      2017-7-10    Add Inverter fault/alarm code
+                             007/030/031/032/033
+    V1.1.7      2017-8-7     Modify the name of fault code:
+                             003/006/014/016/019/021/022/025/026/041/042//048/049/050
+    V1.1.8      2017-8-12    Delete Inverter fault/alarm code:
+                             051
+                             Add Inverter fault/alarm code:
+                             053/054/055/056/059/060
+    V1.1.9      2017-9-20    Add Inverter one working state
+    V1.1.10     2017-9-26    Modify the code of JP
+    V1.1.11     2017-10-19   Add Inverter fault/alarm code
+                             564/565/580/581
+    V1.1.12     2017-10-24   Add country and region code
+                             26/27/28/29/63/64/65/66/67/59/98
+                             Modify fault/alarm note:
+                             “LCD” changed to “LCD or APP”
+    V1.1.13     2017-11-2    Add Inverter data point : Total apparent power
+    V1.1.14     2017-11-18   Add Inverter model: SG15KTL-M、SG20KTL-M
+    V1.1.15     2017-11-25   Add Inverter model: SG30KTL-M
+                             Add Inverter fault/alarm code: 116
+    V1.1.16     2017-12-22   Add Inverter model:SG111HV
+                             Modify SG10KTL-M, SG12KTL-M limit the maximum power
+                             ratio of 110%
+                                          1/ 37
+                                                                                       Public
+
+
+V1.1.17   2018-1-18    Increase the support of “Total apparent power” point inverter
+                       model information
+V1.1.18   2018-03-17   Delete some product types according to overseas sales list.
+                       “U1 Limit” default value is adjusted to 950.
+                       Add Inverter fault/alarm code: 117
+V1.1.19   2018-04-24   Add Inverter fault/alarm code: 34/106
+                       Add country code: US-NE
+V1.1.20   2018-05-24   Add PID work state、PID night recovery、PID day protection、
+                       PID alarm code
+V1.1.21   2018-06-15   Adjust the description of fault code 44
+                       Adjust the description of fault code23/40
+                       Add Inverter fault/alarm code:45/46
+                       Add Appendix 5
+V1.2.22   2018-08-07   Add Inverter fault/alarm code:105
+                       Add Inverter model :
+                       SG110HV-M
+V1.1.23   2018-8-17    Adjust the description of fault code2/15
+V1.1.24   2018-08-31   Add Inverter data point : DC Voltage 6 –DC Voltage 12,
+                       DC current 6 –DC current 12; Current of 19thinput–Current of
+                       24thinput
+                       Delete the fault/alarm code 6/26/75
+                       Adjust the description of fault code 15/74
+V1.1.25   2018-09-18   Adjust address :DC Voltage 9 –DC Voltage 12,
+                       DC current 9 –DC current 12
+                       Add country code: MYS/PHL，
+                       Add Inverter fault/alarm code:
+                       566/567/568/569/570/571,582/583/584/585/586/587
+V1.1.26   2018-11-7    Add Inverter fault/alarm code:448-471
+V1.1.27   2018-11-7    Add Inverter model: SG33CX、SG40CX、SG50CX、SG110CX、
+                       Add SG5-20K Meter information(read-only register:5083-0104,
+                       holding register:5009-5015 )
+                       Modify the name of fault code: 030/031/032/033/042
+                       Add Q(U)/Q(P) curve definition
+V1.1.28   2019-4-9     Add Inverter model: SG250HX
+V1.1.29   2019-5-23    Add Inverter fault/alarm code:
+                       220/221/222/223/224/225/226/227/514
+                       Modify the SG250HX power limitation setting range 0-1110, See
+                       Appendix 6.
+                       Add Inverter model:
+                       SG30CX/SG36CX-US/SG60CX-US/SG250HX-US
+V1.1.30   2019-9-21    Add Inverter model:
+                       SG25CX-SA/SG100CX-JP、SG250HX-IN
+V1.1.31   2020-3-12    Add Inverter fault code 1500-1531
+
+
+                                    2/ 37
+                                                                                                        Public
+
+
+       V1.1.32         2020-6-17     Adjust the description and applicable Inverter of points, update
+                                     Appendix6, Appendix 9, Appendix10
+       V1.1.33         2020-7-10     Add Inverter model:
+                                     SG250HX-IN-20
+       V1.1.34         2020-8-15     Add Full-Day PID Suppression、 Installed PV Power
+       V1.1.35         2021-1-28     1. Add Inverter model:SG75CX
+                                     2. Update Country ID
+                                     3. Add 100% Scheduling to Achieve Active Overload
+       V1.1.36         2021-2-7      1. Add Inverter model:
+                                     SG3.0RT, SG4.0RT, SG5.0RT, SG6.0RT, SG7.0RT,SG8.0RT,
+                                     SG10RT, SG12RT, SG15RT, SG17RT, SG20RT
+       V1.1.37         2021-07-12    RT series machines do not support PID protection function, the
+                                     model description in the protocol is deleted (measuring point
+                                     5042)
+
+
+Valid for device types:
+       In production:
+       SG3.0RT, SG4.0RT, SG5.0RT, SG6.0RT, SG7.0RT，SG8.0RT, SG10RT, SG12RT, SG15RT, SG17RT, SG20RT
+
+      SG30KTL-M, SG30KTL-M-V31, SG33KTL-M, SG36KTL-M, SG33K3J, SG49K5J, SG34KJ, LP_P34KSG,
+      SG50KTL-M-20, SG60KTL, G80KTL, SG80KTL-20, SG60KU-M
+
+      SG5KTL-MT, SG6KTL-MT, SG8KTL-M, SG10KTL-M, SG10KTL-MT, SG12KTL-M, SG15KTL-M,
+      SG17KTL-M, SG20KTL-M,
+
+      SG80KTL-M, SG85BF, SG80HV, SG80BF, SG110HV-M, SG111HV, SG125HV, SG125HV-20
+      SG25CX-SA, SG30CX, SG33CX, SG40CX, SG50CX, SG36CX-US, SG60CX-US, SG75CX, SG100CX
+      SG100CX-JP, SG110CX, SG136TX, SG225HX, SG250HX
+      SG250HX-IN, SG250HX-US
+
+      Discontinued:
+      SG30KTL, SG10KTL, SG12KTL, SG15KTL, SG20KTL, SG30KU, SG36KTL, SG36KU, SG40KTL,
+      SG40KTL-M, SG50KTL-M, SG60KTL-M, SG60KU
+      Statement:
+      All hardware versions of SG60KTL share one device type code.
+
+
+
+
+                                                  3/ 37
+                                                                                                            Public
+
+
+
+1. Introduction
+    This communication adopts modbus RTU protocol, and applies to the communication between Sungrow PV
+    grid-connected string inverters and the upper computer (PC) monitoring software. This protocol can read the
+    real-time operating data and fault states of inverters.
+
+2. Communication Interface
+    1)   RS485
+                                                                Default setting
+                                      Address          Inverter: 1 - 247 settable
+                                                       PC: 1 - 247 settable
+                                     Broadcast                        Yes
+                                      Baud rate                    9600bit/s
+                                      Check bit                 Null or settable
+                                      Data bit                         8
+                                      Stop bit                         1
+                                       Mode                          RTU
+                                 Appliance interface   RS485-2W cable connection
+    2)   Ethernet (optional)
+         Default:
+         - IP: 192.168.1.100;
+         - Sub-Net: 255.255.0.0
+         - Port: 502
+
+3. Definition of Address
+4. Data type
+     U16: 16-bit unsigned integer, big-endian
+     S16: 16-bit signed integer, big-endian
+     U32: 32-bit unsigned integer; little-endian for double-word data. Big-endian for byte data
+     S32: 32-bit signed integer; little-endian for double-word data. Big-endian for byte data
+     Example:
+     transmission order of U16 data 0x0102 is 01, 02
+     transmission order of U32 data 0x01020304 is 03, 04, 01, 02
+     The transmission order of multibyte data UTF-8: the high-byte data is in the front and the low-byte data is at
+     back.
+     Example: transmission order of UTF-8 data ABCD is A, B, C, D.
+   2. Value description
+     The decimal parameters are transmitted as integer after expansion. For example: 10.333 KW is transmitted as
+     10333; 800.5 V is transmitted as 8005. Negative numbers are transmitted as complement, 0xFFFF signifying -1.
+     Unavailable register cannot be viewed or set. The return of unsigned number is F, For example: “0xFFFF” is the
+     return for U16, “0xFFFFFFFF” is the return for U32; the return of signed number is the max. positive number,
+     e.g. “0x7FFF” for S16, “0x7FFFFFFF” for S32; 0x00 for UTF-8. UTF-8 occupies 1 byte. The length of odd
+     number is complemented by 0x00.
+     Example:
+     SG80KTL only one MPPT input,
+                                                        4/ 37
+                                                                                                                     Public
+
+
+        MPPT 2 voltage (5013)
+        MPPT 2 current (5014)
+        MPPT 3 voltage (5015)
+        MPPT 3 current (5016)
+        MPPT 4 voltage (5115)
+        MPPT 4 current (5116), The data for these registers are 0xFFFF.
+      3. Address type
+        Address of 3x type is read-only register, supporting the CMD code inquiry of 0x04.
+        Address of 4x type is holding register, supporting the CMD code inquiry of 0x03, and CMD codes write-in of
+        0x10 and 0x06. CMD codes 0x10 and 0x06 support the broadcast address.
+        Support Modbus error code 02 (address error), 04 (setting failure).
+        Visit all registers by subtracting 1 from the register address. Example: if the address is 5000 –5001, visit it using
+        address 4999 –5000. Entering “01 04 1387 00 02 + CRC” to check the data of address 5000 –5001.
+      4. Verify type
+        CRC16 generates polynomial 0xA001, little-endian.
+
+
+
+      3.1      Running information variable address definition (read-only register, Address type: 3X)
+
+No.             Name            Address     Data type      Data range      Unit                    Note
+                                                    Device attributes
+1             Reserved        4950 - 4951   U32
+2             Reserved        4952 - 4953   U32
+3             Reserved        4954 - 4968   U16
+4             Reserved        4969 - 4983   U16
+5             Reserved        4984 - 4989   U16
+6                SN           4990 - 4999   UTF-8                                            Data type :UTF-8
+
+7       Device type code         5000       U16                                              See Appendix 6
+
+            Nominal active
+8                                5001       U16                           0.1kW
+                power
+
+
+
+
+                                                        0-two phase;
+9            Output type         5002       U16            1-3P4L;
+                                                           2-3P3L
+
+
+
+
+10      Daily power yields       5003       U16                           0.1 kWh
+11      Total power yields    5004 - 5005   U32                            kWh
+12      Total running time    5006 - 5007   U32                             h
+13     Internal temperature      5008        S16                           0.1℃
+            Total apparent                                                                  Valid for inverters:
+14                            5009 - 5010   U32                             VA
+                power                                                                         SG5KTL-MT
+                                                              5/ 37
+                         Public
+
+
+          SG6KTL-MT
+           SG8KTL-M
+          SG10KTL-M
+          SG10KTL-MT
+          SG12KTL-M
+          SG15KTL-M
+          SG17KTL-M
+          SG20KTL-M
+           SG3.0RT
+           SG4.0RT
+           SG5.0RT
+           SG6.0RT
+           SG7.0RT
+           SG8.0RT
+           SG10RT
+           SG12RT
+           SG15RT
+           SG17RT
+           SG20RT
+           SG33K3J
+          SG36KTL-M
+          SG40KTL-M
+           SG50KTL
+          SG50KTL-M
+           SG60KTL
+          SG60KTL-M
+           SG60KU-M
+           SG80KTL
+          SG80KTL-M
+           SG111HV
+           SG125HV
+          SG125HV-20
+            SG33CX
+            SG40CX
+            SG50CX
+           SG110CX
+           SG250HX
+            SG30CX
+          SG36CX-US
+          SG60CX-US
+          SG250HX-US
+          SG250HX-IN
+          SG25CX-SA
+        SG100CX、SG75CX
+           SG225HX
+6/ 37
+                                                                                                                 Public
+
+
+15     MPPT 1 voltage          5011       U16                    0.1V
+16     MPPT 1 current          5012       U16                    0.1A
+17     MPPT 2 voltage          5013       U16                    0.1V
+18     MPPT 2 current          5014       U16                    0.1A               See Appendix 6
+19     MPPT 3 voltage          5015       U16                    0.1V
+20     MPPT 3 current          5016       U16                    0.1A
+21     Total DC power       5017 - 5018   U32                     W
+          A-B line                                                         Output type (address: 5002) is 1:
+22     voltage/phase A         5019       U16                    0.1 V    upload phase voltage; 2: upload line
+           voltage                                                                      voltage
+          B-C line                                                         Output type (address: 5002) is 1:
+23     Voltage/phase B         5020       U16                    0.1 V    upload phase voltage; 2: upload line
+           Voltage                                                                      voltage
+          C-A line                                                         Output type (address: 5002) is 1:
+24     Voltage/phase C         5021       U16                    0.1 V    upload phase voltage; 2: upload line
+           Voltage                                                                      voltage
+25     Phase A current         5022       U16                    0.1 A
+26     Phase B current         5023       U16                    0.1 A
+27     Phase C current         5024       U16                    0.1 A
+28        Reserved          5025 - 5026   U32
+29        Reserved          5027 - 5028   U32
+30        Reserved          5029 - 5030   U32
+31   Total active power     5031 - 5032   U32                     W
+32   Total reactive power   5033–5034     S32                     Var
+                                                                                   >0 means leading
+33      Power factor           5035       S16                    0.001
+                                                                                   <0 means lagging
+34     Grid frequency          5036       U16                    0.1 Hz
+35        Reserved             5037       U16
+                                                                            Data of address 5039 - 5045 are
+         Work state            5038       U16   See Appendix 1
+                                                                                       additional
+      Fault/Alarm time:
+                               5039       U16
+            Year
+      Fault/Alarm time:
+                               5040       U16
+           Month
+      Fault/Alarm time:                                                            Fault/Alarm time and
+                               5041       U16
+            Day                                                           Fault/Alarm code (5039 - 5045) are
+36
+      Fault/Alarm time:                                                    valid only when the device work
+                               5042       U16
+            Hour                                                            state is fault (0x5500) or alarm
+      Fault/Alarm time:                                                                (0x9100).
+                               5043       U16
+           Minute
+      Fault/Alarm time:
+                               5044       U16
+           Second
+     Fault/Alarm code 1        5045       U16   See Appendix 3
+          Reserved          5046 - 5048   U16
+                                                      7/ 37
+                                                                                                           Public
+
+
+      Nominal reactive
+37                            5049       U16                       0.1kVar
+           power
+38        Reserved         5050 - 5070   U32
+      Array insulation                         1 - 20000(0xFFFF:
+39                            5071       U16                        1kΩ
+         resistance                                 invalid)
+40        Reserved            5072       U16
+41        Reserved         5073-5076
+        Active Power
+42                         5077 - 5078   U32                         1w
+     Regulation Setpoint
+       Reactive Power
+43                         5079-5080     S32                        1Var
+     Regulation Setpoint
+44       Work state        5081 - 5082   U32                                      See Appendix 2
+45      Meter power        5083~5084     S32                         1w
+       Meter A phase
+46                         5085~5086     S32                         1w
+           power                                                                 Valid for inverters:
+       Meter B phase                                                               SG5KTL-MT
+47                         5087~5088     S32                         1w
+           power                                                                   SG6KTL-MT
+       Meter C phase                                                                SG8KTL-M
+48                         5089~5090     S32                         1w
+           power                                                                   SG10KTL-M
+49      Load power         5091~5092     S32                         1w            SG10KTL-MT
+50   Daily export energy   5093~5094     U32                       0.1kWh          SG12KTL-M
+51   Total export energy   5095~5096     U32                       0.1kWh          SG15KTL-M
+52   Daily import energy   5097~5098     U32                       0.1kWh          SG17KTL-M
+53   Total import energy   5099~5100     U32                       0.1kWh          SG20KTL-M
+     Daily direct energy                                                     Note: Country set to Europe
+54                         5101~5102     U32                       0.1kWh
+        consumption                                                                     Area.
+
+     Total direct energy
+55                         5103~5104     U32                       0.1kWh
+        consumption
+56        Reserved         5105 - 5112
+57   Daily running time       5113       U16                        1min
+58     Present country        5114       U16                                      See Appendix 4
+
+
+59    MPPT 4 voltage          5115       U16                        0.1V
+
+
+60    MPPT 4 current          5116       U16                        0.1A
+61    MPPT 5 voltage          5117       U16                        0.1V
+62    MPPT 5 current          5118       U16                        0.1A
+63    MPPT 6 voltage          5119       U16                        0.1V          See Appendix 6
+
+64    MPPT 6 current          5120       U16                        0.1A
+65    MPPT 7 voltage          5121       U16                        0.1V
+66    MPPT 7 current          5122       U16                        0.1A
+67    MPPT 8 voltage          5123       U16                        0.1V
+68    MPPT 8 current          5124       U16                        0.1A
+69        Reserved            5125
+
+                                                       8/ 37
+                                                                                                Public
+
+
+70       Reserved         5126 - 5127
+      Monthly power
+71                        5128 - 5129   U32           0.1kWh
+           yields
+72    MPPT 9 voltage         5130       U16            0.1V
+73    MPPT 9 current         5131       U16            0.1A
+74   MPPT 10 voltage         5132       U16            0.1V
+75   MPPT 10 current         5133       U16            0.1A
+                                                                      See Appendix 6
+76   MPPT 11 voltage         5134       U16            0.1V
+77   MPPT 11 current         5135       U16            0.1A
+78   MPPT 12 voltage         5136       U16            0.1V
+79   MPPT 12 current         5137       U16            0.1A
+80       Reserved         5138 - 5139   U16
+81       Reserved            5140
+82       Reserved            5141
+83       Reserved            5142
+84       Reserved            5143
+                                                               (Display accuracy increased to
+                                                                         0.1kWh)
+                                                                    Valid for inverters:
+                                                                       SG5KTL-MT
+                                                                       SG6KTL-MT
+                                                                       SG8KTL-M
+                                                                       SG10KTL-M
+                                                                      SG10KTL-MT
+                                                                       SG12KTL-M
+                                                                       SG15KTL-M
+                                                                       SG17KTL-M
+                                                                       SG20KTL-M
+                                                                         SG3.0RT
+                                                                         SG4.0RT
+85   Total power yields   5144 - 5145   U32           0.1kWh
+                                                                         SG5.0RT
+                                                                         SG6.0RT
+                                                                         SG7.0RT
+                                                                         SG8.0RT
+                                                                         SG10RT
+                                                                         SG12RT
+                                                                         SG15RT
+                                                                         SG17RT
+                                                                         SG20RT
+                                                                       SG80KTL-M
+                                                                        SG111HV
+                                                                        SG125HV
+                                                                       SG125HV-20
+                                                                         SG33CX
+
+                                              9/ 37
+                                                                                                 Public
+
+
+                                                                          SG40CX
+                                                                          SG50CX
+                                                                         SG110CX
+                                                                         SG250HX
+                                                                          SG30CX
+                                                                        SG36CX-US
+                                                                        SG60CX-US
+                                                                       SG250HX-US
+                                                                        SG250HX-IN
+                                                                        SG25CX-SA
+                                                                    SG100CX、SG75CX
+                                                                         SG225HX
+
+
+     Negative voltage to
+86                         5146   S16   -15000~15000   0.1V
+         the ground
+87      Bus voltage        5147   U16     0 - 15000    0.1V
+                                                                (Display accuracy increased to
+                                                                           0.01Hz)
+                                                                     Valid for inverters:
+                                                                        SG5KTL-MT
+                                                                        SG6KTL-MT
+                                                                        SG8KTL-M
+                                                                        SG10KTL-M
+                                                                       SG10KTL-MT
+                                                                        SG12KTL-M
+                                                                        SG15KTL-M
+                                                                        SG17KTL-M
+                                                                        SG20KTL-M
+                                                                          SG3.0RT
+                                                                          SG4.0RT
+88     Grid frequency      5148   U16                  0.01Hz             SG5.0RT
+                                                                          SG6.0RT
+                                                                          SG7.0RT
+                                                                          SG8.0RT
+                                                                          SG10RT
+                                                                          SG12RT
+                                                                          SG15RT
+                                                                          SG17RT
+                                                                          SG20RT
+                                                                        SG80KTL-M
+                                                                         SG111HV
+                                                                         SG125HV
+                                                                        SG125HV-20
+                                                                          SG33CX
+                                                                          SG40CX
+                                             10/ 37
+                                                                                     Public
+
+
+                                                                   SG50CX
+                                                                  SG110CX
+                                                                  SG250HX
+                                                                   SG30CX
+                                                                 SG36CX-US
+                                                                 SG60CX-US
+                                                                SG250HX-US
+                                                                SG250HX-IN
+                                                                 SG25CX-SA
+                                                             SG100CX、SG75CX
+                                                                  SG225HX
+
+
+89     Reserved       5149   U16       0~15000        0.1V
+                                                              Valid for inverters:
+                                                                SG5KTL-MT
+                                                                SG6KTL-MT
+                                                                 SG8KTL-M
+                                                                SG10KTL-M
+                                                               SG10KTL-MT
+                                                                SG12KTL-M
+                                                                SG15KTL-M
+                                                                SG17KTL-M
+                                                                SG20KTL-M
+                                                                   SG3.0RT
+                                                                   SG4.0RT
+                                                                   SG5.0RT
+                                                                   SG6.0RT
+                                    2: PID Recover
+                                                                   SG7.0RT
+                                      Operation
+                                                                   SG8.0RT
+90   PID work state   5150   U16     4: Anti-PID
+                                                                   SG10RT
+                                      Operation
+                                                                   SG12RT
+                                   8: PID Abnormity
+                                                                   SG15RT
+                                                                   SG17RT
+                                                                    SG20R
+                                                                SG80KTL-M
+                                                                  SG125HV
+                                                                SG125HV-20
+                                                                  SG80KTL
+                                                              SG33CXSG40CX
+                                                                   SG50CX
+                                                                  SG110CX
+                                                             SG100CX、SG75CX
+                                                                  SG136TX
+                                                                  SG250HX
+                                                                   SG30CX
+                                          11/ 37
+                                                                                                               Public
+
+
+                                                                                    SG36CX-US
+                                                                                    SG60CX-US
+                                                                                   SG250HX-US
+                                                                                   SG250HX-IN
+                                                                                    SG25CX-SA
+                                                                                     SG225HX
+                                            432:PID resistance
+                                                 abnormal
+                                             433:PID function
+91   PID alarm code        5151      U16         abnormal                         See Appendix 5
+                                                 434:PID
+                                            overvoltage/overcur
+                                              rent protection
+92      Reserved           5152      U16
+93      Reserved         5153-7012
+                                     Combiner board information
+
+1    String 1 current      7013       U16                         0.01A
+
+2    String 2 current      7014       U16                         0.01A
+3    String 3 current      7015       U16                         0.01A
+4    String 4 current      7016       U16                         0.01A
+5    String 5 current      7017       U16                         0.01A
+6    String 6 current      7018       U16                         0.01A
+7    String 7 current      7019       U16                         0.01A
+8    String 8 current      7020       U16                         0.01A     Before checking the current
+9    String 9 current      7021       U16                         0.01A   information of one input, please
+10   String 10 current     7022       U16                         0.01A   make sure the hardware supports
+
+11   String 11 current     7023       U16                         0.01A   this function. If parameter can be
+
+12   String 12 current     7024       U16                         0.01A   viewed in the LCD panel or APP
+
+13   String 13 current     7025       U16                         0.01A   software(default menu-running
+
+14   String 14 current     7026       U16                         0.01A   information), the corresponding
+
+15   String 15 current     7027       U16                         0.01A          address is readable.
+                                                                           Number of strings, please see
+16   String 16 current     7028       U16                         0.01A
+                                                                                    Appendix 6
+17   String 17 current     7029       U16                         0.01A
+18   String 18 current     7030       U16                         0.01A
+19   String 19 current     7031       U16                         0.01A
+20   String 20 current     7032       U16                         0.01A
+21   String 21 current     7033       U16                         0.01A
+22   String 22 current     7034       U16                         0.01A
+23   String 23 current     7035       U16                         0.01A
+24   String 24 current     7036       U16                         0.01A
+
+
+
+
+                                                    12/ 37
+                                                                                                                      Public
+
+
+a)    Parameter setting address definition (holding register, Address type: 4X)
+
+No.        Name            Address       Data type       Data range         Unit                     Note
+                                                      Setting data
+        System clock:
+ 1                          5000           U16
+            Year
+        System clock:
+ 2                          5001           U16
+           Month
+        System clock:
+ 3                          5002           U16
+            Day                                                                     Receive time synchronization setting of
+        System clock:                                                                       the monitoring system
+ 4                          5003           U16
+            Hour
+        System clock:
+ 5                          5004           U16
+           Minute
+        System clock:
+ 6                          5005           U16
+           Second
+                                                         0xCF (Start)
+ 7        Start/Stop        5006           U16
+                                                         0xCE (Stop)
+           Power
+                                                        0xAA: Enable;
+ 8        limitation        5007           U16
+                                                        0x55: Disable
+           switch
+           Power
+                                                                                     Available when the power limitation
+ 9        limitation        5008           U16          See Appendix 6      0.1%
+                                                                                           switch (5007) is enabled
+           setting
+10        Reserved          5009           U16
+        Export power                                    0xAA: Enable;
+11                          5010           U16
+          limitation                                    0x55: Disable
+        Export power
+12                          5011           U16       0-Rated active power                     Valid for inverters:
+       limitation value
+                                                                                                SG5KTL-MT
+           Current
+                                                                                                SG6KTL-MT
+13       transformer        5012           U16              1-100            A
+                                                                                                 SG8KTL-M
+        output current
+                                                                                                SG10KTL-M
+           Current
+                                                                                                SG10KTL-MT
+14       transformer        5013           U16             1-10000           A
+                                                                                                SG12KTL-M
+            range
+                                                                                                SG15KTL-M
+           Current                                        0- Internal
+15                          5014           U16                                                  SG17KTL-M
+         transformer                                      1- External
+                                                                                                SG20KTL-M
+        Export power
+                                                                                      Note: Country set to Europe Area.
+16        limitation        5015           U16             0~1000           0.1%
+         percentage
+        Installed PV                                                        0.01K
+17                          5016           U16             0-30000
+           Power                                                             W
+
+
+
+
+                                                       13/ 37
+                                                                                                   Public
+
+
+                                                                    Available when the reactive power
+                                                                     adjustment switch (5036) is set to
+      Power factor                         -1000 - -800
+18                       5019       S16                    0.001     power factor setting valid (0xA1)
+        setting                             800 - 1000
+                                                                            > 0 means leading
+                                                                            < 0 means lagging
+                                                                            Valid for inverters:
+                                                                                 SG33CX
+                                                                                 SG40CX
+                                                                                 SG50CX
+                                                                                 SG75CX
+                                                                                SG110CX
+                                                                                SG136TX
+                                                                                SG250HX
+                                                                                 SG30CX
+                                                                               SG36CX-US
+                                                                               SG60CX-US
+                                                                              SG250HX-US
+                                                                              SG250HX-IN
+                                                                                SG225HX
+                                                                                SG250HX
+         100%                                                                  SG25CX-SA
+     Scheduling to                        0xAA: Enable;                         SG100CX
+19                       5020       U16
+     Achieve Active                        0x55: Disable                         SG3.0RT
+       Overload                                                                  SG4.0RT
+                                                                                 SG5.0RT
+                                                                                 SG6.0RT
+                                                                                 SG7.0RT
+                                                                                 SG8.0RT
+                                                                                 SG10RT
+                                                                                 SG12RT
+                                                                                 SG15RT
+                                                                                 SG17RT
+                                                                                 SG20RT
+                                                                    NOTE：If scheduling command is
+                                                                   0~99%, inverters will generate power
+                                                                    according to the command value. If
+                                                                    scheduling command is over 100%,
+                                                                   inverters will always generate its max
+                                                                                  power
+
+
+
+20     Reserved       5021 - 5033   U16
+
+
+
+      Night SVG                           0xAA: Enable;                     Valid for inverters:
+21                       5035       U16
+        Switch                             0x55: Disable                         SG3.0RT
+                                          14/ 37
+                                                                          Public
+
+
+                                                              SG4.0RT
+                                                              SG5.0RT
+                                                              SG6.0RT
+                                                              SG7.0RT
+                                                              SG8.0RT
+                                                               SG10RT
+                                                               SG12RT
+                                                               SG15RT
+                                                               SG17RT
+                                                               SG20RT
+                                                             SG80KTL-M
+                                                             SG125HV-20
+                                                              SG33CX
+                                                              SG40CX
+                                                              SG50CX
+                                                              SG110CX
+                                                              SG136TX
+                                                              SG250HX
+                                                              SG30CX
+                                                             SG36CX-US
+                                                             SG60CX-US
+                                                             SG250HX-US
+                                                             SG250HX-IN
+                                                              SG225HX
+                                                              SG250HX
+                                                             SG25CX-SA
+                                                              SG100CX
+                                                              SG75CX
+                                     0x55: OFF, power
+                                    factor returns to 1,
+                                      reactive power
+                                   percentage returns to
+                                               0;
+                                    0xA1: power factor
+                                   setting valid, Reactive
+     Reactive power                  power percentage
+22     adjustment     5036   U16        returns to 0;
+         mode                      0xA2: Reactive power
+                                     percentage setting
+                                    valid, power factor
+                                        returns to 1;
+                                    0xA3: Enable Q(P)
+                                   curve configuration;
+                                    0xA4: Enable Q(U)
+                                    curve configuration
+                                      15/ 37
+                                                                                              Public
+
+
+                                                              Available when the reactive power
+     Reactive power
+                                      0 - 1000                 adjustment switch (5036) is set to
+23     percentage     5037   S16                    0.1%
+                                      0 - -1000             Reactive power percentage setting valid
+         setting
+                                                                            (0xA2)
+
+
+
+24     Reserved       5038
+
+
+
+         Power
+                                                             Available when the power limitation
+25     limitation     5039   U16   See Appendix 6   0.1kW
+                                                                   switch (5007) is enabled
+       adjustment
+                                                              Available when the reactive power
+     Reactive power                                 0.1kV      adjustment switch (5036) is set to
+26                    5040   S16   See Appendix 6
+       adjustment                                    ar     Reactive power percentage setting valid
+                                                                            (0xA2)
+                                                                      Valid for inverters:
+                                                                         SG5KTL-MT
+                                                                         SG6KTL-MT
+                                                                         SG8KTL-M
+                                                                         SG10KTL-M
+                                                                        SG10KTL-MT
+                                                                         SG12KTL-M
+                                                                         SG15KTL-M
+                                                                         SG17KTL-M
+                                                                         SG20KTL-M
+                                                                           SG3.0RT
+                                                                           SG4.0RT
+                                                                           SG5.0RT
+                                                                           SG6.0RT
+                                   0xAA: Enable;                           SG7.0RT
+27   PID Recovery     5041   U16
+                                    0x55: Disable                          SG8.0RT
+                                                                           SG10RT
+                                                                           SG12RT
+                                                                           SG15RT
+                                                                           SG17RT
+                                                                           SG20RT
+                                                                         SG80KTL-M
+                                                                          SG125HV
+                                                                         SG125HV-20
+                                                                          SG80KTL
+                                                                           SG33CX
+                                                                           SG40CX
+                                                                           SG50CX
+                                                                    SG100CX、SG75CX
+                                                                          SG110CX
+                                   16/ 37
+                                                                                             Public
+
+
+                                                                          SG136TX
+                                                                          SG250HX
+                                                                           SG30CX
+                                                                         SG36CX-US
+                                                                         SG60CX-US
+                                                                        SG250HX-US
+                                                                        SG250HX-IN
+                                                                         SG25CX-SA
+                                                                          SG225HX
+                                                                      Valid for inverters:
+                                                                          SG125HV
+                                                                        SG125HV-20
+                                           0xAA: Enable;                  SG250HX
+28    Anti-PID         5042       U16
+                                            0x55: Disable               SG250HX-US
+                                                                        SG250HX-IN
+                                                                    SG136TX/SG100CX-JP
+                                                                          SG225HX
+     Full-Day PID                          0xAA: Enable;              Valid for inverters:
+29                     5043       U16
+     Suppression                            0x55: Disable                     HX
+30    Reserved      5043 - 5047
+                                           See Appendix 7
+                                         Note: The reactive
+                                          power adjustment
+31   Q(P) curve 1   5048-5077                                     Except inverters :CX/HX/TX
+                                        switch (5036) is set to
+                                         Enable Q(P) curve
+                                               (0xA3)
+                                           See Appendix 8
+                                         Note: The reactive
+                                          power adjustment
+32   Q(U) curve 1   5078-5115                                     Except inverters :CX/HX/TX
+                                        switch (5036) is set to
+                                         Enable Q(U) curve
+                                               (0xA4)
+                                                                      Valid for inverters:
+                                                                           SG3.0RT
+                                                                           SG4.0RT
+                                           See Appendix 9                  SG5.0RT
+                                         Note: The reactive                SG6.0RT
+                                          power adjustment                 SG7.0RT
+33   Q(P) curve 2   5116-5134
+                                        switch (5036) is set to            SG8.0RT
+                                         Enable Q(P) curve                 SG10RT
+                                               (0xA3)                      SG12RT
+                                                                           SG15RT
+                                                                           SG17RT
+                                                                           SG20RT
+
+
+                                           17/ 37
+                                                                                    Public
+
+
+                                                          SG33CX/SG40CX/SG50CX/
+                                                            SG110CX/ SG250HX/
+                                                            SG30CX/SG36CX-US/
+                                                          SG60CX-US/SG250HX-US
+                                                           SG250HX-IN/SG225HX/
+                                                                SG25CX-SA
+                                                             SG100CX/SG75CX
+                                                             Valid for inverters:
+                                  See Appendix 10         SG33CX/SG40CX/SG50CX/
+                                 Note: The reactive         SG110CX/ SG250HX/
+                                  power adjustment         SG30CX//SG36CX-US/
+34   Q(U) curve 2   5135-5154
+                                switch (5036) is set to   SG60CX-US/SG250HX-US
+                                 Enable Q(U) curve         SG250HX-IN/SG225HX/
+                                       (0xA4)                   SG25CX-SA
+                                                             SG100CX/SG75CX
+35    Reserved      5155-5199
+
+
+
+
+                                   18/ 37
+                                                                                                                          Public
+
+
+Appendix
+Appendix 1 Device Work State 1
+
+Device state (register 5038)
+
+
+                     Value read by                                                                 Grid-connected power
+State                                  Paraphrase
+                     register 5038                                                                 generation
+
+
+                                       After being energized, inverter tracks the PV arrays’
+                                       maximum power point (MPP) and converts the DC
+Run                  0x0                                                                     Yes
+                                       power into AC power. This is the normal operation
+                                       mode
+Stop                 0x8000            Inverter is stopped.                                        No
+                                       Inverter will stop operation by manually “stop” via
+Key stop             0x1300            app. In this way, inverter internal DSP stops. To           No
+                                       restart the inverter, manually start via app
+Emergency Stop       0x1500                                                                        No
+                                       Inverter enters standby mode when DC side input is
+Standby              0x1400            insufficient. In this mode inverter will wait within        No
+                                       the standby duration.
+Initial standby      0x1200            The inverter is in the initial power-on standby state.      No
+                                       The inverter is initializing and synchronizing with
+Starting             0x1600                                                                        No
+                                       the grid
+Alarm run            0x9100            Warning information is detected.                            Yes
+                                       The inverter derates actively due to environmental
+Derating run         0x8100                                                                        Yes
+                                       factors such as temperature or altitude
+                                       The inverter runs according to the scheduling
+Dispatch run         0x8200            instructions received from the monitoring                   Yes
+                                       background
+                                       If a fault occurs, inverter will automatically stop
+                                       operation, and disconnect the AC relay. The fault
+Fault                0x5500            information will be displayed in the app. Once the          No
+                                       fault is removed in recovery time, inverter will
+                                       automatically resume running.
+Communicate fault    0x2500                                                                        Unconfirmed
+
+
+
+
+Appendix 2 Device Work State2
+
+Work State (5081 - 5082)                                               Note
+                               Corresponding   BIT   in   address
+State
+                               5081-5082
+Run                            0                                       Total run state bit BIT17
+Stop                           1                                       1
+Key stop                       3                                       3
+
+                                                              19/ 37
+                                                                             Public
+
+
+Emergency Stop                   5             5
+Standby                          4             4
+Initial standby                  2             2
+Starting                         6             6
+Alarm run                        10            Total run state bit BIT17
+Derating run                     11            Total run state bit BIT17
+Dispatch run                     12            Total run state bit BIT17
+Fault                            9             Total fault state bit BIT18
+Communicate fault                13            Total fault state bit BIT18
+Total run bit       (device is
+                                 17
+grid-connected running)
+Total fault bit (device is in
+                                 18
+fault stop state)
+
+
+
+
+                                      20/ 37
+                                                                                                    Public
+
+
+Appendix 3 Device Fault Code(Note: Please refer to the product user manual for handling measures)
+  LCD or APP        Communication send
+                                                     Description                Classification
+display (decimal)   data (hexadecimal)
+      002                0x0002                    Grid overvoltage                 Fault
+      003                0x0003               Grid transient overvoltage            Fault
+      004                0x0004                   Grid undervoltage                 Fault
+      005                0x0005                    Grid low voltage                 Fault
+      007                0x0007             AC instantaneous overcurrent            Fault
+      008                0x0008                  Grid over frequency                Fault
+      009                0x0009                  Grid underfrequency                Fault
+      010                0x000A                   Grid power outage                 Fault
+      011                0x000B                   Device abnormal                   Fault
+      012                0x000C               Excessive leakage current             Fault
+      013                0x000D                     Grid abnormal                   Fault
+      014                0x000E               10-minute grid overvoltage            Fault
+      015                0x000F                   Grid high voltage                 Fault
+      016                0x0010                    Output overload                  Fault
+      017                0x0011                 Grid voltage unbalance              Fault
+      019                0x0013                   Device abnormal                   Fault
+      020                0x0014                   Device abnormal                   Fault
+      021                0x0015                   Device abnormal                   Fault
+      022                0x0016                   Device abnormal                   Fault
+      023                0x0017                  PV connection fault                Fault
+      024                0x0018                   Device abnormal                   Fault
+      025                0x0019                   Device abnormal                   Fault
+      030                0x001E                   Device abnormal                   Fault
+      031                0x001F                   Device abnormal                   Fault
+      032                0x0020                   Device abnormal                   Fault
+      033                0x0021                   Device abnormal                   Fault
+      034                0x0022                   Device abnormal                   Fault
+      036                0x0024          Excessively high module temperature        Fault
+      037                0x0025          Excessively high ambient temperature       Fault
+      038                0x0026                   Device abnormal                   Fault
+      039                0x0027            Low system insulation resistance         Fault
+      040                0x0028                   Device abnormal                   Fault
+      041                0x0029                   Device abnormal                   Fault
+      042                0x002A                   Device abnormal                   Fault
+      043                0x002B               Low ambient temperature               Fault
+      044                0x002C                   Device abnormal                   Fault
+      045                0x002D                   Device abnormal                   Fault
+      046                0x002E                   Device abnormal                   Fault
+      047                0x002F            PV input configuration abnormal          Fault
+      048                0x0030                   Device abnormal                   Fault
+
+
+                                                          21/ 37
+                                                                 Public
+
+
+049   0x0031             Device abnormal                 Fault
+050   0x0032             Device abnormal                 Fault
+053   0x0035             Device abnormal                 Fault
+054   0x0036             Device abnormal                 Fault
+055   0x0037             Device abnormal                 Fault
+056   0x0038             Device abnormal                 Fault
+059   0x003B             Device abnormal                 Alarm
+060   0x003C             Device abnormal                 Fault
+070   0x0046                 Fan alarm                   Alarm
+071   0x0047            AC-side SPD alarm                Alarm
+072   0x0048            DC-side SPD alarm                Alarm
+074   0x004A           Communication alarm               Alarm
+076   0x004C             Device abnormal                 Alarm
+078   0x004E               PV1 abnormal                  Alarm
+079   0x004F               PV2 abnormal                  Alarm
+080   0x0050               PV3 abnormal                  Alarm
+081   0x0051               PV4 abnormal                  Alarm
+                   Electric arc detection module
+087   0x0057                                             Alarm
+                             abnormal
+088   0x0058              Electric arc fault             Fault
+089   0x0059       Electric arc detection disabled       Fault
+105   0x0069   Grid-side protection self-check failure   Fault
+106   0x006A           Grounding cable fault             Fault
+116   0x0074             Device abnormal                 Fault
+117   0x0075             Device abnormal                 Fault
+220   0x00DC               PV5 abnormal                  Alarm
+221   0x00DD               PV6 abnormal                  Alarm
+222   0x00DE               PV7 abnormal                  Alarm
+223   0x00DF               PV8 abnormal                  Alarm
+224   0x00E0               PV9 abnormal                  Alarm
+225   0x00E1              PV10 abnormal                  Alarm
+226   0x00E2              PV11 abnormal                  Alarm
+227   0x00E3              PV12 abnormal                  Alarm
+                  Meter communication abnormal
+514   0x0202                                             Alarm
+                               alarm
+532   0x0214     String 1 reverse connection alarm       Alarm
+533   0x0215     String 2 reverse connection alarm       Alarm
+534   0x0216     String 3 reverse connection alarm       Alarm
+535   0x0217     String 4 reverse connection alarm       Alarm
+536   0x0218     String 5 reverse connection alarm       Alarm
+537   0x0219     String 6 reverse connection alarm       Alarm
+538   0x021A     String 7 reverse connection alarm       Alarm
+539   0x021B     String 8 reverse connection alarm       Alarm
+
+                                  22/ 37
+                                                            Public
+
+
+540   0x021C   String 9 reverse connection alarm    Alarm
+541   0x021D   String 10 reverse connection alarm   Alarm
+542   0x021E   String 11 reverse connection alarm   Alarm
+543   0x021F   String 12 reverse connection alarm   Alarm
+544   0x0220   String 13 reverse connection alarm   Alarm
+545   0x0221   String 14 reverse connection alarm   Alarm
+546   0x0222   String 15 reverse connection alarm   Alarm
+547   0x0223   String 16 reverse connection alarm   Alarm
+564   0x0234   String 17 reverse connection alarm   Alarm
+565   0x0235   String 18 reverse connection alarm   Alarm
+566   0x0236   String 19 reverse connection alarm   Alarm
+567   0x0237   String 20 reverse connection alarm   Alarm
+568   0x0238   String 21 reverse connection alarm   Alarm
+569   0x0239   String 22 reverse connection alarm   Alarm
+570   0x023A   String 23 reverse connection alarm   Alarm
+571   0x023B   String 24 reverse connection alarm   Alarm
+548   0x0224        String 1 abnormal alarm         Alarm
+549   0x0225        String 2 abnormal alarm         Alarm
+550   0x0226        String 3 abnormal alarm         Alarm
+551   0x0227        String 4 abnormal alarm         Alarm
+552   0x0228        String 5 abnormal alarm         Alarm
+553   0x0229        String 6 abnormal alarm         Alarm
+554   0x022A        String 7 abnormal alarm         Alarm
+555   0x022B        String 8 abnormal alarm         Alarm
+556   0x022C        String 9 abnormal alarm         Alarm
+557   0x022D       String 10 abnormal alarm         Alarm
+558   0x022E       String 11 abnormal alarm         Alarm
+559   0x022F       String 12 abnormal alarm         Alarm
+560   0x0230       String 13 abnormal alarm         Alarm
+561   0x0231       String 14 abnormal alarm         Alarm
+562   0x0232       String 15 abnormal alarm         Alarm
+563   0x0233       String 16 abnormal alarm         Alarm
+580   0x0244       String 17 abnormal alarm         Alarm
+581   0x0245       String 18 abnormal alarm         Alarm
+582   0x0246       String 19 abnormal alarm         Alarm
+583   0x0247       String 20 abnormal alarm         Alarm
+584   0x0248       String 21 abnormal alarm         Alarm
+585   0x0249       String 22 abnormal alarm         Alarm
+586   0x024A       String 23 abnormal alarm         Alarm
+587   0x024B       String 24 abnormal alarm         Alarm
+448   0x01C0    String 1 reverse connection fault   Fault
+449   0x01C1    String 2 reverse connection fault   Fault
+450   0x01C2    String 3 reverse connection fault   Fault
+
+                                23/ 37
+                                                             Public
+
+
+451    0x01C3   String 4 reverse connection fault    Fault
+452    0x01C4   String 5 reverse connection fault    Fault
+453    0x01C5   String 6 reverse connection fault    Fault
+454    0x01C6   String 7 reverse connection fault    Fault
+455    0x01C7   String 8 reverse connection fault    Fault
+456    0x01C8   String 9 reverse connection fault    Fault
+457    0x01C9   String 10 reverse connection fault   Fault
+458    0x01CA   String 11 reverse connection fault   Fault
+459    0x01CB   String 12 reverse connection fault   Fault
+460    0x01CC   String 13 reverse connection fault   Fault
+461    0x01CD   String 14 reverse connection fault   Fault
+462    0x01CE   String 15 reverse connection fault   Fault
+463    0x01CF   String 16 reverse connection fault   Fault
+464    0x01D0   String 17 reverse connection fault   Fault
+465    0x01D1   String 18 reverse connection fault   Fault
+466    0x01D2   String 19 reverse connection fault   Fault
+467    0x01D3   String 20 reverse connection fault   Fault
+468    0x01D4   String 21 reverse connection fault   Fault
+469    0x01D5   String 22 reverse connection fault   Fault
+470    0x01D6   String 23 reverse connection fault   Fault
+471    0x01D7   String 24 reverse connection fault   Fault
+1500   0x05DC           PV1 overvoltage              Fault
+1501   0x05DD           PV2 overvoltage              Fault
+1502   0x05DE           PV3 overvoltage              Fault
+1503   0x05DF           PV4 overvoltage              Fault
+1504   0x05E0           PV5 overvoltage              Fault
+1505   0x05E1           PV6 overvoltage              Fault
+1506   0x05E2           PV7 overvoltage              Fault
+1507   0x05E3           PV8 overvoltage              Fault
+1508   0x05E4           PV9 overvoltage              Fault
+1509   0x05E5          PV10 overvoltage              Fault
+1510   0x05E6          PV11 overvoltage              Fault
+1511   0x05E7          PV12 overvoltage              Fault
+1512   0x05E8          PV13 overvoltage              Fault
+1513   0x05E9          PV14 overvoltage              Fault
+1514   0x05EA          PV15 overvoltage              Fault
+1515   0x05EB          PV16 overvoltage              Fault
+1516   0x05EC          PV17 overvoltage              Fault
+1517   0x05ED          PV18 overvoltage              Fault
+1518   0x05EE          PV19 overvoltage              Fault
+1519   0x05EF          PV20 overvoltage              Fault
+1520   0x05F0          PV21 overvoltage              Fault
+1521   0x05F1          PV22 overvoltage              Fault
+
+                                24/ 37
+                                           Public
+
+
+1522   0x05F2   PV23 overvoltage   Fault
+1523   0x05F3   PV24 overvoltage   Fault
+1524   0x05F4   PV25 overvoltage   Fault
+1525   0x05F5   PV26 overvoltage   Fault
+1526   0x05F6   PV27 overvoltage   Fault
+1527   0x05F7   PV28 overvoltage   Fault
+1528   0x05F8   PV29 overvoltage   Fault
+1529   0x05F9   PV30 overvoltage   Fault
+1530   0x05FA   PV31 overvoltage   Fault
+1531   0x05FB   PV32 overvoltage   Fault
+
+
+
+
+                       25/ 37
+                                                                                         Public
+
+
+Appendix 4 Country Information
+
+
+            Code          Country                         Country (English)   Note
+            0             GB                              Great Britain
+
+            1             DE                              Germany
+            2             FR                              France
+            3             IT                              Italy
+            4             ES                              Spain
+            5             AT                              Austria
+            6             AU                              Australia
+            7             CZ                              Czech
+            8             BE                              Belgium
+            9             DK                              Denmark
+            10            GR_L                            Greece Land
+            11            GR_IS                           Greece Island
+            12            NL                              Netherlands
+            13            PT                              Portugal
+            14            CHN                             China
+            15            SE                              Sweden
+            16            Other 50Hz
+            17            RO                              Romania
+            18            TH                              Thailand
+            19            TK                              Turkey
+            20            AU-WEST                         Australia(west)
+            21            Reserved
+            25            Vorarlberg (Austria)            Vorarlberg          District
+            26            IND                             India
+            27            ARE                             Arab Emirates
+            28            ISR                             Israel
+            29            HUN                             Hungary
+            30            MYS                             Malaysia
+            31            PHL                             Philippines
+            32            POL                             Poland
+            33            Reserved
+            34            COL                             Poland
+            35 - 58       Reserved
+            35            TH                              Thailand-MEA
+            36            Vietnam                         Vietnam
+            37            Reserved                        Reserved
+            38            Oman                            Oman
+            39            Sandi Arabia                    Sandi Arabia
+            40            Finland                         Finland
+            41            Ireland                         Ireland
+                                                 26/ 37
+                                                                                                                                        Public
+
+
+                  59                     US-HWE                               America(Hawaii)             District
+                  60                     CA                                   Canada
+                  61                     US                                   America
+                  62                     Other 60Hz
+                  63                     KOR                                  Korea
+                  64                     ZAF                                  South Africa
+                  65                     CHL                                  Chile
+                  66                     BRA                                  Brazil
+                  67                     TPE                                  Chinese Taipei              District
+                  69                     JP                                   Japan
+                  76                     EN50549-1                            Europe
+                  77                     EN50549-2                            Europe
+                  97                     US-NE                                America(ISO-NE)             District
+                  98                     US-SA                                America(1741-SA)            District
+                  170                    Mexico_220                           Mexico
+
+
+
+
+Appendix 5、PID alarm code
+
+LCD or APP display      Communication                  Description                                          Note
+      (decimal)            send data
+                         (hexadecimal)
+                                                                               1. Check to ensure that the inverter is equipped with the
+                                                                               PID regulation function.
+                                                                               2. Check whether the ISO impedance protection value is
+                                                                               excessively high through the LCD or the APP, so as to
+432                     0x01B0                 PID impedance abnormity
+                                                                               ensure the requirements are met.
+                                                                               3. Check whether the positive and negative insulation
+                                                                               resistances to earth of the battery panel are excessively low.
+                                                                               4. Please contact SUNGROW if the fault still exists.
+                                                                               1. Check to ensure that the inverter is equipped with the
+                                                                               PID regulation function.
+                                                                               2. Check device operating environment and ensure the
+433                     0x01B1                 PID function abnormity
+                                                                               transformer-side phase line or N line impedance to ground
+                                                                               is normal.
+                                                                               3. Please contact SUNGROW if the fault still exists.
+                                                                               1. Check if the actual ISO impedance is excessively large
+                                               PID                             (greater than 1.5M ohms).
+434                     0x01B2                 overvoltage/overcurrent         2. Check whether the set PID control duty cycle is
+                                               protection                      excessively large.
+                                                                               3. Please contact SUNGROW if the fault still exists.
+
+
+
+
+                                                                     27/ 37
+                                                                                                                                    Public
+
+
+Appendix 6、Device Information(Note: If the value of string/MPPT is 1, it indicates that no string information (7013-7036) is uploaded to the
+read-only memory.)
+
+                                                                                                Power limited        Reactive
+                                                                             Power limited
+                     Model       Type code     MPPT     String/MPPT                                 range         power limited
+                                                                              range(0.1%)
+                                                                                                  (0.1kWh)        range(0.1kvar)
+               SG30KTL              0x27         2            4                  0-1100             0-330            -150-150
+               SG10KTL              0x26         2            3                  0-1100             0-110             -50-50
+               SG12KTL              0x29         2            3                  0-1100             0-132             -60-60
+
+               SG15KTL              0x28         2            3                  0-1100             0-165             -75-75
+
+               SG20KTL             0x2A          2            3                  0-1100             0-220            -100-100
+                SG30KU              0x2C         2            5                  0-1100             0-330            -150-150
+               SG36KTL             0x2D          2            5                  0-1100             0-396            -180-180
+                SG36KU              0x2E         2            5                  0-1100             0-396            -180-180
+               SG40KTL              0x2F         2            4                  0-1100             0-396            -180-180
+              SG40KTL-M            0x0135        3            3                  0-1100             0-440            -200-200
+              SG50KTL-M           0x011B         4            3                  0-1100             0-550            -250-250
+              SG60KTL-M            0x0131        4            4                  0-1100             0-660            -300-300
+                SG60KU             0x0136        1            8                  0-1100             0-660            -300-300
+              SG30KTL-M            0x0141        3          3;3;2                0-1000             0-300            -150-150
+           SG30KTL-M-V31            0x70         3          3;3;2                0-1000             0-300            -150-150
+              SG33KTL-M            0x0134        3          3;3;2                0-1100             0-363            -165-165
+              SG36KTL-M             0x74         3          3;3;2                0-1000             0-360            -180-180
+                SG33K3J           0x013D         3            3                  0-1000             0-333            -166-166
+                SG49K5J            0x0137        4            3                  0-1000             0-495            -247-247
+                 SG34KJ             0x72         2            4                  0-1000             0-340            -170-170
+              LP_P34KSG             0x73         1            4                  0-1000             0-340            -170-170
+            SG50KTL-M-20          0x011B         4            3                  0-1100             0-550            -250-250
+               SG60KTL            0x010F         1            14                 0-1100             0-660            -300-300
+               SG80KTL             0x0138        1            18                 0-1000             0-800            -400-400
+              SG80KTL-20           0x0138        1            18                 0-1000             0-800            -400-400
+               SG60KU-M            0x0132        4            4                  0-1100             0-660            -300-300
+              SG5KTL-MT            0x0147        2            1                  0-1100              0-55             -25-25
+              SG6KTL-MT            0x0148        2            1                  0-1100              0-66             -30-30
+               SG8KTL-M           0x013F         2            1                  0-1100              0-88             -40-40
+                                                                             Default: 0-1100   Default: 0-110
+                                                                              If country is      If country is
+              SG10KTL-M           0x013E         2            1                                                       -50-50
+                                                                         Germany，range is      Germany，range
+                                                                                 0-1000            is0-100
+             SG10KTL-MT           0x2C0F         2            2                  0-1100             0-110             -50-50
+              SG12KTL-M           0x013C         2            2                  0-1100             0-132             -60-60
+              SG15KTL-M            0x0142        2            2                  0-1100             0-165             -75-75
+              SG17KTL-M            0x0149        2            2                  0-1100             0-187             -85-85
+              SG20KTL-M            0x0143        2            2                  0-1100             0-220            -100-100
+
+                                                                    28/ 37
+                                                                                            Public
+
+
+SG80KTL-M    0x0139   4    4                  0-1100             0-880          -400-400
+ SG111HV     0x014C   1    1                  0-1000            0-1110          -555-555
+ SG125HV     0x013B   1    1                  0-1000            0-1250          -625-625
+SG125HV-20   0x2C03   1    1                  0-1000            0-1250          -625-625
+ SG30CX      0x2C10   3    2                  0-1000             0-299          -179~179
+ SG33CX      0x2C00   3    2                  0-1100             0-363          -218~218
+SG36CX-US    0x2C0A   3    2                  0-1100             0-330          -198~198
+ SG40CX      0x2C01   4    2                  0-1100             0-440          -264~264
+ SG50CX      0x2C02   5    2                  0-1100             0-550          -330~330
+SG60CX-US    0x2C0B   5    2                  0-1100             0-550          -330~330
+ SG110CX     0x2C06   9    2                  0-1100            0-1100          -660~660
+ SG250HX     0x2C0C   12   2                  0-1110            0-2500         -1500~1500
+SG250HX-US   0x2C11   12   2                  0-1110            0-2500         -1500~1500
+ SG100CX     0x2C12   12   2                  0-1000            0-1000          -660~660
+SG100CX-JP   0x2C12   12   2                  0-1000            0-1000          -660~660
+SG250HX-IN   0x2C13   12   2                  0-1250            0-2500         -1500~1500
+SG25CX-SA    0x2C15   3    2                  0-1100             0-275          -165~165
+ SG75CX      0x2C22   9    2                  0-1000             0-750          -450~450
+                                                             Default: 0-33
+                                                              (Germany,
+ SG3.0RT     0x243D   2    1                                   Belgium,          -15~15
+                                                              Australia:
+                                                                 0-30)
+                                                             Default: 0-44
+                                                               (Germany,
+ SG4.0RT     0x243E   2    1                                   Belgium,          -20~20
+                                                              Australia:
+                                                                 0-40)
+                                                             Default: 0-55
+                                          Default: 0-1100
+                                                               (Germany,
+                                             (Germany,
+ SG5.0RT     0x2430   2    1                                   Belgium,          -25~25
+                                             Belgium,
+                                                              Australia:
+                                            Australia:
+                                                                 0-50)
+                                             0-1000)
+                                                             Default: 0-66
+                                                               (Germany,
+ SG6.0RT     0x2431   2    1                                   Belgium,          -30~30
+                                                              Australia:
+                                                                 0-60)
+                                                             Default: 0-77
+                                                               (Germany,
+ SG7.0RT     0x243C   2    2;1                                 Belgium:          -35~35
+                                                            0-70; Australia:
+                                                               0-69.99)
+ SG8.0RT     0x2432   2    2;1                               Default: 0-88       -40~40
+
+                                 29/ 37
+                                                                 Public
+
+
+                                       (Germany,
+                                       Belgium,
+                                       Australia:
+                                         0-80)
+                      2;1            Default: 0-110
+                                       (Germany,
+SG10RT   0x2433   2                    Belgium,        -50~50
+                                       Australia:
+                                        0-110)
+                      2;1            Default: 0-132
+                                       (Germany,
+SG12RT   0x2434   2                    Belgium,        -60~60
+                                       Australia:
+                                        0-120)
+                                     Default: 0-165
+                                       (Germany,
+SG15RT   0x2435   2   2                Belgium,        -75~75
+                                       Australia:
+                                        0-150)
+                                     Default: 0-187
+                                      (Germany,
+SG17RT   0x2436   2   2                Belgium,        -85~85
+                                       Australia:
+                                        0-170)
+                                     Default: 0-220
+                                       (Germany,
+SG20RT   0x2437   2   2                Belgium,       -100~100
+                                       Australia:
+                                        0-200)
+
+
+
+
+                            30/ 37
+                                                                                                                                                        Public
+
+
+ Appendix 7Q(P) Curve 1
+                                                                   5048~5064, Not Italy curve
+                                                Curve A                                                   Curve B
+                      COS Ф                                                            Q/Pn
+                                     （PA,K_A)                                                  （PA,K_A)
+                     Upper PF                                                      Lower Cap
+                       Cap
+
+                                Capacitive
+
+
+
+
+                                                                       P/Pn                                                   P/Pn
+                           1                                                               0        （PB,K_B)
+
+
+
+                                                                    Inductive
+
+
+
+                      Lower
+                      PF Ind                                                       Upper Ind
+                                                                (PC,K_C)                                               (PC,K_C)
+
+
+
+
+                                                                      0 - 1,                                                Curve A：PA <PC
+Curve                            5048                     U16         0 Curve A,                                            Curve B：
+                                                                      1 Curve B                                             (PA≤PB≤PC, but PA!=PC)
+                                                                      200-1000                                              and
+PB                               5049                     U16                                                  0.1%
+                                                                      Curve B is valid                                      (KA≤KB≤KC
+                                                                      -500-500                                              or
+KB                               5050                     S16                                                  0.001
+                                                                      Curve B is valid                                      KA≥KB≥KC,but KA!=KC)
+                                                                      Curve A：0~500                            0.1%
+PA(Lower Power)                  5051                     U16
+                                                                      Curve B：100-1000
+                                                                      Curve A：500~1000                         0.1%
+PC(Upper Power)                  5052                     U16
+                                                                      Curve B：200-1000
+                                                                      Curve A：900~1000                         0.001
+KA(Upperlimit-PF)                5053                     S16
+                                                                      Curve B：-500-500
+                                                                      Curve A：900~1000                         0.001
+KC(Lower limit-PF)               5054                     S16
+                                                                      Curve B：-500-500
+Reserved                  5055-5064
+                                                                       5065~5077,Italy curve
+
+
+
+
+powerA                           5065                     U16         200~1000                                 0.1%
+powerB                           5066                     U16         200~1000                                 0.1%                  powerA<=powerB<powerC
+powerC                           5067                     U16         200~1000                                 0.1%
+pf_max                           5068                     U16         900~1000                                 0.001
+Uin                              5069                     U16         1000~1100                                0.1%
+                                                                                                                                           Uin>Uout
+Uout                             5070                     U16         900~1000                                 0.1%
+Reserved                  5071~5077                       U16
+
+                                                                                31/ 37
+                                                                                                                                                                                    Public
+
+
+Appendix 8      Q(U) Curve 1
+                                                                         5078~5097, Not Italy curve
+
+                                                    Curve A
+                                                                                                                      Curve B
+                                               Q /Pn
+                            Q1                                                                                     Q /Pn
+                                                                                                       Q1
+                                                         Upper Q/Sn Ind
+                                                                                                                             Upper Q/Sn Ind
+
+
+
+                                            Hysteresis
+
+
+                                                         Q_U1
+
+
+                                                                                                                             U1 Limit /
+                                          Q2                      Q3                                                                      Upper U Limit
+                                                                                                                             U2 Limit
+                        Lower U Limit    U1 Limit        Vn   U2 Limit    Upper U Limit   V/Vn     Lower U Limit    Q2/Q3                                     V/Vn
+
+                                                         Q_U2
+
+
+
+
+                                                          Hysteresis
+
+
+
+                                        Lower Q/Sn Cap
+                                                                               Q4                           Lower Q/Sn Cap
+                                                                                                                                                Q4
+
+
+
+
+                                                                    0-1,                                                                              Curve A：
+Curve              5078                         U16                 0 Curve A,                                                                        (U1Limit+Hysteresis<U2
+                                                                    1 Curve B                                                                         Limit-Hysteresis)
+                                                                    -500-500,                                                                         and
+Q_U1               5079                             S16                                                                    0.1%
+                                                                    Curve A is valid                                                                  (-Upper Q/Sn<=Q_U1<= Lower
+                                                                    -500-500，                                                                         Q/Sn)
+Q_U2               5080                             S16                                                                    0.1%
+                                                                    Curve A is valid                                                                  and
+Lower ULimit       5081                         U16                 800~1000                                               0.1%                       (-Upper Q/Sn<=Q_U2<= Lower
+Upper U Limit      5082                         U16                 1000~1200                                              0.1%                       Q/Sn)
+
+U1 Limit           5083                         U16                 900~1100                                               0.1%
+U2 Limit           5084                         U16                 900~1100                                               0.1%                       Curve：
+
+                   5085                         U16                 0~50                                                                              U1 Limit == U2 Limit
+Hysteresis                                                                                                                 0.1%
+                                                                    Curve A is valid
+Lower Q/Sn         5086                         U16                 (Ind) 0~ 500                                           0.1%
+Upper Q/Sn         5087                         U16                 (Cap) 0~500                                            0.1%
+Reserved         5088-5097
+                                                                           5098~5115, Italy curve
+
+
+
+
+V1i
+                 5098                          U16                  900~1100                                                    0.1%
+(Italy)
+V2i
+                 5099                          U16                  900~1100                                                    0.1%                        V2i < V1i < V1s < V2s
+(Italy)
+V1s
+                 5100                          U16                  900~1100                                                    0.1%
+(Italy)
+V2s              5101                          U16                  900~1100                                                    0.1%
+
+                                                                                          32/ 37
+                                                                                                                                                                          Public
+
+
+(Italy)
+Qmax
+               5102                      U16                500~1000                                                       0.001
+(Italy)
+Pin
+               5103                      U16                200~1000                                                       0.1%                          Pin > Pout
+(Italy)
+Pout
+               5104                      U16                10~200                                                         0.1%
+(Italy)
+                                                            0-1,
+Curve
+               5105                      U16                0 Curve A,
+(Italy)
+                                                            1 Curve B
+Reserved     5106~5115
+
+
+Appendix9    Q(P) Curve 2
+                                                  Curve A                                                            Curve B
+                        COS Ф                                                                  Q/Pn
+                                       （QP_P1,QP_K1)                                                       （QP_P1,QP_K1)
+                       Upper PF                                                            Lower Cap
+                         Cap
+
+                                  Capacitive
+                                                    L1                                                                L1
+
+
+
+                                                         （QP_P2,QP_K2)         P/Pn                                         （QP_P2,QP_K2)         P/Pn
+                             1      Lower Power                  Upper Power                       0   Lower Power                  Upper Power
+
+
+
+                                                            L2           Inductive                                             L2
+
+
+
+
+                        Lower
+                        PF Ind                                                             Upper Ind
+                                                                   (QP_P3,QP_K3)                                                     (QP_P3,QP_K3)
+
+
+
+
+                                                                                                                                    1. QP_P1<= QP_P2< QP_P3
+                                                                                                                                    2.If QP_P1= QP_P2, QP_K1= QP_K2
+
+
+                                                                                                                                    QP_EnableMode：
+                                                                                                                                    Enter and exit Q (P) mode conditions,
+                                                             0-1                                                                    0xAA, unconditional entry and exit;
+Q(P) Curve      5116                    U16                  0: Curve A                                                             0x55, conditional entry and exit:
+                                                             1: Curve B                                                             the voltage is higher than
+                                                                                                                                    QP_EnterVoltageRatio,
+                                                                                                                                    the voltage is lower than
+                                                                                                                                    UoutQP_ExitVoltageRatio,
+                                                                                                                                    and the power is lower than
+                                                                                                                                    QP_ExitPowerRatio
+QP_P1           5117                    U16                  100~1000                                     0.1%
+QP_P2           5118                    U16                  200~1000                                     0.1%
+QP_P3           5119                    U16                  200~1000                                     0.1%
+                                                             Curve A：800~1000                             0.001
+                                                             Curve B：
+                                                             If support Overload
+QP_K1           5120                    S16
+                                                             -660-660
+                                                             If not
+                                                             -600-600
+QP_K2           5121                    S16                  Curve A：800~1000                             0.001
+
+                                                                                      33/ 37
+                                                                       Public
+
+
+                                         If support Overload
+                                         -660-660
+                                         If not
+                                         -600-600
+                                         Curve A：800~1000      0.001
+                                         If support Overload
+QP_K3                  5122        S16   -660-660
+                                         If not
+                                         -600-600
+QP_EnterVoltageRatio   5123        U16   1000~1100             0.1%
+QP_ExitVoltageRatio    5124        U16   900~1000              0.1%
+QP_ExitPowerRatio      5125        U16   10-200                0.1%
+                                         0xAA Yes
+QP_EnableMode          5126        U16
+                                         0x55 No
+Reserved               5127-5134   U16
+
+
+
+
+                                                     34/ 37
+                                                                                                                                                                                                                   Public
+
+
+ Appendix10                                    Q(U) Curve 2
+                         Curve A                                                          Q/Sn                  Curve B
+       Q/Sn
+                                                                                                    (QU_V1, QU_Q1)   (QU_V2, QU_Q2)
+                  (QU_V1, QU_Q1)
+ Upper Q/Sn Ind                                                                    Upper Q/Sn Ind
+
+
+
+
+                                   滞环比
+
+
+
+
+                                                      (QU_V3, QU_Q3)
+                                                                          Grid voltage                                                                    Grid voltage
+                             (QU_V2, QU_Q2)
+
+
+
+                                         Hysteresis
+
+
+
+
+                                                                                  Lower Q/Sn Cap
+ Lower Q/Sn Cap                                                                                                                (QU_V3, QU_Q3)   (QU_V4, QU_Q4)
+                                                                 (QU_V4, QU_Q4)
+
+
+
+
+                                                                                                                     0-1
+Q(U)曲线                                         5135                                      U16                         0: Curve A;
+                                                                                                                     1: Curve B
+滞环比                                            5136                                      U16                         0~50                                           0.1%
+QU_V1                                          5137                                      U16                         800~ 1000                                      0.1%
+                                                                                                                     If support Overload
+                                                                                                                     -660-0
+QU_Q1                                          5138                                      U16                                                                        0.1%
+                                                                                                                     If not
+                                                                                                                     -600-0                                                QU_V1ve B,;        Inioiooower
+QU_V2                                          5139                                      U16                         800~1000                                       0.1%   QU_EnableMode：
+                                                                                                                     If support Overload                                   Enter and exit Q (U) mode conditions,
+                                                                                                                     -660-660                                              0xAA, unconditional entry and exit;
+QU_Q2                                          5140                                      U16                                                                        0.1%
+                                                                                                                     If not                                                0x55, conditional entry and exit:
+                                                                                                                     -600-600                                              the current power is higher than
+QU_V3                                          5141                                      U16                         1000~1200                                      0.1%   QU_EnterPower,
+                                                                                                                     If support Overload                                   and the current power is lower than
+                                                                                                                     -660-660                                              QU_ExitPower.
+QU_Q3                                          5142                                      U16                                                                        0.1%
+                                                                                                                     If not                                                0x5A, conditional entry
+                                                                                                                     -600-600                                              PF is lower than
+QU_V4                                          5143                                      U16                         1000~1200                                      0.1%   QU_LimitPFValue
+                                                                                                                     If support Overload
+                                                                                                                     0-660
+QU_Q4                                          5144                                      U16                                                                        0.1%
+                                                                                                                     If not
+                                                                                                                     0-600
+QU_EnterPower                                  5145                                      U16                         200-1000                                       0.1%
+QU_ExitPower                                   5146                                      U16                         10-200                                         0.1%
+                                                                                                                     0xAA Yes
+QU_EnableMode                                  5147                                      U16
+                                                                                                                     0x55 No
+QU_LimitPFValue                                5148                                      U16                         0-95                                           0.01
+Reserved                                       5149~5154
+
+
+
+
+                                                                                                                                         35/ 37
+                                                                                                                  Public
+
+
+
+8. Examples
+    Take ComTest for example.
+  a) Acquire one piece of running information
+          Supposed that the inverter address is 1, it needs to acquire data from address 5000 of 3x address type.
+          The PC sends (HEX):
+          01 04 13 87 00 01 85 67
+          The inverter replies (HEX):
+          01 04 02 01 32 39 75
+          Note: The type code of inverter SG60KU-M is 0x0132.
+  b) Acquire multiple running information
+          Supposed that the inverter address is 1, it needs to acquire10 data from address starting from 5000 of 3x
+          address type
+          The PC sends (HEX):
+          01 04 13 87 00 0A C4 A0
+          The inverter replies (HEX):
+          01 04 14 01 32 00 28 00 00 00 00 00 05 00 00 00 26 00 00 00 00 00 00 56 EA
+          Note: The type code of inverter SG60KU-M is 0x0132. The nominal output power is 4.0kW, two-phase.
+          Daily power generation is 0. The total power generation is 5kWh. The total running time is 38h.The internal
+          temperature is 0℃. The internal transformer temperature is 0℃.
+  c) Acquire SN
+          Supposed that the inverter address is 1, it needs to acquire 10 data from address starting from 4990 of 3x
+          address type
+          The PC sends (HEX):
+          01 04 13 7D 00 0A E4 91
+          The inverter replies (HEX):
+          01 04 14 31 32 31 32 31 32 30 30 31 00 00 00 00 00 00 00 00 00 00 00 9B 56
+          Note:
+          1. SN data type is UTF-8;
+          2. Serial number is: 121212001
+  d) Read one setting datum
+          Supposed that the inverter address is 1, it needs to read data from address 5000 of 4x address type.
+          The PC sends (HEX):
+          01 03 13 87 00 01 30 A7
+          The inverter replies (HEX):
+          01 03 02 07 D8 BA 2E
+          Note: the data read out is year 2008.
+  e)   Read multiple setting data
+          Supposed that the inverter address is 1, it needs to read 10 data from address starting from 5000 of 4x address
+          type.
+          The PC sends (HEX):
+          01 03 13 87 00 0A 71 60
+          The inverter replies (HEX):
+          01 03 14 07 DA 00 0A 00 1E 00 09 00 28 00 25 00 CE 00 AA 01 F4 00 00 80 53
+          Note: The data are October, 10, 2010, 09:40:37; Stop; power limitation on, power limitation value is 50 %.
+                                                         36/ 37
+                                                                                                                 Public
+
+
+f)   Set one datum
+        Supposed that the inverter address is 1, it needs to set data from address 5000 of 4x address type.
+        The PC sends (HEX):
+        01 10 13 87 00 01 02 07 DA 19 4D
+        The inverter replies (HEX):
+        01 10 13 87 00 01 B5 64
+        Or
+        The PC sends (HEX):
+        01 06 13 87 07 DA BE CC
+        The inverter replies (HEX):
+        01 06 13 87 07 DA BE CC
+        Note: The setting data is year 2010
+g)   Set multiple data
+        Supposed that the inverter address is 1, it needs to set 10 data to address starting from 5000 of 4x address
+        type.
+        The PC sends (HEX):
+        01 10 13 87 00 0A 14 07 D9 00 0A 00 1E 00 09 00 10 00 00 00 CE 00 AA 01 F4 00 00 3E 65
+        The inverter replies (HEX):
+        01 10 13 87 00 0A F4 A3
+        Note: The data are October, 30, 2009, 09:16:00, stop, power limitation on, power limitation value is 50 %.
+h)   Read device running information
+        Supposed that the inverter address is 1, it needs to set 8 data to address starting from 5038 of 3x address type.
+        The PC sends (HEX):
+        01 04 13 AD 00 0864 A9
+        The inverter replies (HEX):
+        01 04 10 55 00 07 DF 00 0C 00 15 00 04 00 0C 00 3B 00 0A EE D1
+        Note:
+        1) Device running state is Fault(0x5500); the fault/alarm time and code are valid in this state;
+        2) Fault time: 4 (0x0004):12(0x000C): 59(0x003B), Dec. (0x000C), 21(0x0015), 2015(0x07DF); the fault is
+        island (0x000A).
+
+
+
+
+                                                       37/ 37
+

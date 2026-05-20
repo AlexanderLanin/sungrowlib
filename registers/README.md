@@ -1,12 +1,12 @@
 # Sungrow Register Catalog
 
-Machine-readable JSON database of 311 Modbus registers for Sungrow SH and SG series solar inverters. Originally converted from [homeassistant-sungrow](https://github.com/mkanet/homeassistant-sungrow) and audited against the official Sungrow communication protocols (V1.0.20–V1.1.9).
+Machine-readable JSON database of 332 Modbus registers for Sungrow SH and SG series solar inverters. Originally converted from [homeassistant-sungrow](https://github.com/mkanet/homeassistant-sungrow) and audited against the official Sungrow communication protocols (V1.0.20–V1.1.11).
 
 Use this file directly in any language or tool — no sungrowlib dependency required.
 
 ## File
 
-[`registers-sungrow.json`](registers-sungrow.json) — 229 input registers, 82 holding registers.
+[`registers-sungrow.json`](registers-sungrow.json) — 230 input registers, 102 holding registers.
 
 ## Schema
 
@@ -38,6 +38,7 @@ Each entry:
 | `decoded` | object | | Map of raw value → human-readable string (e.g. `{"0": "Stop", "32768": "Run"}`) |
 | `mask` | number | | Bitmask for boolean extraction (e.g. `1` = bit 0) |
 | `unsupported_value` | number \| null \| `"None"` | | Raw value that means "not supported" (e.g. `0xFFFF`) |
+| `source` | string[] | | Official protocol document(s) defining this register (see below) |
 
 ### Detail Levels
 
@@ -48,6 +49,19 @@ Each entry:
 | 3 | Extended | Temperatures, voltages, currents |
 | 4 | Detail | MPPT details, daily/total energy counters |
 | 5 | Debug | Alarm codes, internal states, RTC clock |
+
+### Source Attribution
+
+Each register can have a `source` field indicating which official Sungrow protocol document(s) define it:
+
+| Source | Document |
+|--------|----------|
+| `hybrid-v1.1.11` | Communication Protocol of Residential Hybrid Inverter V1.1.11 |
+| `string-v1.1.37` | Communication Protocol of PV Grid-Connected String Inverters V1.1.37 |
+
+Always an array, e.g. `["hybrid-v1.1.11"]` or `["hybrid-v1.1.11", "string-v1.1.37"]`. Registers without a `source` field originate from community projects (homeassistant-sungrow, SunGather, mkaiser) and have not been verified against an official protocol document.
+
+The protocol PDFs and their text extractions are in [`docs/`](docs/).
 
 ### Feature Groups
 
