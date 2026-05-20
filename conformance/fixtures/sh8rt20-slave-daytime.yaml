@@ -1,0 +1,89 @@
+# Real register dump from SH8.0RT-20 slave inverter (daytime, MPPT active)
+# Source: solar_register_dumps id=1, slave_id=1
+# Same system as sh8rt20-master-daytime.yaml
+serial: "A2350415779"
+model_code: 0xE12
+slave_id: 1
+
+input:
+  # Protocol / firmware
+  4950: [12288, 16706]
+  4952: [4352, 256]
+  4954: 16722
+  4969: 19780
+  4990: { utf8: "A2350415779" }
+  5000: 0xE12                   # device_type_code → SH8.0RT-20
+  5001: 80                      # nominal_output_power ×0.1 = 8.0 kW
+  5002: 0                       # output_type → "2P"
+  # MPPT (daytime values)
+  5006: 207
+  5007: 170
+  5008: 1000
+  5011: 3676                    # mppt_1_voltage ×0.1 = 367.6V
+  5012: 40                      # mppt_1_current ×0.1 = 4.0A
+  5013: 3283                    # mppt_2_voltage ×0.1 = 328.3V
+  5014: 39                      # mppt_2_current ×0.1 = 3.9A
+  5017: 2794                    # total_dc_power
+  5018: 0
+  5019: 2363
+  5020: 2371
+  5021: 2375
+  # Slave has no system_state master indicators
+  5033: 65535
+  5034: 65535
+  5035: 1000
+  5036: 85
+  5037: 65535
+  5038: 814
+  5039: 65535
+  5040: 65535
+  # Slave: no meter
+  5601: 0
+  5602: 0
+  5622: 0
+  5623: 800
+  5628: 80
+  # Dashboard registers — slave has zeros for most aggregated values
+  13000: 207
+  13001: 1
+  13002: 203
+  13003: [14750, 2]             # total_pv_generation U32 = 2×65536+14750 = 145822 → 14582.2 kWh
+  13008: 0                      # load_power = 0 (slave doesn't report load)
+  13010: 0                      # export_power = 0
+  13018: 59112
+  13022: 0                      # battery_power = 0 (slave has no battery)
+  13023: 0                      # battery_soc = 0
+  13024: 0
+  13025: 0
+  13030: 0
+  13031: 38
+  13032: 38
+  13033: 38
+  13034: 2677
+  13037: 0                      # total_import_energy = 0 (is_master = false)
+  13038: 0
+  13039: 0                      # battery_capacity = 0 (has_battery = false)
+  13051: 204
+  13053: 65535
+  13054: 65535
+  13055: 65535
+  13056: 65535
+  13057: 65535
+  13058: 1000
+  13074: 8000
+  13086: 85
+  13087: 85
+  13100: 0
+
+holding:
+  5000: 2026
+  5001: 5
+  5002: 10
+  5003: 11
+  5004: 55
+  5005: 29
+  33047: 1060
+  33048: 1060
+  33500: 0xAA                   # master_slave_mode = enabled
+  33501: 0xA1                   # master_slave_role = slave (161)
+  33502: 2                      # inverter_count = 2

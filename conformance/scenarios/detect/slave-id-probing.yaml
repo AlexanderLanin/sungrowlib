@@ -1,0 +1,35 @@
+schema: 1
+name: slave-id-probing
+tags: [detect]
+description: >
+  Slave ID 1 returns 0xFFFF for serial_number (unresponsive).
+  Lib should probe slave ID 2 and succeed there.
+
+inverters:
+  - id: default
+    slave_id: 2
+    input:
+      4990: { utf8: "A2350415770" }
+      5000: 0xE12
+      5001: 80
+      5002: 0
+      5011: 3200
+      5012: 85
+      5071: 1500
+      5601: 0xFFFF
+      13037: [500, 0]
+      13039: 160
+    holding:
+      5000: 2025
+      5001: 6
+      5002: 15
+      5003: 14
+      5004: 30
+      5005: 45
+      33500: 0x55
+
+expect:
+  info:
+    model: "SH8.0RT-20"
+    serial_number: "A2350415770"
+    connection_mode: standalone

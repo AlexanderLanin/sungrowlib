@@ -1,0 +1,20 @@
+schema: 1
+name: sh8rt20-standalone
+tags: [detect]
+description: >
+  SH8.0RT-20 with master/slave mode disabled (0x55).
+  Should detect as standalone regardless of role register.
+
+inverters:
+  - id: standalone
+    fixture: sh8rt20-standalone
+
+expect:
+  info:
+    model: "SH8.0RT-20"
+    serial_number: "A2350415770"
+    connection_mode: standalone
+    has_battery: true
+    has_meter: false
+    slave_count: 0
+    output_type: "2P"

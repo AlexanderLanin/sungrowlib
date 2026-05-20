@@ -1,0 +1,37 @@
+schema: 1
+name: full-master-battery
+tags: [read, decode, battery, master]
+description: >
+  Full read of a daytime master with battery.
+  Tests S16 signed decode, U32 little-endian, scale factors, and computed registers.
+
+inverters:
+  - id: master
+    fixture: sh8rt20-master-daytime
+
+expect:
+  read:
+    # S16 decode with model override (S32→S16 for SH8.0RT-20)
+    load_power:     { value: 2526, unit: W }
+    export_power:   { value: -242, unit: W }
+
+    # U32 little-endian with scale
+    total_pv_generation:   { approx: 15788.9, tolerance: 1.0 }
+
+    # Scale ×0.1
+    battery_soc:         { value: 100.0, unit: "%" }
+    battery_temperature:   { value: 24.0, unit: "°C" }
+    battery_capacity:      { value: 16.0, unit: kWh }
+
+    # MPPT voltages/currents (scale ×0.1)
+    mppt_1_voltage:        { value: 524.0, unit: V }
+    mppt_1_current:        { value: 2.9, unit: A }
+    mppt_2_voltage:        { value: 249.6, unit: V }
+    mppt_2_current:        { value: 3.7, unit: A }
+
+    # Computed: V × I
+    mppt_1_power:          { approx: 1519.6, tolerance: 0.1 }
+    mppt_2_power:          { approx: 923.5, tolerance: 0.1 }
+
+    # Computed: timestamp from RTC holding registers
+    timestamp:             { value: "2026-05-10 11:55:32" }

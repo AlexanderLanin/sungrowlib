@@ -1,0 +1,23 @@
+schema: 1
+name: sh8rt20-slave
+tags: [detect, slave]
+description: >
+  SH8.0RT-20 slave inverter detection.
+  Slave has no battery, no meter, no master role.
+
+inverters:
+  - id: slave
+    fixture: sh8rt20-slave-daytime
+
+expect:
+  info:
+    model: "SH8.0RT-20"
+    serial_number: "A2350415779"
+    connection_mode: slave
+    has_battery: false
+    has_meter: false
+
+  active_groups:
+    has_battery: false
+    is_master: false
+    mppt2: true

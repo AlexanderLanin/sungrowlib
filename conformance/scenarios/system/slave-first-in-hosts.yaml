@@ -1,0 +1,21 @@
+schema: 1
+name: slave-first-in-hosts
+tags: [system, multi-host]
+description: >
+  Slave is listed first in the hosts array.
+  The lib should still correctly identify the master.
+
+inverters:
+  - id: slave
+    fixture: sh8rt20-slave-daytime
+
+  - id: master
+    fixture: sh8rt20-master-daytime
+
+expect:
+  system:
+    # Slave is first in hosts — lib must discover master anyway
+    hosts: [slave, master]
+    master_host: master
+    has_slaves: true
+    slave_count: 1

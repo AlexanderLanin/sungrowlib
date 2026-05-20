@@ -1,0 +1,34 @@
+schema: 1
+name: slave-read-registers
+tags: [read, slave]
+description: >
+  Read from a slave inverter directly.
+  Slaves report PV generation and MPPT but no load/export/battery.
+
+inverters:
+  - id: slave
+    fixture: sh8rt20-slave-daytime
+
+expect:
+  info:
+    model: "SH8.0RT-20"
+    serial_number: "A2350415779"
+    connection_mode: slave
+
+  read:
+    # Slave has own PV generation
+    total_pv_generation:   { approx: 14582.2, tolerance: 0.1 }
+
+    # Slave has own MPPT
+    mppt_1_voltage:        { value: 367.6, unit: V }
+    mppt_1_current:        { value: 4.0, unit: A }
+    mppt_2_voltage:        { value: 328.3, unit: V }
+    mppt_2_current:        { value: 3.9, unit: A }
+
+    # Computed MPPT power
+    mppt_1_power:          { approx: 1470.4, tolerance: 0.1 }
+    mppt_2_power:          { approx: 1280.4, tolerance: 0.1 }
+
+    # Slave reports 0 for load/export (no battery on this slave)
+    load_power:     { value: 0, unit: W }
+    export_power:   { value: 0, unit: W }

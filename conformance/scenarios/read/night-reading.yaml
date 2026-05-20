@@ -1,0 +1,42 @@
+schema: 1
+name: night-reading
+tags: [read, groups]
+description: >
+  Nighttime reading where MPPT currents are 0.
+  Group indicator mppt2 reads as false at night.
+  With cached groups, mppt2 should be preserved as true.
+
+inverters:
+  - id: master
+    fixture: sh8rt20-master-night
+
+expect:
+  info:
+    model: "SH8.0RT-20"
+    connection_mode: master
+    has_battery: true
+
+  active_groups:
+    has_battery: true
+    is_master: true
+    direct_lan: true
+    has_meter: true
+    # mppt2 = false at night (current=0), unless cached
+    mppt2: false
+
+  read:
+    # Battery active at night
+    battery_power:         { value: 438, unit: W }
+    battery_soc:         { value: 79.0, unit: "%" }
+    battery_temperature:   { value: 23.0, unit: "°C" }
+
+    # Load covered by battery + grid
+    load_power:     { value: 565, unit: W }
+    export_power:   { value: -197, unit: W }
+
+    # MPPT zero at night
+    mppt_1_voltage:        { value: 0.0, unit: V }
+    mppt_1_current:        { value: 0.0, unit: A }
+
+    # Computed timestamp from RTC
+    timestamp:             { value: "2026-05-13 23:36:47" }

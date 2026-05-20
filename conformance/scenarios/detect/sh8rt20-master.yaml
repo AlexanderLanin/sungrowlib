@@ -1,0 +1,27 @@
+schema: 1
+name: sh8rt20-master
+tags: [detect, battery, master]
+description: >
+  SH8.0RT-20 master with battery and meter.
+  Validates model detection, serial decode, master/slave topology, and group indicators.
+
+inverters:
+  - id: master
+    fixture: sh8rt20-master-daytime
+
+expect:
+  info:
+    model: "SH8.0RT-20"
+    serial_number: "A2350415770"
+    connection_mode: master
+    has_battery: true
+    has_meter: true
+    output_type: "2P"
+    slave_count: 1
+
+  active_groups:
+    has_battery: true
+    is_master: true
+    direct_lan: true
+    has_meter: true
+    mppt2: true

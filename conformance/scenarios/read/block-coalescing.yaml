@@ -1,0 +1,24 @@
+schema: 1
+name: block-coalescing
+tags: [read, efficiency]
+description: >
+  Verifies that the lib coalesces adjacent registers into blocks efficiently.
+  With ~30 dashboard registers (level ≤ 3), the lib should not make more than
+  ~15 Modbus calls total (connect setup + read data).
+
+inverters:
+  - id: master
+    fixture: sh8rt20-master-daytime
+
+expect:
+  read:
+    load_power: { value: 2526, unit: W }
+
+  modbus_calls:
+    # connect reads setup registers + read() reads data blocks across all levels
+    total_calls: { max: 50 }
+    input_calls: { max: 35 }
+    holding_calls: { max: 15 }
+
+    # Dashboard registers 13000-13039 should be in one or two blocks, not individual reads
+    no_single_reads: [13008, 13010, 13022, 13023, 13025, 13037]

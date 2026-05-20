@@ -1,0 +1,35 @@
+schema: 1
+name: master-slave-pair
+tags: [system, multi-host]
+description: >
+  Two-inverter system: master with battery + slave.
+  Tests auto-discovery, master read, and slave read.
+
+inverters:
+  - id: master
+    fixture: sh8rt20-master-daytime
+
+  - id: slave
+    fixture: sh8rt20-slave-daytime
+
+expect:
+  system:
+    hosts: [master, slave]
+    master_host: master
+    has_slaves: true
+    slave_count: 1
+
+  # read() returns master data
+  read:
+    load_power:   { value: 2526, unit: W }
+    export_power: { value: -242, unit: W }
+    battery_soc:       { value: 100.0, unit: "%" }
+
+  # slave_read returns per-slave data
+  slave_read:
+    - host: slave
+      values:
+        total_pv_generation: { approx: 14582.2, tolerance: 0.1 }
+        mppt_1_voltage:      { value: 367.6, unit: V }
+        mppt_1_current:      { value: 4.0, unit: A }
+        mppt_1_power:        { approx: 1470.4, tolerance: 0.1 }

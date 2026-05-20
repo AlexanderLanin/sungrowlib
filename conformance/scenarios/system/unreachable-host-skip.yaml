@@ -1,0 +1,18 @@
+schema: 1
+name: unreachable-host-skip
+tags: [system, error]
+description: >
+  One host is unreachable (no simulator running on that port).
+  The lib should skip it and connect to the reachable host.
+
+inverters:
+  # Only one actual simulator — the runner will pass a dead port for "unreachable"
+  - id: reachable
+    fixture: sh8rt20-master-daytime
+
+expect:
+  system:
+    # "unreachable" is a special id: runner uses a port with nothing listening
+    hosts: [unreachable, reachable]
+    master_host: reachable
+    has_slaves: false

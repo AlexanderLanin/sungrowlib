@@ -1,0 +1,4200 @@
+{
+  "read": [
+    {
+      "name": "protocol_number",
+      "level": 5,
+      "address": 4950,
+      "data_type": "U32",
+      "description": "Deprecated since protocol V1.1.7 (now Reserved). May return 0xFFFFFFFF on new firmware."
+    },
+    {
+      "name": "protocol_version",
+      "level": 1,
+      "address": 4952,
+      "data_type": "U32",
+      "description": "Protocol version number, e.g. 0x01010700 = V1.1.7."
+    },
+    {
+      "name": "arm_software_version",
+      "level": 1,
+      "address": 4954,
+      "data_type": "UTF-8[15]",
+      "description": "Certification version of ARM Software. Changed from U16 to UTF-8 in protocol V1.1.0."
+    },
+    {
+      "name": "dsp_software_version",
+      "level": 1,
+      "address": 4969,
+      "data_type": "UTF-8[15]",
+      "description": "Certification version of DSP Software. Changed from U16 to UTF-8 in protocol V1.1.0."
+    },
+    {
+      "name": "serial_number",
+      "level": 1,
+      "address": 4990,
+      "data_type": "UTF-8[10]",
+      "description": "Inverter serial number (10 UTF-8 characters)."
+    },
+    {
+      "name": "device_type_code",
+      "level": 1,
+      "address": 5000,
+      "data_type": "U16",
+      "decoded": {
+        "38": "SG10KTL",
+        "39": "SG30KTL",
+        "40": "SG15KTL",
+        "41": "SG12KTL",
+        "42": "SG20KTL",
+        "44": "SG30KU",
+        "45": "SG36KTL",
+        "46": "SG36KU",
+        "47": "SG40KTL",
+        "112": "SG30KTL-M-V31",
+        "114": "SG34KJ",
+        "115": "LP_P34KSG",
+        "116": "SG36KTL-M",
+        "271": "SG60KTL",
+        "283": "SG50KTL-M",
+        "294": "SG5K-D",
+        "305": "SG60KTL-M",
+        "306": "SG60KU-M",
+        "308": "SG33KTL-M",
+        "309": "SG40KTL-M",
+        "310": "SG60KU",
+        "311": "SG49K5J",
+        "312": "SG80KTL",
+        "313": "SG80KTL-M",
+        "315": "SG125HV",
+        "316": "SG12KTL-M",
+        "317": "SG33K3J",
+        "318": "SG10KTL-M",
+        "319": "SG8KTL-M",
+        "321": "SG30KTL-M",
+        "322": "SG15KTL-M",
+        "323": "SG20KTL-M",
+        "327": "SG5KTL-MT",
+        "328": "SG6KTL-MT",
+        "329": "SG17KTL-M",
+        "332": "SG111HV",
+        "3331": "SH5K-V13",
+        "3334": "SH3K6",
+        "3335": "SH4K6",
+        "3337": "SH5K-20",
+        "3338": "SH3K6-30",
+        "3339": "SH4K6-30",
+        "3340": "SH5K-30",
+        "3341": "SH3.6RS",
+        "3342": "SH4.6RS",
+        "3343": "SH5.0RS",
+        "3344": "SH6.0RS",
+        "3351": "SH3.0RS",
+        "3352": "SH4.0RS",
+        "3354": "SH8.0RS",
+        "3355": "SH10RS",
+        "3367": "MG5RL",
+        "3368": "MG6RL",
+        "3584": "SH5.0RT",
+        "3585": "SH6.0RT",
+        "3586": "SH8.0RT",
+        "3587": "SH10RT",
+        "3592": "SH5.0RT-V122",
+        "3593": "SH6.0RT-V122",
+        "3594": "SH8.0RT-V122",
+        "3595": "SH10RT-V122",
+        "3596": "SH5.0RT-V112",
+        "3597": "SH6.0RT-V112",
+        "3598": "SH8.0RT-V112",
+        "3599": "SH10RT-V112",
+        "3600": "SH5.0RT-20",
+        "3601": "SH6.0RT-20",
+        "3602": "SH8.0RT-20",
+        "3603": "SH10RT-20",
+        "3616": "SH5T",
+        "3617": "SH6T",
+        "3618": "SH8T",
+        "3619": "SH10T",
+        "3620": "SH12T",
+        "3621": "SH15T",
+        "3622": "SH20T",
+        "3624": "SH25T",
+        "9219": "SG8K-D",
+        "9264": "SG5.0RT",
+        "9265": "SG6.0RT",
+        "9266": "SG8.0RT",
+        "9267": "SG10RT",
+        "9268": "SG12RT",
+        "9269": "SG15RT",
+        "9270": "SG17RT",
+        "9271": "SG20RT",
+        "9276": "SG7.0RT",
+        "9277": "SG3.0RT",
+        "9278": "SG4.0RT",
+        "9734": "SG5.0RS",
+        "11264": "SG33CX",
+        "11265": "SG40CX",
+        "11266": "SG50CX",
+        "11267": "SG125HV-20",
+        "11270": "SG110CX",
+        "11274": "SG36CX-US",
+        "11275": "SG60CX-US",
+        "11276": "SG250HX",
+        "11279": "SG10KTL-MT",
+        "11280": "SG30CX",
+        "11281": "SG250HX-US",
+        "11282": "SG100CX",
+        "11283": "SG250HX-IN",
+        "11285": "SG25CX-SA",
+        "11298": "SG75CX"
+      },
+      "description": "Inverter model identification code. See protocol Appendix 1."
+    },
+    {
+      "name": "nominal_output_power",
+      "level": 1,
+      "address": 5001,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kW",
+      "description": "Rated output power of the inverter."
+    },
+    {
+      "name": "output_type",
+      "level": 1,
+      "address": 5002,
+      "data_type": "U16",
+      "decoded": {
+        "0": "2P",
+        "1": "3P4L",
+        "2": "3PSL"
+      },
+      "description": "Output topology: 0=single-phase, 1=3P4L (three-phase four-wire), 2=3P3L (three-phase three-wire)."
+    },
+    {
+      "name": "daily_output_energy",
+      "level": 3,
+      "address": 5003,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Daily active output energy. Includes PV generation and battery discharge."
+    },
+    {
+      "name": "total_output_energy",
+      "level": 4,
+      "address": 5004,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Accumulated active output energy. Includes PV generation and battery discharge."
+    },
+    {
+      "name": "total_running_time",
+      "group": "is_master",
+      "level": 4,
+      "address": 5006,
+      "data_type": "U32",
+      "unit_of_measurement": "h",
+      "models_exclude": [
+        "SH8.0RT-20"
+      ],
+      "unsupported_value": 0,
+      "description": "Accumulated running time. String inverter register, reserved for SH hybrid models."
+    },
+    {
+      "name": "inside_temperature",
+      "level": 4,
+      "address": 5008,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "°C",
+      "description": "Internal temperature of the inverter housing."
+    },
+    {
+      "name": "total_apparent_power",
+      "level": 4,
+      "address": 5009,
+      "data_type": "U32",
+      "unit_of_measurement": "VA",
+      "description": "Total apparent power output. String inverter register.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "mppt_1_voltage",
+      "level": 3,
+      "address": 5011,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "MPPT 1 input voltage."
+    },
+    {
+      "name": "mppt_1_current",
+      "level": 3,
+      "address": 5012,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "MPPT 1 input current."
+    },
+    {
+      "name": "mppt_2_voltage",
+      "group": "mppt2",
+      "level": 3,
+      "address": 5013,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "unsupported_value": "None",
+      "description": "MPPT 2 input voltage."
+    },
+    {
+      "name": "mppt_2_current",
+      "group": "mppt2",
+      "level": 3,
+      "address": 5014,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "unsupported_value": "None",
+      "description": "MPPT 2 input current.",
+      "indicator": "mppt2"
+    },
+    {
+      "name": "mppt_3_voltage",
+      "group": "mppt3",
+      "level": 3,
+      "address": 5015,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "models_exclude": [
+        "SH8.0RT-20"
+      ],
+      "unsupported_value": "None",
+      "description": "MPPT 3 input voltage."
+    },
+    {
+      "name": "mppt_3_current",
+      "group": "mppt3",
+      "level": 3,
+      "address": 5016,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "models_exclude": [
+        "SH8.0RT-20"
+      ],
+      "unsupported_value": "None",
+      "description": "MPPT 3 input current.",
+      "indicator": "mppt3"
+    },
+    {
+      "name": "total_dc_power",
+      "level": 3,
+      "address": 5017,
+      "data_type": "U32",
+      "unit_of_measurement": "W",
+      "description": "Total PV power (sum of all MPPT inputs).",
+      "notes": [
+        "this doesnt quite match the sum of mppt inputs, its ~80% - ~120%",
+        "this is DC(!!), use total_active_power (5031) or total_active_power_hybrid (13034) for AC power"
+      ]
+    },
+    {
+      "name": "phase_a_voltage",
+      "level": 4,
+      "address": 5019,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "Phase A voltage (or A-B line voltage for 3P3L output type)."
+    },
+    {
+      "name": "phase_b_voltage",
+      "level": 4,
+      "address": 5020,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "Phase B voltage (or B-C line voltage for 3P3L output type)."
+    },
+    {
+      "name": "phase_c_voltage",
+      "level": 4,
+      "address": 5021,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "Phase C voltage (or C-A line voltage for 3P3L output type)."
+    },
+    {
+      "name": "phase_a_current",
+      "level": 4,
+      "address": 5022,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "String inverter register. Reserved in hybrid protocol (use 13031 for SH models).",
+      "models_exclude": [
+        "SH*"
+      ],
+      "group": "direct_lan"
+    },
+    {
+      "name": "phase_b_current",
+      "level": 4,
+      "address": 5023,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "String inverter register. Reserved in hybrid protocol (use 13032 for SH models).",
+      "models_exclude": [
+        "SH*"
+      ],
+      "group": "direct_lan"
+    },
+    {
+      "name": "phase_c_current",
+      "level": 4,
+      "address": 5024,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "String inverter register. Reserved in hybrid protocol (use 13033 for SH models).",
+      "models_exclude": [
+        "SH*"
+      ],
+      "group": "direct_lan"
+    },
+    {
+      "name": "total_active_power",
+      "level": 3,
+      "address": 5031,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "String inverter register. Reserved (5022-5032) in hybrid protocol. Use 13034 for SH models.",
+      "models_exclude": [
+        "SH*"
+      ],
+      "group": "direct_lan"
+    },
+    {
+      "name": "total_reactive_power",
+      "level": 4,
+      "address": 5033,
+      "data_type": "S32",
+      "unit_of_measurement": "var",
+      "description": "Total reactive power output."
+    },
+    {
+      "name": "power_factor",
+      "level": 4,
+      "address": 5035,
+      "data_type": "S16",
+      "accuracy": 0.001,
+      "unit_of_measurement": "%",
+      "description": "Power factor. Positive=leading, negative=lagging."
+    },
+    {
+      "name": "grid_frequency_low_res",
+      "level": 4,
+      "address": 5036,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "Hz",
+      "description": "Grid frequency (0.1Hz resolution). Use grid_frequency (5242) for higher precision (0.01Hz)."
+    },
+    {
+      "name": "work_state_1",
+      "level": 3,
+      "address": 5038,
+      "data_type": "U16",
+      "decoded": {
+        "4608": "Initial Standby",
+        "4864": "Key Stop",
+        "5120": "Standby",
+        "5376": "Emergency Stop",
+        "5632": "Starting",
+        "9472": "Communication Fault",
+        "21760": "Fault",
+        "32768": "Stop",
+        "33024": "Derating Run",
+        "33280": "Dispatch Run",
+        "37120": "Alarm Run"
+      },
+      "models_exclude": [
+        "SH*",
+        "WiNet"
+      ],
+      "description": "Inverter work state. String inverter register, excluded for SH hybrid models."
+    },
+    {
+      "name": "alarm_time_year",
+      "level": 5,
+      "address": 5039,
+      "data_type": "U16",
+      "models_exclude": [
+        "SH*",
+        "WiNet"
+      ],
+      "description": "Alarm timestamp: year. String inverter register."
+    },
+    {
+      "name": "alarm_time_month",
+      "level": 5,
+      "address": 5040,
+      "data_type": "U16",
+      "models_exclude": [
+        "SH*",
+        "WiNet"
+      ],
+      "description": "Alarm timestamp: month. String inverter register."
+    },
+    {
+      "name": "alarm_time_day",
+      "level": 5,
+      "address": 5041,
+      "data_type": "U16",
+      "models_exclude": [
+        "SH*",
+        "WiNet"
+      ],
+      "description": "Alarm timestamp: day. String inverter register."
+    },
+    {
+      "name": "alarm_time_hour",
+      "level": 5,
+      "address": 5042,
+      "data_type": "U16",
+      "models_exclude": [
+        "SH*",
+        "WiNet"
+      ],
+      "description": "Alarm timestamp: hour. String inverter register."
+    },
+    {
+      "name": "alarm_time_minute",
+      "level": 5,
+      "address": 5043,
+      "data_type": "U16",
+      "models_exclude": [
+        "SH*",
+        "WiNet"
+      ],
+      "description": "Alarm timestamp: minute. String inverter register."
+    },
+    {
+      "name": "alarm_time_second",
+      "level": 5,
+      "address": 5045,
+      "data_type": "U16",
+      "models_exclude": [
+        "SH*",
+        "WiNet"
+      ],
+      "description": "Alarm timestamp: second. String inverter register."
+    },
+    {
+      "name": "alarm_time",
+      "level": 5,
+      "data_type": "datetime",
+      "format": "%Y-%m-%d %H:%M:%S",
+      "params": [
+        "alarm_time_year",
+        "alarm_time_month",
+        "alarm_time_day",
+        "alarm_time_hour",
+        "alarm_time_minute",
+        "alarm_time_second"
+      ],
+      "only_if_signal": "pid_alarm_code != 0"
+    },
+    {
+      "name": "alarm_code_1",
+      "level": 5,
+      "address": 5045,
+      "data_type": "U16",
+      "models_exclude": [
+        "SH*",
+        "WiNet"
+      ],
+      "description": "Primary alarm code. String inverter register."
+    },
+    {
+      "name": "nominal_reactive_power",
+      "level": 4,
+      "address": 5049,
+      "data_type": "U16",
+      "accuracy": 100,
+      "unit_of_measurement": "var",
+      "description": "Rated reactive power. String inverter register.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "array_insulation_resistance",
+      "level": 4,
+      "address": 5071,
+      "data_type": "U16",
+      "unit_of_measurement": "k-ohm",
+      "description": "PV array insulation resistance to ground. Group indicator for direct_lan.",
+      "indicator": "direct_lan",
+      "group": "direct_lan"
+    },
+    {
+      "name": "active_power_regulation_setpoint",
+      "level": 5,
+      "address": 5077,
+      "data_type": "U32",
+      "unit_of_measurement": "W",
+      "models_exclude": [
+        "SH8.0RT-20"
+      ],
+      "description": "Active power regulation setpoint. String inverter register."
+    },
+    {
+      "name": "reactive_power_regulation_setpoint",
+      "level": 4,
+      "address": 5079,
+      "data_type": "S32",
+      "unit_of_measurement": "var",
+      "description": "Reactive power regulation setpoint. String inverter register.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "work_state_2",
+      "level": 4,
+      "address": 5081,
+      "data_type": "U32",
+      "decoded": {
+        "0": "Run",
+        "1": "Stop",
+        "2": "Initial Standby",
+        "3": "Key Stop",
+        "4": "Standby",
+        "5": "Emergency Stop",
+        "6": "Starting",
+        "9": "Fault",
+        "10": "Alarm Run",
+        "11": "Derating Run",
+        "12": "Dispatch Run",
+        "13": "Communication Fault",
+        "17": "Total Run Bit",
+        "18": "Total Fault Bit"
+      },
+      "models_exclude": [
+        "SH8.0RT-20"
+      ],
+      "description": "Extended inverter work state (U32). String inverter register."
+    },
+    {
+      "name": "meter_power",
+      "level": 4,
+      "address": 5083,
+      "data_type": "S32",
+      "smart_meter": true,
+      "unit_of_measurement": "W",
+      "models": [
+        "SG*KTL-M*"
+      ],
+      "description": "Smart meter total active power. String inverter register (SG*KTL-M models).",
+      "group": "direct_lan",
+      "notes": [
+        "Available on SH8.0RT-20",
+        "This is the EXACT same value as export_power",
+        "This does not match the sum of phase powers (meter_a_phase_power + meter_b_phase_power + meter_c_phase_power)",
+        "it's updated more frequently than the phase powers?!"
+      ]
+    },
+    {
+      "name": "meter_a_phase_power",
+      "level": 4,
+      "address": 5085,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "models": [
+        "SG*KTL-M*"
+      ],
+      "description": "Smart meter phase A active power. String inverter register (SG*KTL-M models).",
+      "group": "direct_lan"
+    },
+    {
+      "name": "meter_b_phase_power",
+      "level": 4,
+      "address": 5087,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "models": [
+        "SG*KTL-M*"
+      ],
+      "description": "Smart meter phase B active power. String inverter register (SG*KTL-M models)."
+    },
+    {
+      "name": "meter_c_phase_power",
+      "level": 4,
+      "address": 5089,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "models": [
+        "SG*KTL-M*"
+      ],
+      "description": "Smart meter phase C active power. String inverter register (SG*KTL-M models)."
+    },
+    {
+      "name": "meter_load_power",
+      "level": 4,
+      "address": 5091,
+      "data_type": "S32",
+      "smart_meter": true,
+      "unit_of_measurement": "W",
+      "models": [
+        "SG*KTL-M*"
+      ],
+      "description": "Smart meter load power. String inverter register (SG*KTL-M models)."
+    },
+    {
+      "name": "daily_export_energy_string",
+      "level": 3,
+      "address": 5093,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "models": [
+        "SG*KTL-M*"
+      ],
+      "description": "Daily energy exported to grid. String inverter register (SG*KTL-M models only)."
+    },
+    {
+      "name": "total_export_energy_string",
+      "level": 3,
+      "address": 5095,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "models": [
+        "SG*KTL-M*"
+      ],
+      "description": "Accumulated energy exported to grid. String inverter register (SG*KTL-M models only)."
+    },
+    {
+      "name": "daily_import_energy_string",
+      "level": 3,
+      "address": 5097,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "models": [
+        "SG*KTL-M*"
+      ],
+      "description": "Daily energy imported from grid. String inverter register (SG*KTL-M models only)."
+    },
+    {
+      "name": "total_import_energy_string",
+      "level": 3,
+      "address": 5099,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "models_exclude": [
+        "SH8.0RT-20"
+      ],
+      "description": "Accumulated energy imported from grid. String inverter register."
+    },
+    {
+      "name": "daily_direct_energy_consumption_string",
+      "level": 3,
+      "address": 5101,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "models": [
+        "SG*KTL-M*"
+      ],
+      "description": "Daily electricity consumed directly from PV by loads. String inverter register, requires smart energy meter.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "total_direct_energy_consumption_string",
+      "level": 3,
+      "address": 5103,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "models": [
+        "SG*KTL-M*"
+      ],
+      "description": "Accumulated electricity consumed directly from PV by loads. String inverter register, requires smart energy meter.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "daily_running_time",
+      "level": 4,
+      "address": 5113,
+      "data_type": "U16",
+      "unit_of_measurement": "min",
+      "models_exclude": [
+        "SH8.0RT-20"
+      ],
+      "description": "Daily running time in minutes. String inverter register."
+    },
+    {
+      "name": "mppt_4_voltage",
+      "models": [
+        "SG50KTL-M",
+        "SG60KTL-M",
+        "SG49K5J",
+        "SG50KTL-M-20",
+        "SG60KU-M",
+        "SG80KTL-M",
+        "SG40CX",
+        "SG50CX",
+        "SG60CX-US",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "group": [
+        "mppt4",
+        "direct_lan"
+      ],
+      "level": 3,
+      "address": 5115,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "MPPT 4 input voltage. Large string inverters only."
+    },
+    {
+      "name": "mppt_4_current",
+      "models": [
+        "SG50KTL-M",
+        "SG60KTL-M",
+        "SG49K5J",
+        "SG50KTL-M-20",
+        "SG60KU-M",
+        "SG80KTL-M",
+        "SG40CX",
+        "SG50CX",
+        "SG60CX-US",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "group": [
+        "mppt4",
+        "direct_lan"
+      ],
+      "level": 3,
+      "address": 5116,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "MPPT 4 input current. Large string inverters only.",
+      "indicator": "mppt4"
+    },
+    {
+      "name": "mppt_5_voltage",
+      "models": [
+        "SG50CX",
+        "SG60CX-US",
+        "SG110CX",
+        "SG250HX*",
+        "SG100CX*",
+        "SG75CX"
+      ],
+      "group": [
+        "mppt5",
+        "direct_lan"
+      ],
+      "level": 3,
+      "address": 5117,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "MPPT 5 input voltage. Large string inverters only."
+    },
+    {
+      "name": "mppt_5_current",
+      "models": [
+        "SG50CX",
+        "SG60CX-US",
+        "SG110CX",
+        "SG250HX*",
+        "SG100CX*",
+        "SG75CX"
+      ],
+      "group": [
+        "mppt5",
+        "direct_lan"
+      ],
+      "level": 3,
+      "address": 5118,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "MPPT 5 input current. Large string inverters only.",
+      "indicator": "mppt5"
+    },
+    {
+      "name": "mppt_6_voltage",
+      "group": [
+        "mppt6",
+        "direct_lan"
+      ],
+      "models": [
+        "SG110CX",
+        "SG250HX*",
+        "SG100CX*",
+        "SG75CX"
+      ],
+      "level": 4,
+      "address": 5119,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "MPPT 6 input voltage. Large string inverters only."
+    },
+    {
+      "name": "mppt_6_current",
+      "group": [
+        "mppt6",
+        "direct_lan"
+      ],
+      "models": [
+        "SG110CX",
+        "SG250HX*",
+        "SG100CX*",
+        "SG75CX"
+      ],
+      "level": 4,
+      "address": 5120,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "MPPT 6 input current. Large string inverters only.",
+      "indicator": "mppt6"
+    },
+    {
+      "name": "mppt_7_voltage",
+      "group": [
+        "mppt7",
+        "direct_lan"
+      ],
+      "models": [
+        "SG110CX",
+        "SG250HX*",
+        "SG100CX*",
+        "SG75CX"
+      ],
+      "level": 4,
+      "address": 5121,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "MPPT 7 input voltage. Large string inverters only."
+    },
+    {
+      "name": "mppt_7_current",
+      "group": [
+        "mppt7",
+        "direct_lan"
+      ],
+      "models": [
+        "SG110CX",
+        "SG250HX*",
+        "SG100CX*",
+        "SG75CX"
+      ],
+      "level": 4,
+      "address": 5122,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "MPPT 7 input current. Large string inverters only.",
+      "indicator": "mppt7"
+    },
+    {
+      "name": "mppt_8_voltage",
+      "group": [
+        "mppt8",
+        "direct_lan"
+      ],
+      "models": [
+        "SG110CX",
+        "SG250HX*",
+        "SG100CX*",
+        "SG75CX"
+      ],
+      "level": 4,
+      "address": 5123,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "MPPT 8 input voltage. Large string inverters only."
+    },
+    {
+      "name": "mppt_8_current",
+      "group": [
+        "mppt8",
+        "direct_lan"
+      ],
+      "models": [
+        "SG110CX",
+        "SG250HX*",
+        "SG100CX*",
+        "SG75CX"
+      ],
+      "level": 4,
+      "address": 5124,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "MPPT 8 input current. Large string inverters only.",
+      "indicator": "mppt8"
+    },
+    {
+      "name": "monthly_power_yields",
+      "group": "is_master",
+      "level": 3,
+      "address": 5128,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "models_exclude": [
+        "SH8.0RT-20"
+      ],
+      "description": "Monthly energy yield."
+    },
+    {
+      "name": "mppt_9_voltage",
+      "group": [
+        "mppt9",
+        "direct_lan"
+      ],
+      "models": [
+        "SG110CX",
+        "SG250HX*",
+        "SG100CX*",
+        "SG75CX"
+      ],
+      "level": 4,
+      "address": 5130,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "MPPT 9 input voltage. Large string inverters only."
+    },
+    {
+      "name": "mppt_9_current",
+      "group": [
+        "mppt9",
+        "direct_lan"
+      ],
+      "models": [
+        "SG110CX",
+        "SG250HX*",
+        "SG100CX*",
+        "SG75CX"
+      ],
+      "level": 4,
+      "address": 5131,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "MPPT 9 input current. Large string inverters only.",
+      "indicator": "mppt9"
+    },
+    {
+      "name": "mppt_10_voltage",
+      "group": [
+        "mppt10",
+        "direct_lan"
+      ],
+      "models": [
+        "SG250HX*"
+      ],
+      "level": 4,
+      "address": 5132,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "MPPT 10 input voltage. SG250HX only."
+    },
+    {
+      "name": "mppt_10_current",
+      "group": [
+        "mppt10",
+        "direct_lan"
+      ],
+      "models": [
+        "SG250HX*"
+      ],
+      "level": 4,
+      "address": 5133,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "MPPT 10 input current. SG250HX only.",
+      "indicator": "mppt10"
+    },
+    {
+      "name": "mppt_11_voltage",
+      "group": [
+        "mppt11",
+        "direct_lan"
+      ],
+      "models": [
+        "SG250HX*"
+      ],
+      "level": 4,
+      "address": 5134,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "MPPT 11 input voltage. SG250HX only."
+    },
+    {
+      "name": "mppt_11_current",
+      "group": [
+        "mppt11",
+        "direct_lan"
+      ],
+      "models": [
+        "SG250HX*"
+      ],
+      "level": 4,
+      "address": 5135,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "MPPT 11 input current. SG250HX only.",
+      "indicator": "mppt11"
+    },
+    {
+      "name": "mppt_12_voltage",
+      "group": [
+        "mppt12",
+        "direct_lan"
+      ],
+      "models": [
+        "SG250HX*"
+      ],
+      "level": 4,
+      "address": 5136,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "MPPT 12 input voltage. SG250HX only."
+    },
+    {
+      "name": "mppt_12_current",
+      "group": [
+        "mppt12",
+        "direct_lan"
+      ],
+      "models": [
+        "SG250HX*"
+      ],
+      "level": 4,
+      "address": 5137,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "MPPT 12 input current. SG250HX only.",
+      "indicator": "mppt12"
+    },
+    {
+      "name": "total_power_yields",
+      "group": "is_master",
+      "level": 3,
+      "address": 5144,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "models_exclude": [
+        "SH8.0RT-20"
+      ],
+      "description": "Accumulated total energy yield."
+    },
+    {
+      "name": "negative_voltage_to_the_ground",
+      "level": 5,
+      "address": 5146,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "Negative voltage to ground. String inverter register.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "bus_voltage",
+      "level": 4,
+      "address": 5147,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "DC bus voltage. String inverter register.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "grid_frequency_5148",
+      "level": 5,
+      "address": 5148,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "Hz",
+      "description": "Grid frequency from community source (address 5148). Hybrid PDF V1.1.9 lists Grid Frequency at 5242 instead. Kept for dump verification.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "pid_work_state",
+      "level": 5,
+      "address": 5150,
+      "data_type": "U16",
+      "decoded": {
+        "2": "PID Recover Operation",
+        "4": "Anti-PID Operation",
+        "8": "PID Abnormity"
+      },
+      "models_exclude": [
+        "SH8.0RT-20"
+      ],
+      "description": "PID (Potential Induced Degradation) work state. String inverter register."
+    },
+    {
+      "name": "pid_alarm_code",
+      "level": 4,
+      "address": 5151,
+      "data_type": "U16",
+      "decoded": {
+        "432": "PID resistance abnormal",
+        "433": "PID function abnormal",
+        "434": "PID overvoltage/overcurrent protection"
+      },
+      "models_exclude": [
+        "SH8.0RT-20"
+      ],
+      "description": "PID alarm code. String inverter register."
+    },
+    {
+      "name": "battery_power",
+      "group": "has_battery",
+      "level": 3,
+      "address": 5214,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Battery power. S32 with full range. Positive = charging, negative = discharging. Recommended instead of register 13022."
+    },
+    {
+      "name": "export_power_string",
+      "level": 4,
+      "address": 5216,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Power exported to grid. String inverter register (not available on SH hybrid models via WiNet).",
+      "group": "direct_lan"
+    },
+    {
+      "name": "meter_active_power",
+      "level": 3,
+      "address": 5601,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Only valid when inverter directly connected to smart energy meter. Positive=import, negative=export.",
+      "indicator": "has_meter",
+      "group": "has_meter"
+    },
+    {
+      "name": "meter_phase_a_active_power",
+      "level": 3,
+      "address": 5603,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Smart meter phase A active power. Positive = import from grid, negative = export to grid. Only valid with three-phase meter.",
+      "group": "has_meter"
+    },
+    {
+      "name": "meter_phase_b_active_power",
+      "level": 3,
+      "address": 5605,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Smart meter phase B active power. Positive = import from grid, negative = export to grid. Only valid with three-phase meter.",
+      "group": "has_meter"
+    },
+    {
+      "name": "meter_phase_c_active_power",
+      "level": 3,
+      "address": 5607,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Smart meter phase C active power. Positive = import from grid, negative = export to grid. Only valid with three-phase meter.",
+      "group": "has_meter"
+    },
+    {
+      "name": "power_meter",
+      "level": 4,
+      "address": 5218,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Power meter reading. String inverter register.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "grid_frequency",
+      "level": 4,
+      "address": 5242,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "Hz",
+      "description": "Grid frequency with 0.01Hz precision. Recommended instead of register 5036 (0.1Hz resolution)."
+    },
+    {
+      "name": "min_feed_in_power_limitation_value",
+      "level": 4,
+      "address": 5622,
+      "data_type": "U16",
+      "accuracy": 10,
+      "unit_of_measurement": "W",
+      "models": [
+        "SH5.0RS",
+        "SH3.6RS",
+        "SH4.6RS",
+        "SH6.0RS",
+        "SH10RT",
+        "SH8.0RT",
+        "SH8.0RT-20",
+        "SH6.0RT",
+        "SH5.0RT"
+      ],
+      "description": "Minimum configurable feed-in power limitation value. Read-only system parameter."
+    },
+    {
+      "name": "max_feed_in_power_limitation_value",
+      "level": 4,
+      "address": 5623,
+      "data_type": "U16",
+      "accuracy": 10,
+      "unit_of_measurement": "W",
+      "description": "Maximum configurable feed-in power limitation value. Read-only system parameter."
+    },
+    {
+      "name": "bdc_rated_power",
+      "level": 4,
+      "address": 5628,
+      "data_type": "U16",
+      "accuracy": 100,
+      "unit_of_measurement": "W",
+      "description": "BDC (bidirectional converter) rated power."
+    },
+    {
+      "name": "battery_current",
+      "group": "has_battery",
+      "level": 3,
+      "address": 5631,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "Battery current with sign. Positive = charging, negative = discharging. Recommended instead of register 13021 (unsigned)."
+    },
+    {
+      "name": "max_charging_current_bms",
+      "level": 4,
+      "address": 5635,
+      "data_type": "U16",
+      "unit_of_measurement": "A",
+      "description": "Maximum charging current as reported by the battery management system (BMS)."
+    },
+    {
+      "name": "max_discharging_current_bms",
+      "level": 4,
+      "address": 5636,
+      "data_type": "U16",
+      "unit_of_measurement": "A",
+      "description": "Maximum discharging current as reported by the battery management system (BMS)."
+    },
+    {
+      "name": "battery_capacity",
+      "group": "has_battery",
+      "level": 3,
+      "address": 5639,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "kWh",
+      "description": "Battery capacity with 0.01 kWh precision. Recommended instead of register 13039 (0.1 kWh resolution)."
+    },
+    {
+      "name": "phase_a_backup_current",
+      "level": 4,
+      "address": 5720,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "Phase A backup (off-grid) output current."
+    },
+    {
+      "name": "phase_b_backup_current",
+      "level": 4,
+      "address": 5721,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "Phase B backup (off-grid) output current."
+    },
+    {
+      "name": "phase_c_backup_current",
+      "level": 4,
+      "address": 5722,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "Phase C backup (off-grid) output current."
+    },
+    {
+      "name": "phase_a_backup_power",
+      "level": 4,
+      "address": 5723,
+      "data_type": "S16",
+      "unit_of_measurement": "W",
+      "description": "Phase A backup (off-grid) output power."
+    },
+    {
+      "name": "phase_b_backup_power",
+      "level": 4,
+      "address": 5724,
+      "data_type": "S16",
+      "unit_of_measurement": "W",
+      "description": "Phase B backup (off-grid) output power."
+    },
+    {
+      "name": "phase_c_backup_power",
+      "level": 4,
+      "address": 5725,
+      "data_type": "S16",
+      "unit_of_measurement": "W",
+      "description": "Phase C backup (off-grid) output power."
+    },
+    {
+      "name": "total_backup_power",
+      "level": 4,
+      "address": 5726,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Total backup (off-grid) output power across all phases."
+    },
+    {
+      "name": "phase_a_backup_voltage",
+      "level": 4,
+      "address": 5731,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "Phase A backup (off-grid) output voltage."
+    },
+    {
+      "name": "phase_b_backup_voltage",
+      "level": 4,
+      "address": 5732,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "Phase B backup (off-grid) output voltage."
+    },
+    {
+      "name": "phase_c_backup_voltage",
+      "level": 4,
+      "address": 5733,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "Phase C backup (off-grid) output voltage."
+    },
+    {
+      "name": "backup_frequency",
+      "level": 4,
+      "address": 5734,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "Hz",
+      "description": "Backup (off-grid) output frequency."
+    },
+    {
+      "name": "pv_power_of_today",
+      "level": 5,
+      "address": 6100,
+      "data_type": "U16[96]",
+      "unit_of_measurement": "W",
+      "description": "96-entry array: PV power at 15-minute intervals throughout the day.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "daily_pv_energy_yields",
+      "level": 5,
+      "address": 6196,
+      "data_type": "U16[30]",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "30-entry array: daily PV energy yields for the past 30 days.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "monthly_pv_energy_yields",
+      "level": 5,
+      "address": 6227,
+      "data_type": "U16[12]",
+      "unit_of_measurement": "kWh",
+      "accuracy": 0.1,
+      "description": "12-entry array: monthly PV energy yields for the past 12 months.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "yearly_pv_energy_yields",
+      "level": 5,
+      "address": 6250,
+      "data_type": "U32[20]",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "20-entry array: yearly PV energy yields starting from 2019 (valid for 15 years).",
+      "group": "direct_lan"
+    },
+    {
+      "name": "direct_power_consumption_of_today_from_pv",
+      "level": 5,
+      "address": 6290,
+      "data_type": "U16[96]",
+      "unit_of_measurement": "W",
+      "description": "96-entry array: direct PV consumption power at 15-minute intervals throughout the day.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "daily_direct_energy_consumption_from_pv",
+      "level": 5,
+      "address": 6386,
+      "data_type": "U16[31]",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "31-entry array: daily direct PV consumption for the past 31 days.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "monthly_direct_energy_consumption_from_pv",
+      "level": 5,
+      "address": 6417,
+      "data_type": "U16[12]",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "12-entry array: monthly direct PV consumption for the past 12 months.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "yearly_direct_energy_consumption_from_pv",
+      "level": 5,
+      "address": 6429,
+      "data_type": "U32[20]",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "20-entry array: yearly direct PV consumption starting from 2019 (valid for 15 years).",
+      "group": "direct_lan"
+    },
+    {
+      "name": "export_power_from_pv_of_today",
+      "group": [
+        "is_master",
+        "direct_lan"
+      ],
+      "level": 5,
+      "address": 6469,
+      "data_type": "U16[96]",
+      "unit_of_measurement": "W",
+      "description": "96-entry array: PV export power at 15-minute intervals throughout the day."
+    },
+    {
+      "name": "daily_export_energy_from_pv",
+      "group": [
+        "is_master",
+        "direct_lan"
+      ],
+      "level": 4,
+      "address": 6565,
+      "data_type": "U16[31]",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "31-entry array: daily PV export energy for the past 31 days."
+    },
+    {
+      "name": "monthly_export_energy_from_pv",
+      "group": [
+        "is_master",
+        "direct_lan"
+      ],
+      "level": 4,
+      "address": 6596,
+      "data_type": "U16[12]",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "12-entry array: monthly PV export energy for the past 12 months."
+    },
+    {
+      "name": "yearly_export_energy_from_pv",
+      "group": [
+        "is_master",
+        "direct_lan"
+      ],
+      "level": 4,
+      "address": 6608,
+      "data_type": "U32[20]",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "20-entry array: yearly PV export energy starting from 2019 (valid for 15 years)."
+    },
+    {
+      "name": "battery_charge_power_of_today",
+      "group": [
+        "has_battery",
+        "direct_lan"
+      ],
+      "level": 4,
+      "address": 6648,
+      "data_type": "U16[96]",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "96-entry array: battery charge power from PV at 15-minute intervals throughout the day."
+    },
+    {
+      "name": "daily_battery_charge_energy_from_pv_history",
+      "group": [
+        "has_battery",
+        "direct_lan"
+      ],
+      "level": 4,
+      "address": 6744,
+      "data_type": "U16[31]",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "31-entry array: daily battery charge energy from PV for the past 31 days. For current day scalar value, use daily_battery_charge_energy_from_pv (13012)."
+    },
+    {
+      "name": "monthly_battery_charge_energy_from_pv",
+      "group": [
+        "has_battery",
+        "direct_lan"
+      ],
+      "level": 4,
+      "address": 6775,
+      "data_type": "U16[12]",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "12-entry array: monthly battery charge energy from PV for the past 12 months."
+    },
+    {
+      "name": "yearly_battery_charge_energy_from_pv",
+      "group": [
+        "has_battery",
+        "direct_lan"
+      ],
+      "level": 4,
+      "address": 6787,
+      "data_type": "U32[20]",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "20-entry array: yearly battery charge energy from PV starting from 2019 (valid for 15 years)."
+    },
+    {
+      "name": "string_1_current",
+      "level": 4,
+      "address": 7013,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG*",
+        "LP_P34KSG"
+      ],
+      "description": "PV string 1 input current. String inverter register."
+    },
+    {
+      "name": "string_2_current",
+      "level": 4,
+      "address": 7014,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG*",
+        "LP_P34KSG"
+      ],
+      "description": "PV string 2 input current. String inverter register."
+    },
+    {
+      "name": "string_3_current",
+      "level": 4,
+      "address": 7015,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG*",
+        "LP_P34KSG"
+      ],
+      "description": "PV string 3 input current. String inverter register."
+    },
+    {
+      "name": "string_4_current",
+      "level": 4,
+      "address": 7016,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG*",
+        "LP_P34KSG"
+      ],
+      "description": "PV string 4 input current. String inverter register."
+    },
+    {
+      "name": "string_5_current",
+      "level": 4,
+      "address": 7017,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG*",
+        "LP_P34KSG"
+      ],
+      "description": "PV string 5 input current. String inverter register."
+    },
+    {
+      "name": "string_6_current",
+      "level": 4,
+      "address": 7018,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG*",
+        "LP_P34KSG"
+      ],
+      "description": "PV string 6 input current. String inverter register."
+    },
+    {
+      "name": "string_7_current",
+      "level": 4,
+      "address": 7019,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG30KTL",
+        "SG30KU",
+        "SG36KTL",
+        "SG36KU",
+        "SG40KTL",
+        "SG40KTL-M",
+        "SG50KTL-M",
+        "SG60KTL-M",
+        "SG60KU",
+        "SG30KTL-M",
+        "SG30KTL-M-V31",
+        "SG33KTL-M",
+        "SG36KTL-M",
+        "SG33K3J",
+        "SG49K5J",
+        "SG34KJ",
+        "SG50KTL-M-20",
+        "SG60KTL",
+        "SG80KTL",
+        "SG80KTL-20",
+        "SG60KU-M",
+        "SG80KTL-M",
+        "SG30CX",
+        "SG33CX",
+        "SG36CX-US",
+        "SG40CX",
+        "SG50CX",
+        "SG60CX-US",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "description": "PV string 7 input current. String inverter register."
+    },
+    {
+      "name": "string_8_current",
+      "level": 4,
+      "address": 7020,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG30KTL",
+        "SG30KU",
+        "SG36KTL",
+        "SG36KU",
+        "SG40KTL",
+        "SG40KTL-M",
+        "SG50KTL-M",
+        "SG60KTL-M",
+        "SG30KTL-M",
+        "SG30KTL-M-V31",
+        "SG33KTL-M",
+        "SG36KTL-M",
+        "SG33K3J",
+        "SG49K5J",
+        "SG34KJ",
+        "SG50KTL-M-20",
+        "SG60KTL",
+        "SG80KTL",
+        "SG80KTL-20",
+        "SG60KU-M",
+        "SG80KTL-M",
+        "SG30CX",
+        "SG33CX",
+        "SG36CX-US",
+        "SG40CX",
+        "SG50CX",
+        "SG60CX-US",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "description": "PV string 8 input current. String inverter register."
+    },
+    {
+      "name": "string_9_current",
+      "level": 4,
+      "address": 7021,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG30KU",
+        "SG36KTL",
+        "SG36KU",
+        "SG40KTL-M",
+        "SG50KTL-M",
+        "SG60KTL-M",
+        "SG33K3J",
+        "SG49K5J",
+        "SG50KTL-M-20",
+        "SG60KTL",
+        "SG80KTL",
+        "SG80KTL-20",
+        "SG60KU-M",
+        "SG80KTL-M",
+        "SG30CX",
+        "SG33CX",
+        "SG36CX-US",
+        "SG50CX",
+        "SG60CX-US",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "description": "PV string 9 input current. String inverter register."
+    },
+    {
+      "name": "string_10_current",
+      "level": 4,
+      "address": 7022,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG30KU",
+        "SG36KTL",
+        "SG36KU",
+        "SG50KTL-M",
+        "SG60KTL-M",
+        "SG49K5J",
+        "SG50KTL-M-20",
+        "SG60KTL",
+        "SG80KTL",
+        "SG80KTL-20",
+        "SG60KU-M",
+        "SG80KTL-M",
+        "SG30CX",
+        "SG33CX",
+        "SG36CX-US",
+        "SG50CX",
+        "SG60CX-US",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "description": "PV string 10 input current. String inverter register."
+    },
+    {
+      "name": "string_11_current",
+      "level": 4,
+      "address": 7023,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG50KTL-M",
+        "SG60KTL-M",
+        "SG49K5J",
+        "SG50KTL-M-20",
+        "SG60KTL",
+        "SG80KTL",
+        "SG80KTL-20",
+        "SG60KU-M",
+        "SG80KTL-M",
+        "SG30CX",
+        "SG33CX",
+        "SG36CX-US",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "description": "PV string 11 input current. String inverter register."
+    },
+    {
+      "name": "string_12_current",
+      "level": 4,
+      "address": 7024,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG50KTL-M",
+        "SG60KTL-M",
+        "SG49K5J",
+        "SG50KTL-M-20",
+        "SG60KTL",
+        "SG80KTL",
+        "SG80KTL-20",
+        "SG60KU-M",
+        "SG80KTL-M",
+        "SG30CX",
+        "SG33CX",
+        "SG36CX-US",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "description": "PV string 12 input current. String inverter register."
+    },
+    {
+      "name": "string_13_current",
+      "level": 4,
+      "address": 7025,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG60KTL-M",
+        "SG60KTL",
+        "SG80KTL",
+        "SG80KTL-20",
+        "SG60KU-M",
+        "SG80KTL-M",
+        "SG30CX",
+        "SG33CX",
+        "SG36CX-US",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "description": "PV string 13 input current. String inverter register."
+    },
+    {
+      "name": "string_14_current",
+      "level": 4,
+      "address": 7026,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG60KTL-M",
+        "SG60KTL",
+        "SG80KTL",
+        "SG80KTL-20",
+        "SG60KU-M",
+        "SG80KTL-M",
+        "SG30CX",
+        "SG33CX",
+        "SG36CX-US",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX",
+        "SG3.0RT",
+        "SG4.0RT",
+        "SG5.0RT",
+        "SG5.0RS",
+        "SG6.0RT"
+      ],
+      "description": "PV string 14 input current. String inverter register."
+    },
+    {
+      "name": "string_15_current",
+      "level": 4,
+      "address": 7027,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG60KTL-M",
+        "SG80KTL",
+        "SG80KTL-20",
+        "SG60KU-M",
+        "SG80KTL-M",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "description": "PV string 15 input current. String inverter register."
+    },
+    {
+      "name": "string_16_current",
+      "level": 4,
+      "address": 7028,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG60KTL-M",
+        "SG80KTL",
+        "SG80KTL-20",
+        "SG60KU-M",
+        "SG80KTL-M",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "description": "PV string 16 input current. String inverter register."
+    },
+    {
+      "name": "string_17_current",
+      "level": 4,
+      "address": 7029,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG80KTL",
+        "SG80KTL-20",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "description": "PV string 17 input current. String inverter register."
+    },
+    {
+      "name": "string_18_current",
+      "level": 4,
+      "address": 7030,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "SG80KTL",
+        "SG80KTL-20",
+        "SG110CX",
+        "SG250HX",
+        "SG250HX-US",
+        "SG100CX",
+        "SG100CX-JP",
+        "SG250HX-IN",
+        "SG75CX"
+      ],
+      "description": "PV string 18 input current. String inverter register."
+    },
+    {
+      "name": "string_19_current",
+      "level": 4,
+      "address": 7031,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "Not supported by any model"
+      ],
+      "description": "PV string 19 input current. String inverter register."
+    },
+    {
+      "name": "string_20_current",
+      "level": 4,
+      "address": 7032,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "Not supported by any model"
+      ],
+      "description": "PV string 20 input current. String inverter register."
+    },
+    {
+      "name": "string_21_current",
+      "level": 4,
+      "address": 7033,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "Not supported by any model"
+      ],
+      "description": "PV string 21 input current. String inverter register."
+    },
+    {
+      "name": "string_22_current",
+      "level": 4,
+      "address": 7034,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "Not supported by any model"
+      ],
+      "description": "PV string 22 input current. String inverter register."
+    },
+    {
+      "name": "string_23_current",
+      "level": 4,
+      "address": 7035,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "Not supported by any model"
+      ],
+      "description": "PV string 23 input current. String inverter register."
+    },
+    {
+      "name": "string_24_current",
+      "level": 4,
+      "address": 7036,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "A",
+      "models": [
+        "Not supported by any model"
+      ],
+      "description": "PV string 24 input current. String inverter register."
+    },
+    {
+      "name": "running_state",
+      "level": 4,
+      "address": 13000,
+      "data_type": "U16",
+      "description": "Inverter running state. See protocol V1.1.9 Appendix 2. Some states have alternative register values.",
+      "decoded": {
+        "0": "Running",
+        "1": "Stop",
+        "2": "Key Stop",
+        "4": "Emergency Stop",
+        "8": "Standby",
+        "16": "Initial Standby",
+        "20": "Microgrid Operation",
+        "32": "Starting",
+        "64": "Running",
+        "65": "Off-grid Charge",
+        "128": "Derating Running",
+        "256": "Fault",
+        "512": "Update Failed",
+        "1024": "Running in Maintain Mode",
+        "2048": "Running in Compulsory Mode",
+        "4096": "Running in Off-grid Mode",
+        "4369": "Uninitialized",
+        "4864": "Key Stop",
+        "5120": "Standby",
+        "5376": "Emergency Stop",
+        "5632": "Starting",
+        "5888": "AFCI Self-test Shutdown",
+        "6144": "Intelligent Station Building",
+        "6400": "Safe Mode",
+        "8192": "Open Loop",
+        "9472": "Communicate Fault",
+        "9473": "Restarting",
+        "16384": "Running in External EMS Mode",
+        "16385": "Emergency Charging Operation",
+        "32768": "Stop",
+        "33024": "Derating Running",
+        "33280": "Dispatch Running",
+        "37120": "Warn Running"
+      }
+    },
+    {
+      "name": "state_power_generated_from_pv",
+      "level": 4,
+      "address": 13001,
+      "data_type": "U16",
+      "mask": 1,
+      "description": "Power flow status Bit0: PV is generating power."
+    },
+    {
+      "name": "state_battery_charging",
+      "group": "has_battery",
+      "level": 4,
+      "address": 13001,
+      "data_type": "U16",
+      "mask": 2,
+      "description": "Power flow status Bit1: battery is charging."
+    },
+    {
+      "name": "state_battery_discharging",
+      "group": "has_battery",
+      "level": 4,
+      "address": 13001,
+      "data_type": "U16",
+      "mask": 4,
+      "description": "Power flow status Bit2: battery is discharging."
+    },
+    {
+      "name": "state_load_active",
+      "level": 4,
+      "address": 13001,
+      "data_type": "U16",
+      "mask": 8,
+      "description": "Power flow status Bit3: load is consuming power."
+    },
+    {
+      "name": "state_feed_into_grid",
+      "group": "is_master",
+      "level": 4,
+      "address": 13001,
+      "data_type": "U16",
+      "mask": 16,
+      "description": "Power flow status Bit4: feeding power into grid."
+    },
+    {
+      "name": "state_import_from_grid",
+      "group": "is_master",
+      "level": 4,
+      "address": 13001,
+      "data_type": "U16",
+      "mask": 32,
+      "description": "Power flow status Bit5: importing power from grid."
+    },
+    {
+      "name": "state_power_generated_from_load",
+      "level": 4,
+      "address": 13001,
+      "data_type": "U16",
+      "mask": 128,
+      "description": "Power flow status Bit7: negative load power (retrofit systems only)."
+    },
+    {
+      "name": "daily_pv_generation",
+      "level": 3,
+      "address": 13002,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Daily electricity generated through PV modules."
+    },
+    {
+      "name": "total_pv_generation",
+      "level": 2,
+      "address": 13003,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Accumulated electricity generated through PV modules."
+    },
+    {
+      "name": "daily_export_power_from_pv",
+      "group": "is_master",
+      "level": 3,
+      "address": 13005,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Daily export electricity to grid from PV generation. Only valid with smart energy meter."
+    },
+    {
+      "name": "total_export_energy_from_pv",
+      "group": "is_master",
+      "level": 4,
+      "address": 13006,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Accumulated export electricity to grid from PV generation. Only valid with smart energy meter."
+    },
+    {
+      "name": "load_power",
+      "level": 3,
+      "address": 13008,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Power consumed by loads. Only valid with smart energy meter."
+    },
+    {
+      "name": "export_power",
+      "level": 3,
+      "address": 13010,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Power delivered by the inverter to the grid. Only valid with smart energy meter."
+    },
+    {
+      "name": "daily_battery_charge_energy_from_pv",
+      "group": "has_battery",
+      "level": 3,
+      "address": 13012,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Daily electricity that the inverter charges the batteries through the PV modules."
+    },
+    {
+      "name": "total_battery_charge_energy_from_pv",
+      "group": "has_battery",
+      "level": 3,
+      "address": 13013,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Accumulated electricity that the inverter charges the batteries through the PV modules."
+    },
+    {
+      "name": "co2_reduction",
+      "level": 4,
+      "address": 13015,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kg",
+      "description": "Estimated CO2 reduction from PV generation."
+    },
+    {
+      "name": "daily_direct_energy_consumption",
+      "level": 3,
+      "address": 13017,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Daily electricity taken from PV modules by loads directly. Only valid with smart energy meter."
+    },
+    {
+      "name": "total_direct_energy_consumption",
+      "level": 4,
+      "address": 13018,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Accumulated electricity taken from PV modules by the inverter directly. Only valid with smart energy meter."
+    },
+    {
+      "name": "battery_voltage",
+      "group": "has_battery",
+      "level": 4,
+      "address": 13020,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "Battery pack voltage."
+    },
+    {
+      "name": "battery_current_legacy",
+      "group": "has_battery",
+      "level": 4,
+      "address": 13021,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "Battery current (unsigned, no sign for charge/discharge direction). Use battery_current (5631) instead for signed value."
+    },
+    {
+      "name": "battery_power_legacy",
+      "group": "has_battery",
+      "level": 3,
+      "address": 13022,
+      "data_type": "U16",
+      "unit_of_measurement": "W",
+      "description": "Battery power (U16 without sign). Data type is S16 for SH3.0-6.0RS and SH8.0-10RS. Use battery_power (5214) instead for S32 with full range."
+    },
+    {
+      "name": "battery_soc",
+      "group": "has_battery",
+      "level": 3,
+      "address": 13023,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "%",
+      "description": "Battery state of charge (SOC) as percentage (0-100%)."
+    },
+    {
+      "name": "battery_soh",
+      "group": "has_battery",
+      "level": 4,
+      "address": 13024,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "%",
+      "description": "Battery state of health (SOH) as percentage. Indicates remaining battery capacity relative to original."
+    },
+    {
+      "name": "battery_temperature",
+      "group": "has_battery",
+      "level": 4,
+      "address": 13025,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "°C",
+      "description": "Battery temperature."
+    },
+    {
+      "name": "daily_battery_discharge_energy",
+      "group": "has_battery",
+      "level": 3,
+      "address": 13026,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Daily battery discharge energy."
+    },
+    {
+      "name": "total_battery_discharge_energy",
+      "group": "has_battery",
+      "level": 2,
+      "address": 13027,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Accumulated battery discharge energy."
+    },
+    {
+      "name": "self_consumption_of_today",
+      "level": 3,
+      "address": 13029,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "%",
+      "description": "Self-consumption ratio for today. Percentage of PV energy consumed locally vs exported."
+    },
+    {
+      "name": "grid_state",
+      "level": 3,
+      "address": 13030,
+      "data_type": "U16",
+      "decoded": {
+        "85": "On-grid",
+        "170": "Off-grid"
+      },
+      "description": "Reserved in protocol V1.1.9. May not return valid data on newer firmware.",
+      "models_exclude": [
+        "SH8.0RT-20"
+      ],
+      "unsupported_value": 0
+    },
+    {
+      "name": "phase_a_current",
+      "level": 4,
+      "address": 13031,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "Phase A output current. For single-phase inverters, only phase A is valid."
+    },
+    {
+      "name": "phase_b_current",
+      "level": 4,
+      "address": 13032,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "Phase B output current. Only valid for three-phase inverters."
+    },
+    {
+      "name": "phase_c_current",
+      "level": 4,
+      "address": 13033,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "A",
+      "description": "Phase C output current. Only valid for three-phase inverters."
+    },
+    {
+      "name": "total_active_power_hybrid",
+      "level": 5,
+      "address": 13034,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Total active power at the hybrid inverter address (13034). For string inverters, use 5031.",
+      "notes": [
+        "When queried from master, this seems to include total_active_power from slave or battery (tbd).",
+        "The update frequency of this register is quite low, maybe 10 seconds"
+      ]
+    },
+    {
+      "name": "daily_import_energy",
+      "group": "is_master",
+      "level": 3,
+      "address": 13036,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Daily energy imported from grid. Only valid with smart energy meter."
+    },
+    {
+      "name": "total_import_energy",
+      "group": "is_master",
+      "level": 1,
+      "address": 13037,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Accumulated energy imported from grid. Group indicator for is_master. Only valid with smart energy meter.",
+      "indicator": "is_master"
+    },
+    {
+      "name": "battery_capacity_legacy",
+      "group": "has_battery",
+      "level": 3,
+      "address": 13039,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Battery capacity (0.1 kWh for Li-ion, 1 Ah for lead-acid). Use battery_capacity (5639) instead for 0.01 kWh precision.",
+      "indicator": "has_battery"
+    },
+    {
+      "name": "daily_charge_energy",
+      "group": "has_battery",
+      "level": 3,
+      "address": 13040,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Daily total battery charge energy from all sources (PV, grid, etc.)."
+    },
+    {
+      "name": "total_charge_energy",
+      "group": "has_battery",
+      "level": 2,
+      "address": 13041,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Accumulated total battery charge energy."
+    },
+    {
+      "name": "drm_state",
+      "level": 4,
+      "address": 13043,
+      "data_type": "U16",
+      "description": "Demand Response Mode state (1-9: DRM0-DRM8, other values invalid)."
+    },
+    {
+      "name": "daily_export_energy",
+      "group": "is_master",
+      "level": 3,
+      "address": 13045,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Daily electricity delivered by the inverter to the grid through PV modules or batteries. Only valid with smart energy meter."
+    },
+    {
+      "name": "total_export_energy",
+      "group": "is_master",
+      "level": 1,
+      "address": 13046,
+      "data_type": "U32",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kWh",
+      "description": "Accumulated electricity delivered by the inverter to the grid through PV modules or batteries. Only valid with smart energy meter."
+    },
+    {
+      "name": "inverter_alarm",
+      "level": 5,
+      "address": 13050,
+      "data_type": "U32",
+      "description": "Bitmask: Bit0=Fan Alarm, Bit1=AC Lightning, Bit2=DC Lightning, Bit4=Comm Alarm, Bit14=Meter Reversed, Bit30=Meter Comm Alarm, etc."
+    },
+    {
+      "name": "grid_side_fault",
+      "level": 5,
+      "address": 13052,
+      "data_type": "U32",
+      "description": "Bitmask: Bit0=Grid Overvoltage, Bit2=Grid Undervoltage, Bit6=Grid Overfrequency, Bit7=Grid Underfrequency, Bit8=Grid Power Outage, Bit10=Excessive Leakage Current, etc."
+    },
+    {
+      "name": "system_fault_1",
+      "level": 5,
+      "address": 13054,
+      "data_type": "U32",
+      "description": "Bitmask: Bit0=Inverter Switch Overtemp, Bit1=BOOST Switch Overtemp, Bit2=PV IR Fault, Bit4=EPS Relay Failure, etc."
+    },
+    {
+      "name": "system_fault_2",
+      "level": 5,
+      "address": 13056,
+      "data_type": "U32",
+      "description": "Bitmask: Bit0=Module Overtemp, Bit3=Low System Insulation, Bit7=Low Ambient Temp, Bit15=Backup Load Overpower, etc."
+    },
+    {
+      "name": "dc_side_fault",
+      "level": 5,
+      "address": 13058,
+      "data_type": "U32",
+      "description": "Bitmask: Bit4=PV Access Failure, Bit9=PV1 Reverse Connection, Bit10=PV2 Reverse Connection, Bit16=Bus Overvoltage HW Fault, etc."
+    },
+    {
+      "name": "permanent_fault",
+      "level": 5,
+      "address": 13060,
+      "data_type": "U32",
+      "description": "Bitmask: Bit0=PV Overcurrent Perm, Bit1=Inversion Overcurrent Perm, Bit3=Bus Overvoltage Perm, Bit4=Relay Perm Fault, etc."
+    },
+    {
+      "name": "bdc_side_fault",
+      "level": 5,
+      "address": 13062,
+      "data_type": "U32",
+      "description": "Bitmask: Bit0=BDC Charge Overcurrent, Bit1=BDC Discharge Overcurrent, Bit5=Battery Pre-charge Relay Failure, Bit12=BDC Overtemp, etc."
+    },
+    {
+      "name": "bdc_side_permanent_fault",
+      "level": 5,
+      "address": 13064,
+      "data_type": "U32",
+      "description": "Bitmask: Bit0=BDC Overcurrent Perm, Bit2=Battery Overvoltage Perm, Bit4=BDC Self-detect Perm, Bit7=BDC Soft Start Perm, etc."
+    },
+    {
+      "name": "battery_fault",
+      "group": "has_battery",
+      "level": 5,
+      "address": 13066,
+      "data_type": "U32",
+      "description": "Bitmask: Bit3=Battery Avg Undervoltage, Bit7=Battery Overtemp, Bit8=Battery Low Temp, Bit11=Battery Transient Overvoltage, Bit14=BMS Comm Fault, Bit16=Abnormal Battery Connection, etc."
+    },
+    {
+      "name": "battery_alarm",
+      "group": "has_battery",
+      "level": 5,
+      "address": 13068,
+      "data_type": "U32",
+      "description": "Bitmask: Bit0=BDC Temp Sensor Open Circuit, Bit1=BDC Temp Sensor Short Circuit."
+    },
+    {
+      "name": "bms_alarm",
+      "level": 5,
+      "address": 13070,
+      "data_type": "U32",
+      "description": "BMS alarm bitmask."
+    },
+    {
+      "name": "bms_protection",
+      "level": 5,
+      "address": 13072,
+      "data_type": "U32",
+      "description": "BMS protection bitmask."
+    },
+    {
+      "name": "bms_fault_1",
+      "level": 5,
+      "address": 13074,
+      "data_type": "U32",
+      "description": "BMS fault 1 bitmask. Uses battery communication address for RS485."
+    },
+    {
+      "name": "bms_fault_2",
+      "level": 5,
+      "address": 13076,
+      "data_type": "U32",
+      "description": "BMS fault 2 bitmask."
+    },
+    {
+      "name": "bms_alarm_2",
+      "level": 5,
+      "address": 13078,
+      "data_type": "U32",
+      "description": "BMS alarm 2 bitmask."
+    },
+    {
+      "name": "channel_2_total_active_power",
+      "level": 4,
+      "address": 13200,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Meter channel 2 total active power. Only valid with dual-channel meter (e.g. DTSU666-20). Added in protocol V1.1.7."
+    },
+    {
+      "name": "channel_2_phase_a_active_power",
+      "level": 4,
+      "address": 13202,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Meter channel 2 phase A active power. Only valid with dual-channel meter."
+    },
+    {
+      "name": "channel_2_phase_b_active_power",
+      "level": 4,
+      "address": 13204,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Meter channel 2 phase B active power. Only valid with dual-channel meter."
+    },
+    {
+      "name": "channel_2_phase_c_active_power",
+      "level": 4,
+      "address": 13206,
+      "data_type": "S32",
+      "unit_of_measurement": "W",
+      "description": "Meter channel 2 phase C active power. Only valid with dual-channel meter."
+    },
+    {
+      "name": "inverter_firmware_version",
+      "level": 1,
+      "address": 13250,
+      "data_type": "UTF-8[15]",
+      "description": "Inverter firmware version string. Added in protocol V1.1.7. SH3.0-10RS and MG5-6RL not supported.",
+      "models_exclude": [
+        "SH3.0RS",
+        "SH3.6RS",
+        "SH4.0RS",
+        "SH5.0RS",
+        "SH6.0RS",
+        "SH8.0RS",
+        "SH10RS",
+        "MG5RL",
+        "MG6RL"
+      ]
+    },
+    {
+      "name": "communication_module_firmware_version",
+      "level": 1,
+      "address": 13265,
+      "data_type": "UTF-8[15]",
+      "description": "WiNet-S/S2/Logger communication module firmware version. Added in protocol V1.1.7.",
+      "models_exclude": [
+        "SH3.0RS",
+        "SH3.6RS",
+        "SH4.0RS",
+        "SH5.0RS",
+        "SH6.0RS",
+        "SH8.0RS",
+        "SH10RS",
+        "MG5RL",
+        "MG6RL"
+      ]
+    },
+    {
+      "name": "battery_firmware_version",
+      "level": 1,
+      "address": 13280,
+      "data_type": "UTF-8[15]",
+      "description": "Battery firmware version string. Added in protocol V1.1.7.",
+      "models_exclude": [
+        "SH3.0RS",
+        "SH3.6RS",
+        "SH4.0RS",
+        "SH5.0RS",
+        "SH6.0RS",
+        "SH8.0RS",
+        "SH10RS",
+        "MG5RL",
+        "MG6RL"
+      ]
+    },
+    {
+      "name": "bms_status",
+      "level": 5,
+      "address": 13100,
+      "data_type": "U16",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "description": "Legacy BMS status. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "max_charging_current",
+      "group": "has_battery",
+      "level": 5,
+      "address": 13101,
+      "data_type": "U16",
+      "unit_of_measurement": "A",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 30,
+      "description": "Legacy BMS maximum charging current. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "max_discharging_current",
+      "group": "has_battery",
+      "level": 5,
+      "address": 13102,
+      "data_type": "U16",
+      "unit_of_measurement": "A",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 30,
+      "description": "Legacy BMS maximum discharging current. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "warning",
+      "level": 5,
+      "address": 13103,
+      "data_type": "U16",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 0,
+      "description": "Legacy BMS warning code. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "protection",
+      "level": 5,
+      "address": 13104,
+      "data_type": "U16",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 0,
+      "description": "Legacy BMS protection code. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "fault1",
+      "level": 5,
+      "address": 13105,
+      "data_type": "U16",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 0,
+      "description": "Legacy BMS fault 1 code. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "fault2",
+      "level": 5,
+      "address": 13106,
+      "data_type": "U16",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 0,
+      "description": "Legacy BMS fault 2 code. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "soc",
+      "level": 4,
+      "address": 13107,
+      "data_type": "U16",
+      "unit_of_measurement": "%",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 0,
+      "description": "Legacy BMS state of charge. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "soh",
+      "level": 4,
+      "address": 13108,
+      "data_type": "U16",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 0,
+      "description": "Legacy BMS state of health. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "battery_current",
+      "group": "has_battery",
+      "level": 5,
+      "address": 13109,
+      "data_type": "U16",
+      "unit_of_measurement": "A",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 0,
+      "description": "Battery current (unsigned, no sign for charge/discharge direction). Use battery_current (5631) instead for signed value."
+    },
+    {
+      "name": "battery_voltage",
+      "group": "has_battery",
+      "level": 5,
+      "address": 13110,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "V",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 0,
+      "description": "Battery pack voltage."
+    },
+    {
+      "name": "cycle_count",
+      "level": 5,
+      "address": 13111,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 0,
+      "description": "Battery cycle count. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "average_cell_voltage",
+      "level": 5,
+      "address": 13112,
+      "data_type": "U16",
+      "unit_of_measurement": "V",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 0,
+      "description": "Average individual cell voltage. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "max_cell_voltage",
+      "level": 5,
+      "address": 13113,
+      "data_type": "U16",
+      "unit_of_measurement": "V",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 0,
+      "description": "Maximum individual cell voltage. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "min_cell_voltage",
+      "level": 5,
+      "address": 13114,
+      "data_type": "U16",
+      "unit_of_measurement": "V",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "unsupported_value": 0,
+      "description": "Minimum individual cell voltage. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "battery_pack_voltage",
+      "group": "has_battery",
+      "level": 5,
+      "address": 13115,
+      "data_type": "U16",
+      "unit_of_measurement": "V",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "description": "Battery pack voltage. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "average_cell_temp",
+      "level": 5,
+      "address": 13116,
+      "data_type": "S16",
+      "unit_of_measurement": "°C",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "description": "Average cell temperature. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "max_cell_temp",
+      "level": 5,
+      "address": 13117,
+      "data_type": "S16",
+      "unit_of_measurement": "°C",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "description": "Maximum cell temperature. Only for SH5K-20/SH3K6/SH4K6 series."
+    },
+    {
+      "name": "min_cell_temp",
+      "level": 5,
+      "address": 13118,
+      "data_type": "S16",
+      "unit_of_measurement": "°C",
+      "models": [
+        "SH5K-20",
+        "SH3K6",
+        "SH4K6",
+        "SH5K-V13",
+        "SH5K-30",
+        "SH3K6-30",
+        "SH4K6-30"
+      ],
+      "description": "Minimum cell temperature. Only for SH5K-20/SH3K6/SH4K6 series."
+    }
+  ],
+  "hold": [
+    {
+      "name": "year",
+      "level": 5,
+      "address": 5000,
+      "data_type": "U16",
+      "description": "System clock: year (2000-2099). Receives time synchronization from monitoring system."
+    },
+    {
+      "name": "month",
+      "level": 5,
+      "address": 5001,
+      "data_type": "U16",
+      "description": "System clock: month (1-12)."
+    },
+    {
+      "name": "day",
+      "level": 5,
+      "address": 5002,
+      "data_type": "U16",
+      "description": "System clock: day (1-31)."
+    },
+    {
+      "name": "hour",
+      "level": 5,
+      "address": 5003,
+      "data_type": "U16",
+      "description": "System clock: hour (0-23)."
+    },
+    {
+      "name": "minute",
+      "level": 5,
+      "address": 5004,
+      "data_type": "U16",
+      "description": "System clock: minute (0-59)."
+    },
+    {
+      "name": "second",
+      "level": 5,
+      "address": 5005,
+      "data_type": "U16",
+      "description": "System clock: second (0-59)."
+    },
+    {
+      "name": "start_stop",
+      "level": 5,
+      "address": 5006,
+      "data_type": "U16",
+      "decoded": {
+        "206": "Stop",
+        "207": "Start"
+      },
+      "description": "Inverter start/stop control (0xCF=Boot, 0xCE=Shutdown)."
+    },
+    {
+      "name": "power_limitation_switch",
+      "level": 5,
+      "address": 5007,
+      "data_type": "U16",
+      "decoded": {
+        "85": "Disable",
+        "170": "Enable"
+      },
+      "description": "Active power limitation enable/disable."
+    },
+    {
+      "name": "power_limitation_setting",
+      "level": 5,
+      "address": 5008,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "%",
+      "description": "Active power limitation percentage."
+    },
+    {
+      "name": "export_power_limitation",
+      "level": 5,
+      "address": 5010,
+      "data_type": "U16",
+      "models": [
+        "SG5KTL-MT",
+        "SG6KTL-MT",
+        "SG8KTL-M",
+        "SG10KTL-M",
+        "SG10KTL-MT",
+        "SG12KTL-M",
+        "SG15KTL-M",
+        "SG17KTL-M",
+        "SG20KTL-M"
+      ],
+      "decoded": {
+        "85": "Disable",
+        "170": "Enable"
+      },
+      "description": "Feed-in power limitation enable/disable. String inverter register.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "export_power_limitation_value",
+      "level": 5,
+      "address": 5011,
+      "data_type": "U16",
+      "models": [
+        "SG5KTL-MT",
+        "SG6KTL-MT",
+        "SG8KTL-M",
+        "SG10KTL-M",
+        "SG10KTL-MT",
+        "SG12KTL-M",
+        "SG15KTL-M",
+        "SG17KTL-M",
+        "SG20KTL-M"
+      ],
+      "description": "Feed-in power limitation value in watts. String inverter register.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "current_transformer_output_current",
+      "level": 5,
+      "address": 5012,
+      "data_type": "U16",
+      "unit_of_measurement": "A",
+      "models": [
+        "SG5KTL-MT",
+        "SG6KTL-MT",
+        "SG8KTL-M",
+        "SG10KTL-M",
+        "SG10KTL-MT",
+        "SG12KTL-M",
+        "SG15KTL-M",
+        "SG17KTL-M",
+        "SG20KTL-M"
+      ],
+      "description": "CT output current setting. String inverter register.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "current_transformer_range",
+      "level": 5,
+      "address": 5013,
+      "data_type": "U16",
+      "unit_of_measurement": "A",
+      "models": [
+        "SG5KTL-MT",
+        "SG6KTL-MT",
+        "SG8KTL-M",
+        "SG10KTL-M",
+        "SG10KTL-MT",
+        "SG12KTL-M",
+        "SG15KTL-M",
+        "SG17KTL-M",
+        "SG20KTL-M"
+      ],
+      "description": "CT current range setting. String inverter register.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "current_transformer",
+      "level": 5,
+      "address": 5014,
+      "data_type": "U16",
+      "models": [
+        "SG5KTL-MT",
+        "SG6KTL-MT",
+        "SG8KTL-M",
+        "SG10KTL-M",
+        "SG10KTL-MT",
+        "SG12KTL-M",
+        "SG15KTL-M",
+        "SG17KTL-M",
+        "SG20KTL-M"
+      ],
+      "decoded": {
+        "0": "Internal",
+        "1": "External"
+      },
+      "description": "CT type selection: internal or external. String inverter register.",
+      "group": "direct_lan"
+    },
+    {
+      "name": "export_power_limitation_percentage",
+      "group": [
+        "has_battery",
+        "direct_lan"
+      ],
+      "level": 5,
+      "address": 5015,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "%",
+      "models": [
+        "SG5KTL-MT",
+        "SG6KTL-MT",
+        "SG8KTL-M",
+        "SG10KTL-M",
+        "SG10KTL-MT",
+        "SG12KTL-M",
+        "SG15KTL-M",
+        "SG17KTL-M",
+        "SG20KTL-M"
+      ],
+      "description": "Feed-in power limitation as percentage. String inverter register."
+    },
+    {
+      "name": "installed_pv_power",
+      "level": 4,
+      "address": 5016,
+      "data_type": "U16",
+      "accuracy": 0.01,
+      "unit_of_measurement": "KW",
+      "models": [
+        "SG5KTL-MT",
+        "SG6KTL-MT",
+        "SG8KTL-M",
+        "SG10KTL-M",
+        "SG10KTL-MT",
+        "SG12KTL-M",
+        "SG15KTL-M",
+        "SG17KTL-M",
+        "SG20KTL-M"
+      ],
+      "description": "Installed PV power capacity. String inverter register."
+    },
+    {
+      "name": "power_factor_setting",
+      "level": 5,
+      "address": 5019,
+      "data_type": "U16",
+      "accuracy": 0.001,
+      "models_exclude": [
+        "SH*"
+      ],
+      "description": "Power factor setpoint. String inverter register."
+    },
+    {
+      "name": "scheduling_achieve_active_overload",
+      "level": 5,
+      "address": 5020,
+      "data_type": "U16",
+      "models": [
+        "SG33CX",
+        "SG40CX",
+        "SG50CX",
+        "SG75CX",
+        "SG110CX",
+        "SG136TX",
+        "SG250HX",
+        "SG30CX",
+        "SG36CX-US",
+        "SG60CX-US",
+        "SG250HX-US",
+        "SG250HX-IN",
+        "SG225HX",
+        "SG250HX",
+        "SG25CX-SA",
+        "SG100CX",
+        "SG3.0RT",
+        "SG4.0RT",
+        "SG5.0RT",
+        "SG5.0RS",
+        "SG6.0RT",
+        "SG7.0RT",
+        "SG8.0RT",
+        "SG10RT",
+        "SG12RT",
+        "SG15RT",
+        "SG17RT",
+        "SG20RT"
+      ],
+      "decoded": {
+        "85": "Disable",
+        "170": "Enable"
+      },
+      "description": "Scheduling active overload control enable/disable."
+    },
+    {
+      "name": "night_svg_switch",
+      "level": 5,
+      "address": 5035,
+      "data_type": "U16",
+      "models": [
+        "SG3.0RT",
+        "SG4.0RT",
+        "SG5.0RT",
+        "SG5.0RS",
+        "SG6.0RT",
+        "SG7.0RT",
+        "SG8.0RT",
+        "SG10RT",
+        "SG12RT",
+        "SG15RT",
+        "SG17RT",
+        "SG20RT",
+        "SG80KTL-M",
+        "SG125HV-20",
+        "SG33CX",
+        "SG40CX",
+        "SG50CX",
+        "SG110CX",
+        "SG136TX",
+        "SG250HX",
+        "SG30CX",
+        "SG36CX-US",
+        "SG60CX-US",
+        "SG250HX-US",
+        "SG250HX-IN",
+        "SG225HX",
+        "SG250HX",
+        "SG25CX-SA",
+        "SG100CX",
+        "SG75CX"
+      ],
+      "decoded": {
+        "85": "Disable",
+        "170": "Enable"
+      },
+      "description": "Night SVG (Static Var Generator) enable/disable."
+    },
+    {
+      "name": "reactive_power_adjustment_mode",
+      "level": 5,
+      "address": 5036,
+      "data_type": "U16",
+      "decoded": {
+        "85": "Off",
+        "161": "Power factor setting",
+        "162": "Reactive power percentage setting",
+        "163": "Enable Q(P)",
+        "164": "Enable Q(U)"
+      },
+      "description": "Reactive power adjustment mode: off, PF setting, Q% setting, Q(P), or Q(U)."
+    },
+    {
+      "name": "reactive_power_percentage_setting",
+      "level": 5,
+      "address": 5037,
+      "data_type": "S16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "%",
+      "description": "Reactive power percentage setpoint."
+    },
+    {
+      "name": "power_limitation_adjustment",
+      "level": 5,
+      "address": 5039,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "kW",
+      "models_exclude": [
+        "SH*"
+      ],
+      "description": "Power limitation adjustment value. String inverter register."
+    },
+    {
+      "name": "reactive_power_adjustment",
+      "level": 5,
+      "address": 5040,
+      "data_type": "S16",
+      "accuracy": 100,
+      "unit_of_measurement": "var",
+      "description": "Reactive power adjustment value."
+    },
+    {
+      "name": "pid_recovery",
+      "level": 5,
+      "address": 5041,
+      "data_type": "U16",
+      "models": [
+        "SG5KTL-MT",
+        "SG6KTL-MT",
+        "SG8KTL-M",
+        "SG10KTL-M",
+        "SG10KTL-MT",
+        "SG12KTL-M",
+        "SG15KTL-M",
+        "SG17KTL-M",
+        "SG20KTL-M",
+        "SG3.0RT",
+        "SG4.0RT",
+        "SG5.0RT",
+        "SG5.0RS",
+        "SG6.0RT",
+        "SG7.0RT",
+        "SG8.0RT",
+        "SG10RT",
+        "SG12RT",
+        "SG15RT",
+        "SG17RT",
+        "SG20RT",
+        "SG80KTL-M",
+        "SG125HV",
+        "SG125HV-20",
+        "SG80KTL",
+        "SG33CX",
+        "SG40CX",
+        "SG50CX",
+        "SG100CX、SG75CX",
+        "SG110CX",
+        "SG136TX",
+        "SG250HX",
+        "SG30CX",
+        "SG36CX-US",
+        "SG60CX-US",
+        "SG250HX-US",
+        "SG250HX-IN",
+        "SG25CX-SA",
+        "SG225HX"
+      ],
+      "decoded": {
+        "85": "Disable",
+        "170": "Enable"
+      },
+      "description": "PID recovery enable/disable."
+    },
+    {
+      "name": "anti_pid",
+      "level": 5,
+      "address": 5042,
+      "data_type": "U16",
+      "models": [
+        "SG125HV",
+        "SG125HV-20",
+        "SG250HX",
+        "SG250HX-US",
+        "SG250HX-IN",
+        "SG136TX",
+        "SG100CX-JP",
+        "SG225HX"
+      ],
+      "decoded": {
+        "85": "Disable",
+        "170": "Enable"
+      },
+      "description": "Anti-PID enable/disable."
+    },
+    {
+      "name": "fullday_pid_suppression",
+      "level": 5,
+      "address": 5043,
+      "data_type": "U16",
+      "models": [
+        "SG250HX",
+        "SG250HX-US",
+        "SG250HX-IN",
+        "SG225HX"
+      ],
+      "decoded": {
+        "85": "Disable",
+        "170": "Enable"
+      },
+      "description": "Full-day PID suppression enable/disable."
+    },
+    {
+      "name": "battery_module_1_max_cell_voltage",
+      "level": 5,
+      "address": 10765,
+      "data_type": "U16",
+      "unit_of_measurement": "mV",
+      "scale": 0.1,
+      "description": "Battery module 1 maximum cell voltage. Community-sourced register."
+    },
+    {
+      "name": "battery_module_1_min_cell_voltage",
+      "level": 5,
+      "address": 10773,
+      "data_type": "U16",
+      "unit_of_measurement": "mV",
+      "scale": 0.1,
+      "description": "Battery module 1 minimum cell voltage. Community-sourced register."
+    },
+    {
+      "name": "start_stop_2",
+      "level": 5,
+      "address": 13000,
+      "data_type": "U16",
+      "decoded": {
+        "206": "Stop",
+        "207": "Start"
+      },
+      "description": "Hybrid inverter start/stop control (0xCF=Boot, 0xCE=Shutdown)."
+    },
+    {
+      "name": "ems_mode_selection",
+      "level": 5,
+      "address": 13050,
+      "data_type": "U16",
+      "decoded": {
+        "206": "Stop",
+        "207": "Start"
+      },
+      "description": "Energy management mode: 0=Self-consumption (default), 2=Compulsory, 3=External EMS, 4=VPP."
+    },
+    {
+      "name": "charge_discharge_command",
+      "level": 5,
+      "address": 13051,
+      "data_type": "U16",
+      "decoded": {
+        "170": "Forced Charge",
+        "187": "Forced Discharge",
+        "204": "Stop"
+      },
+      "description": "Battery charge/discharge command: 0xAA = Charge, 0xBB = Discharge, 0xCC = Stop (default)."
+    },
+    {
+      "name": "charge_discharge_power",
+      "group": [
+        "has_battery",
+        "direct_lan"
+      ],
+      "level": 4,
+      "address": 13052,
+      "data_type": "U16",
+      "unit_of_measurement": "W",
+      "models": [
+        "SH*RS*"
+      ],
+      "description": "Battery charge/discharge power setting. 0-100% of BDC rated power (register 5628)."
+    },
+    {
+      "name": "charge_discharge_power",
+      "group": [
+        "has_battery",
+        "direct_lan"
+      ],
+      "level": 4,
+      "address": 13052,
+      "data_type": "U16",
+      "unit_of_measurement": "%",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Battery charge/discharge power setting. 0-100% of BDC rated power (register 5628)."
+    },
+    {
+      "name": "max_soc",
+      "level": 5,
+      "address": 13058,
+      "data_type": "U16",
+      "unit_of_measurement": "%",
+      "accuracy": 0.1,
+      "description": "Maximum battery SOC upper limit (50.0-100.0%). Battery stops charging above this value."
+    },
+    {
+      "name": "min_soc",
+      "level": 5,
+      "address": 13059,
+      "data_type": "U16",
+      "unit_of_measurement": "%",
+      "accuracy": 0.1,
+      "description": "Minimum battery SOC lower limit (0.0-50.0%). Battery stops discharging below this value."
+    },
+    {
+      "name": "feed_in_limitation_value",
+      "level": 5,
+      "address": 13074,
+      "data_type": "U16",
+      "unit_of_measurement": "W",
+      "description": "Feed-in power limitation value in watts. Controls max power fed into grid at the meter point."
+    },
+    {
+      "name": "start_charging_power",
+      "group": "has_battery",
+      "address": 13084,
+      "level": 5,
+      "accuracy": 10,
+      "data_type": "U16",
+      "unit_of_measurement": "W",
+      "models": [
+        "SH10RT",
+        "SH8.0RT",
+        "SH8.0RT-20",
+        "SH6.0RT",
+        "SH5.0RT"
+      ],
+      "description": "Battery charge start power threshold."
+    },
+    {
+      "name": "start_discharging_power",
+      "group": "has_battery",
+      "address": 13085,
+      "level": 5,
+      "accuracy": 10,
+      "data_type": "U16",
+      "unit_of_measurement": "W",
+      "models": [
+        "SH10RT",
+        "SH8.0RT",
+        "SH8.0RT-20",
+        "SH6.0RT",
+        "SH5.0RT"
+      ],
+      "description": "Battery discharge start power threshold."
+    },
+    {
+      "name": "meter_comm_detection",
+      "address": 13086,
+      "level": 5,
+      "data_type": "U16",
+      "decoded": {
+        "85": "Disabled",
+        "170": "Enabled"
+      },
+      "models": [
+        "SH10RT",
+        "SH8.0RT",
+        "SH8.0RT-20",
+        "SH6.0RT",
+        "SH5.0RT"
+      ],
+      "description": "Smart energy meter communication detection enable/disable (0xAA = Enable, 0x55 = Disable)."
+    },
+    {
+      "name": "feed_in_limitation",
+      "address": 13087,
+      "level": 5,
+      "data_type": "U16",
+      "decoded": {
+        "85": "Disabled",
+        "170": "Enabled"
+      },
+      "models": [
+        "SH10RT",
+        "SH8.0RT",
+        "SH8.0RT-20",
+        "SH6.0RT",
+        "SH5.0RT"
+      ],
+      "description": "Feed-in power limitation enable/disable (0xAA = Enable, 0x55 = Disable)."
+    },
+    {
+      "name": "feed_in_limitation_ratio",
+      "address": 13088,
+      "level": 5,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "%",
+      "description": "Feed-in limitation as percentage of rated power. Added in protocol V1.1.7. Takes precedence over register 13074 when both set.",
+      "models_exclude": [
+        "MG5RL",
+        "MG6RL"
+      ]
+    },
+    {
+      "name": "active_power_limitation",
+      "address": 13089,
+      "level": 5,
+      "data_type": "U16",
+      "decoded": {
+        "85": "Disabled",
+        "170": "Enabled"
+      },
+      "description": "Active power limitation enable/disable. Controls inverter AC output port (vs feed-in at grid connection point). Added in V1.1.7.",
+      "models_exclude": [
+        "MG5RL",
+        "MG6RL"
+      ]
+    },
+    {
+      "name": "active_power_limit_ratio",
+      "address": 13090,
+      "level": 5,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "%",
+      "description": "Active power limitation ratio (0-100%). Controls inverter AC output as percentage of rated power. Added in V1.1.7."
+    },
+    {
+      "name": "reserved_soc_for_backup",
+      "address": 13100,
+      "level": 5,
+      "data_type": "U16",
+      "unit_of_measurement": "%",
+      "models": [
+        "SH10RT",
+        "SH8.0RT",
+        "SH8.0RT-20",
+        "SH6.0RT",
+        "SH5.0RT"
+      ],
+      "description": "Minimum reserved SOC for backup (off-grid) operation (0-100%). Battery enters emergency charging when SOC drops below this."
+    },
+    {
+      "name": "feed_in_limitation_value_wide_range",
+      "address": 31222,
+      "level": 5,
+      "data_type": "U16",
+      "accuracy": 10,
+      "unit_of_measurement": "W",
+      "description": "Feed-in limitation value with extended range (0.01kW resolution). Use when value exceeds U16 max of 65.535kW via register 13074."
+    },
+    {
+      "name": "charge_cutoff_voltage_wide_range",
+      "address": 33042,
+      "level": 5,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "V",
+      "description": "Battery charge cutoff voltage (wide range). Added V1.1.7."
+    },
+    {
+      "name": "max_charging_power",
+      "address": 33047,
+      "level": 5,
+      "data_type": "U16",
+      "unit_of_measurement": "W",
+      "accuracy": 10,
+      "description": "Maximum battery charging power limit."
+    },
+    {
+      "name": "max_discharging_power",
+      "address": 33048,
+      "level": 5,
+      "data_type": "U16",
+      "unit_of_measurement": "W",
+      "accuracy": 10,
+      "description": "Maximum battery discharging power limit."
+    },
+    {
+      "name": "battery_capacity_2",
+      "group": "has_battery",
+      "address": 33049,
+      "level": 3,
+      "data_type": "U16",
+      "unit_of_measurement": "kWh",
+      "accuracy": 0.01,
+      "models_exclude": [
+        "SH8.0RT-20",
+        "WiNet"
+      ],
+      "unsupported_value": 0,
+      "description": "Battery capacity setting. Community-sourced register."
+    },
+    {
+      "name": "charge_discharge_power_wide_range",
+      "group": "has_battery",
+      "address": 33148,
+      "level": 5,
+      "data_type": "U16",
+      "accuracy": 10,
+      "unit_of_measurement": "W",
+      "description": "Charge/discharge power with extended range (0.01kW resolution). Alternative to register 13052."
+    },
+    {
+      "name": "battery_charge_start_power",
+      "group": [
+        "has_battery",
+        "direct_lan"
+      ],
+      "address": 33149,
+      "level": 5,
+      "data_type": "U16",
+      "unit_of_measurement": "W",
+      "accuracy": 10,
+      "unsupported_value": 0,
+      "description": "Battery charge start power setting."
+    },
+    {
+      "name": "battery_charge_stop_power",
+      "group": [
+        "has_battery",
+        "direct_lan"
+      ],
+      "address": 33150,
+      "level": 5,
+      "data_type": "U16",
+      "unit_of_measurement": "W",
+      "accuracy": 10,
+      "unsupported_value": 0,
+      "description": "Battery charge stop power setting."
+    },
+    {
+      "name": "master_slave_mode",
+      "address": 33500,
+      "level": 1,
+      "data_type": "U16",
+      "decoded": {
+        "85": "Disabled",
+        "170": "Enabled"
+      },
+      "description": "Master/slave mode enable/disable."
+    },
+    {
+      "name": "master_slave_role",
+      "address": 33501,
+      "level": 1,
+      "data_type": "U16",
+      "decoded": {
+        "160": "Master",
+        "161": "Slave 1",
+        "162": "Slave 2",
+        "163": "Slave 3",
+        "164": "Slave 4"
+      },
+      "description": "Master/slave role (0xA0=Master, 0xA1=Slave 1, 0xA2=Slave 2, ...)."
+    },
+    {
+      "name": "inverter_count",
+      "address": 33502,
+      "level": 1,
+      "data_type": "U16",
+      "description": "Total inverter count in master/slave system (including master)."
+    },
+    {
+      "name": "weekly_discharging_start_time_1_hour",
+      "group": "has_battery",
+      "address": 33151,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekday discharging period 1 start hour (0-23)."
+    },
+    {
+      "name": "weekly_discharging_start_time_1_minute",
+      "group": "has_battery",
+      "address": 33152,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekday discharging period 1 start minute (0-59)."
+    },
+    {
+      "name": "weekly_discharging_end_time_1_hour",
+      "group": "has_battery",
+      "address": 33153,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekday discharging period 1 end hour (0-23)."
+    },
+    {
+      "name": "weekly_discharging_end_time_1_minute",
+      "group": "has_battery",
+      "address": 33154,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekday discharging period 1 end minute (0-59)."
+    },
+    {
+      "name": "weekly_discharging_start_time_2_hour",
+      "group": "has_battery",
+      "address": 33155,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekday discharging period 2 start hour (0-23)."
+    },
+    {
+      "name": "weekly_discharging_start_time_2_minute",
+      "group": "has_battery",
+      "address": 33156,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekday discharging period 2 start minute (0-59)."
+    },
+    {
+      "name": "weekly_discharging_end_time_2_hour",
+      "group": "has_battery",
+      "address": 33157,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekday discharging period 2 end hour (0-23)."
+    },
+    {
+      "name": "weekly_discharging_end_time_2_minute",
+      "group": "has_battery",
+      "address": 33158,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekday discharging period 2 end minute (0-59)."
+    },
+    {
+      "name": "weekend_discharging_enable",
+      "group": "has_battery",
+      "address": 33179,
+      "level": 5,
+      "data_type": "U16",
+      "decoded": {
+        "85": "Disabled",
+        "170": "Enabled"
+      },
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekend discharging schedule enable/disable."
+    },
+    {
+      "name": "weekend_discharging_start_time_1_hour",
+      "group": "has_battery",
+      "address": 33180,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekend discharging period 1 start hour (0-23)."
+    },
+    {
+      "name": "weekend_discharging_start_time_1_minute",
+      "group": "has_battery",
+      "address": 33181,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekend discharging period 1 start minute (0-59)."
+    },
+    {
+      "name": "weekend_discharging_end_time_1_hour",
+      "group": "has_battery",
+      "address": 33182,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekend discharging period 1 end hour (0-23)."
+    },
+    {
+      "name": "weekend_discharging_end_time_1_minute",
+      "group": "has_battery",
+      "address": 33183,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekend discharging period 1 end minute (0-59)."
+    },
+    {
+      "name": "weekend_discharging_start_time_2_hour",
+      "group": "has_battery",
+      "address": 33184,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekend discharging period 2 start hour (0-23)."
+    },
+    {
+      "name": "weekend_discharging_start_time_2_minute",
+      "group": "has_battery",
+      "address": 33185,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Weekend discharging period 2 start minute (0-59)."
+    },
+    {
+      "name": "forced_charging_enable",
+      "group": "has_battery",
+      "address": 33208,
+      "level": 5,
+      "data_type": "U16",
+      "decoded": {
+        "85": "Disabled",
+        "170": "Enabled"
+      },
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Forced charging schedule enable/disable."
+    },
+    {
+      "name": "forced_charging_valid_time",
+      "group": "has_battery",
+      "address": 33209,
+      "level": 5,
+      "data_type": "U16",
+      "decoded": {
+        "1": "Every Day"
+      },
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Forced charging schedule validity: 0=Weekday only, 1=Every day."
+    },
+    {
+      "name": "forced_charging_start_time_1_hour",
+      "group": "has_battery",
+      "address": 33210,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Forced charging period 1 start hour (0-23)."
+    },
+    {
+      "name": "forced_charging_start_time_1_minute",
+      "group": "has_battery",
+      "address": 33211,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Forced charging period 1 start minute (0-59)."
+    },
+    {
+      "name": "forced_charging_end_time_1_hour",
+      "group": "has_battery",
+      "address": 33212,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Forced charging period 1 end hour (0-23)."
+    },
+    {
+      "name": "forced_charging_end_time_1_minute",
+      "group": "has_battery",
+      "address": 33213,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Forced charging period 1 end minute (0-59)."
+    },
+    {
+      "name": "forced_charging_target_soc_1",
+      "group": "has_battery",
+      "address": 33214,
+      "level": 5,
+      "data_type": "U16",
+      "unit_of_measurement": "%",
+      "accuracy": 0.1,
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Forced charging period 1 target SOC (0-100%)."
+    },
+    {
+      "name": "forced_charging_start_time_2_hour",
+      "group": "has_battery",
+      "address": 33215,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Forced charging period 2 start hour (0-23)."
+    },
+    {
+      "name": "forced_charging_start_time_2_minute",
+      "group": "has_battery",
+      "address": 33216,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Forced charging period 2 start minute (0-59)."
+    },
+    {
+      "name": "forced_charging_end_time_2_hour",
+      "group": "has_battery",
+      "address": 33217,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Forced charging period 2 end hour (0-23)."
+    },
+    {
+      "name": "forced_charging_end_time_2_minute",
+      "group": "has_battery",
+      "address": 33218,
+      "level": 5,
+      "data_type": "U16",
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Forced charging period 2 end minute (0-59)."
+    },
+    {
+      "name": "forced_charging_target_soc_2",
+      "group": "has_battery",
+      "address": 33219,
+      "level": 5,
+      "data_type": "U16",
+      "unit_of_measurement": "%",
+      "accuracy": 0.1,
+      "models": [
+        "SH*RT*"
+      ],
+      "description": "Forced charging period 2 target SOC (0-100%)."
+    }
+  ]
+}

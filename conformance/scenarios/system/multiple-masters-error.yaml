@@ -1,0 +1,44 @@
+schema: 1
+name: multiple-masters-error
+tags: [system, error]
+description: >
+  Two hosts both report as master.
+  The lib should throw an error during connect.
+
+inverters:
+  - id: master1
+    slave_id: 1
+    input:
+      4990: { utf8: "A2350415770" }
+      5000: 0xE12
+      5001: 80
+      5002: 0
+      5071: 1500
+      5601: 0xFFFF
+      13037: [500, 0]
+      13039: 160
+    holding:
+      33500: 0xAA
+      33501: 0xA0
+      33502: 2
+
+  - id: master2
+    slave_id: 1
+    input:
+      4990: { utf8: "B9870123456" }
+      5000: 0xE12
+      5001: 80
+      5002: 0
+      5071: 1500
+      5601: 0xFFFF
+      13037: [500, 0]
+      13039: 160
+    holding:
+      33500: 0xAA
+      33501: 0xA0
+      33502: 2
+
+expect:
+  system:
+    hosts: [master1, master2]
+    error: "Multiple masters detected"

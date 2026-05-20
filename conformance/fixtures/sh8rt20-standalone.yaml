@@ -1,0 +1,49 @@
+# Synthetic fixture: SH8.0RT-20 standalone (master/slave disabled)
+# Based on real dump but with 33500=0x55 (M/S disabled)
+serial: "A2350415770"
+model_code: 0xE12
+slave_id: 1
+
+input:
+  4950: [12288, 16706]
+  4952: [4352, 256]
+  4954: 16722
+  4969: 19780
+  4990: { utf8: "A2350415770" }
+  5000: 0xE12
+  5001: 80
+  5002: 0
+  5011: 3200                    # mppt_1_voltage
+  5012: 85                      # mppt_1_current
+  5013: 2280                    # mppt_2_voltage
+  5014: 38                      # mppt_2_current
+  5017: 2000
+  5018: 0
+  5019: 2360
+  5020: 2377
+  5021: 2371
+  5071: 1500                    # direct_lan
+  5601: 0xFFFF                  # meter unsupported
+  13000: 207
+  13003: [255, 0]               # total_pv_generation = 25.5 kWh
+  13008: 402                    # load_power = 402 W
+  13010: 65134                  # export_power = -402 W
+  13022: 0                      # battery_power_legacy
+  13023: 500                    # battery_soc = 50.0%
+  13024: 970
+  13025: 210                    # battery_temperature = 21.0°C
+  13037: [500, 0]               # total_import_energy (is_master group indicator)
+  13039: 160                    # battery_capacity = 16.0 kWh (has_battery)
+  13051: 204
+  13058: 1000
+
+holding:
+  5000: 2025
+  5001: 6
+  5002: 15
+  5003: 14
+  5004: 30
+  5005: 45
+  33500: 0x55                   # master_slave_mode = DISABLED
+  33501: 0xA0                   # role irrelevant when disabled
+  33502: 1
