@@ -5,7 +5,11 @@
       "level": 5,
       "address": 4950,
       "data_type": "U32",
-      "description": "Deprecated since protocol V1.1.7 (now Reserved). May return 0xFFFFFFFF on new firmware."
+      "description": "Deprecated since protocol V1.1.7 (now Reserved). May return 0xFFFFFFFF on new firmware.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "protocol_version",
@@ -14,7 +18,10 @@
       "data_type": "U32",
       "description": "Protocol version number, e.g. 0x01010700 = V1.1.7.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -22,14 +29,20 @@
       "level": 1,
       "address": 4954,
       "data_type": "UTF-8[15]",
-      "description": "Certification version of ARM Software. Changed from U16 to UTF-8 in protocol V1.1.0."
+      "description": "Certification version of ARM Software. Changed from U16 to UTF-8 in protocol V1.1.0.",
+      "source": [
+        "mkaiser"
+      ]
     },
     {
       "name": "dsp_software_version",
       "level": 1,
       "address": 4969,
       "data_type": "UTF-8[15]",
-      "description": "Certification version of DSP Software. Changed from U16 to UTF-8 in protocol V1.1.0."
+      "description": "Certification version of DSP Software. Changed from U16 to UTF-8 in protocol V1.1.0.",
+      "source": [
+        "mkaiser"
+      ]
     },
     {
       "name": "serial_number",
@@ -39,7 +52,10 @@
       "description": "Inverter serial number (10 UTF-8 characters).",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -157,7 +173,10 @@
       "description": "Inverter model identification code. See protocol Appendix 1.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -169,7 +188,10 @@
       "unit_of_measurement": "kW",
       "description": "Rated output power of the inverter.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -185,7 +207,9 @@
       "description": "Output topology: 0=single-phase, 1=3P4L (three-phase four-wire), 2=3P3L (three-phase three-wire).",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -198,7 +222,10 @@
       "description": "Daily active output energy. Includes PV generation and battery discharge.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -211,7 +238,10 @@
       "description": "Accumulated active output energy. Includes PV generation and battery discharge.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -227,7 +257,9 @@
       "unsupported_value": 0,
       "description": "Accumulated running time. String inverter register, reserved for SH hybrid models.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -240,7 +272,10 @@
       "description": "Internal temperature of the inverter housing.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -250,7 +285,11 @@
       "data_type": "U32",
       "unit_of_measurement": "VA",
       "description": "Total apparent power output. String inverter register.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "mppt_1_voltage",
@@ -262,7 +301,10 @@
       "description": "MPPT 1 input voltage.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -275,7 +317,10 @@
       "description": "MPPT 1 input current.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -290,7 +335,10 @@
       "description": "MPPT 2 input voltage.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -306,7 +354,10 @@
       "indicator": "mppt2",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -324,7 +375,10 @@
       "description": "MPPT 3 input voltage.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -343,7 +397,10 @@
       "indicator": "mppt3",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -359,7 +416,10 @@
       ],
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -371,7 +431,10 @@
       "unit_of_measurement": "V",
       "description": "Phase A voltage (or A-B line voltage for 3P3L output type).",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -383,7 +446,10 @@
       "unit_of_measurement": "V",
       "description": "Phase B voltage (or B-C line voltage for 3P3L output type).",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -396,7 +462,10 @@
       "description": "Phase C voltage (or C-A line voltage for 3P3L output type).",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -412,7 +481,9 @@
       ],
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -428,7 +499,9 @@
       ],
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -444,7 +517,9 @@
       ],
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -459,7 +534,8 @@
       ],
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow"
       ]
     },
     {
@@ -471,7 +547,10 @@
       "description": "Total reactive power output.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -484,7 +563,10 @@
       "description": "Power factor. Positive=leading, negative=lagging.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -497,7 +579,9 @@
       "description": "Grid frequency (0.1Hz resolution). Use grid_frequency (5242) for higher precision (0.01Hz).",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -522,7 +606,11 @@
         "SH*",
         "WiNet"
       ],
-      "description": "Inverter work state. String inverter register, excluded for SH hybrid models."
+      "description": "Inverter work state. String inverter register, excluded for SH hybrid models.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "alarm_time_year",
@@ -533,7 +621,11 @@
         "SH*",
         "WiNet"
       ],
-      "description": "Alarm timestamp: year. String inverter register."
+      "description": "Alarm timestamp: year. String inverter register.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "alarm_time_month",
@@ -544,7 +636,11 @@
         "SH*",
         "WiNet"
       ],
-      "description": "Alarm timestamp: month. String inverter register."
+      "description": "Alarm timestamp: month. String inverter register.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "alarm_time_day",
@@ -555,7 +651,11 @@
         "SH*",
         "WiNet"
       ],
-      "description": "Alarm timestamp: day. String inverter register."
+      "description": "Alarm timestamp: day. String inverter register.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "alarm_time_hour",
@@ -566,7 +666,11 @@
         "SH*",
         "WiNet"
       ],
-      "description": "Alarm timestamp: hour. String inverter register."
+      "description": "Alarm timestamp: hour. String inverter register.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "alarm_time_minute",
@@ -577,7 +681,11 @@
         "SH*",
         "WiNet"
       ],
-      "description": "Alarm timestamp: minute. String inverter register."
+      "description": "Alarm timestamp: minute. String inverter register.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "alarm_time_second",
@@ -599,7 +707,11 @@
         "SH*",
         "WiNet"
       ],
-      "description": "Primary alarm code. String inverter register."
+      "description": "Primary alarm code. String inverter register.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "nominal_reactive_power",
@@ -609,7 +721,11 @@
       "accuracy": 100,
       "unit_of_measurement": "var",
       "description": "Rated reactive power. String inverter register.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "array_insulation_resistance",
@@ -619,7 +735,11 @@
       "unit_of_measurement": "k-ohm",
       "description": "PV array insulation resistance to ground. Group indicator for direct_lan.",
       "indicator": "direct_lan",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "active_power_regulation_setpoint",
@@ -630,7 +750,11 @@
       "models_exclude": [
         "SH8.0RT-20"
       ],
-      "description": "Active power regulation setpoint. String inverter register."
+      "description": "Active power regulation setpoint. String inverter register.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "reactive_power_regulation_setpoint",
@@ -639,7 +763,11 @@
       "data_type": "S32",
       "unit_of_measurement": "var",
       "description": "Reactive power regulation setpoint. String inverter register.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "work_state_2",
@@ -667,7 +795,9 @@
       ],
       "description": "Extended inverter work state (U32). String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -689,7 +819,9 @@
         "it's updated more frequently than the phase powers?!"
       ],
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -702,7 +834,11 @@
         "SG*KTL-M*"
       ],
       "description": "Smart meter phase A active power. String inverter register (SG*KTL-M models).",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "meter_b_phase_power",
@@ -713,7 +849,11 @@
       "models": [
         "SG*KTL-M*"
       ],
-      "description": "Smart meter phase B active power. String inverter register (SG*KTL-M models)."
+      "description": "Smart meter phase B active power. String inverter register (SG*KTL-M models).",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "meter_c_phase_power",
@@ -724,7 +864,11 @@
       "models": [
         "SG*KTL-M*"
       ],
-      "description": "Smart meter phase C active power. String inverter register (SG*KTL-M models)."
+      "description": "Smart meter phase C active power. String inverter register (SG*KTL-M models).",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "meter_load_power",
@@ -738,7 +882,9 @@
       ],
       "description": "Smart meter load power. String inverter register (SG*KTL-M models).",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -753,7 +899,9 @@
       ],
       "description": "Daily energy exported to grid. String inverter register (SG*KTL-M models only).",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -768,7 +916,9 @@
       ],
       "description": "Accumulated energy exported to grid. String inverter register (SG*KTL-M models only).",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -783,7 +933,9 @@
       ],
       "description": "Daily energy imported from grid. String inverter register (SG*KTL-M models only).",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -798,7 +950,9 @@
       ],
       "description": "Accumulated energy imported from grid. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -812,7 +966,11 @@
         "SG*KTL-M*"
       ],
       "description": "Daily electricity consumed directly from PV by loads. String inverter register, requires smart energy meter.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "total_direct_energy_consumption_string",
@@ -825,7 +983,11 @@
         "SG*KTL-M*"
       ],
       "description": "Accumulated electricity consumed directly from PV by loads. String inverter register, requires smart energy meter.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "daily_running_time",
@@ -838,7 +1000,9 @@
       ],
       "description": "Daily running time in minutes. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -883,8 +1047,12 @@
       "description": "MPPT 4 input voltage. Large string inverters only.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
-      ]
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ],
+      "unsupported_value": 65535
     },
     {
       "name": "mppt_4_current",
@@ -919,8 +1087,12 @@
       "indicator": "mppt4",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37"
-      ]
+        "string-v1.1.37",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ],
+      "unsupported_value": 65535
     },
     {
       "name": "mppt_5_voltage",
@@ -943,7 +1115,9 @@
       "unit_of_measurement": "V",
       "description": "MPPT 5 input voltage. Large string inverters only.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -968,7 +1142,9 @@
       "description": "MPPT 5 input current. Large string inverters only.",
       "indicator": "mppt5",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -990,7 +1166,9 @@
       "unit_of_measurement": "V",
       "description": "MPPT 6 input voltage. Large string inverters only.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1013,7 +1191,9 @@
       "description": "MPPT 6 input current. Large string inverters only.",
       "indicator": "mppt6",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1035,7 +1215,9 @@
       "unit_of_measurement": "V",
       "description": "MPPT 7 input voltage. Large string inverters only.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1058,7 +1240,9 @@
       "description": "MPPT 7 input current. Large string inverters only.",
       "indicator": "mppt7",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1080,7 +1264,9 @@
       "unit_of_measurement": "V",
       "description": "MPPT 8 input voltage. Large string inverters only.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1103,7 +1289,9 @@
       "description": "MPPT 8 input current. Large string inverters only.",
       "indicator": "mppt8",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1117,7 +1305,11 @@
       "models_exclude": [
         "SH8.0RT-20"
       ],
-      "description": "Monthly energy yield."
+      "description": "Monthly energy yield.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "mppt_9_voltage",
@@ -1138,7 +1330,9 @@
       "unit_of_measurement": "V",
       "description": "MPPT 9 input voltage. Large string inverters only.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1161,7 +1355,9 @@
       "description": "MPPT 9 input current. Large string inverters only.",
       "indicator": "mppt9",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1180,7 +1376,9 @@
       "unit_of_measurement": "V",
       "description": "MPPT 10 input voltage. SG250HX only.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1200,7 +1398,9 @@
       "description": "MPPT 10 input current. SG250HX only.",
       "indicator": "mppt10",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1219,7 +1419,9 @@
       "unit_of_measurement": "V",
       "description": "MPPT 11 input voltage. SG250HX only.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1239,7 +1441,9 @@
       "description": "MPPT 11 input current. SG250HX only.",
       "indicator": "mppt11",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1258,7 +1462,9 @@
       "unit_of_measurement": "V",
       "description": "MPPT 12 input voltage. SG250HX only.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1278,7 +1484,9 @@
       "description": "MPPT 12 input current. SG250HX only.",
       "indicator": "mppt12",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1294,7 +1502,9 @@
       ],
       "description": "Accumulated total energy yield.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1305,7 +1515,11 @@
       "accuracy": 0.1,
       "unit_of_measurement": "V",
       "description": "Negative voltage to ground. String inverter register.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "bus_voltage",
@@ -1317,7 +1531,9 @@
       "description": "DC bus voltage. String inverter register.",
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1330,7 +1546,9 @@
       "description": "Grid frequency from community source (address 5148). Hybrid PDF V1.1.9 lists Grid Frequency at 5242 instead. Kept for dump verification.",
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1348,7 +1566,9 @@
       ],
       "description": "PID (Potential Induced Degradation) work state. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1366,7 +1586,9 @@
       ],
       "description": "PID alarm code. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1378,7 +1600,8 @@
       "unit_of_measurement": "W",
       "description": "Battery power. S32 with full range. Positive = charging, negative = discharging. Recommended instead of register 13022.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser"
       ]
     },
     {
@@ -1388,7 +1611,11 @@
       "data_type": "S32",
       "unit_of_measurement": "W",
       "description": "Power exported to grid. String inverter register (not available on SH hybrid models via WiNet).",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "power_meter",
@@ -1397,7 +1624,11 @@
       "data_type": "S32",
       "unit_of_measurement": "W",
       "description": "Power meter reading. String inverter register.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "grid_frequency",
@@ -1408,7 +1639,8 @@
       "unit_of_measurement": "Hz",
       "description": "Grid frequency with 0.01Hz precision. Recommended instead of register 5036 (0.1Hz resolution).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser"
       ]
     },
     {
@@ -1421,8 +1653,12 @@
       "indicator": "has_meter",
       "group": "has_meter",
       "source": [
-        "hybrid-v1.1.11"
-      ]
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ],
+      "unsupported_value": 2147483647
     },
     {
       "name": "meter_phase_a_active_power",
@@ -1433,8 +1669,12 @@
       "description": "Smart meter phase A active power. Positive = import from grid, negative = export to grid. Only valid with three-phase meter.",
       "group": "has_meter",
       "source": [
-        "hybrid-v1.1.11"
-      ]
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ],
+      "unsupported_value": 2147483647
     },
     {
       "name": "meter_phase_b_active_power",
@@ -1445,8 +1685,12 @@
       "description": "Smart meter phase B active power. Positive = import from grid, negative = export to grid. Only valid with three-phase meter.",
       "group": "has_meter",
       "source": [
-        "hybrid-v1.1.11"
-      ]
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ],
+      "unsupported_value": 2147483647
     },
     {
       "name": "meter_phase_c_active_power",
@@ -1457,8 +1701,12 @@
       "description": "Smart meter phase C active power. Positive = import from grid, negative = export to grid. Only valid with three-phase meter.",
       "group": "has_meter",
       "source": [
-        "hybrid-v1.1.11"
-      ]
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ],
+      "unsupported_value": 2147483647
     },
     {
       "name": "min_feed_in_power_limitation_value",
@@ -1478,7 +1726,13 @@
         "SH6.0RT",
         "SH5.0RT"
       ],
-      "description": "Minimum configurable feed-in power limitation value. Read-only system parameter."
+      "description": "Minimum configurable feed-in power limitation value. Read-only system parameter.",
+      "source": [
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ],
+      "unsupported_value": 65535
     },
     {
       "name": "max_feed_in_power_limitation_value",
@@ -1487,7 +1741,13 @@
       "data_type": "U16",
       "accuracy": 10,
       "unit_of_measurement": "W",
-      "description": "Maximum configurable feed-in power limitation value. Read-only system parameter."
+      "description": "Maximum configurable feed-in power limitation value. Read-only system parameter.",
+      "source": [
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ],
+      "unsupported_value": 65535
     },
     {
       "name": "bdc_rated_power",
@@ -1498,7 +1758,10 @@
       "unit_of_measurement": "W",
       "description": "BDC (bidirectional converter) rated power.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1511,7 +1774,8 @@
       "unit_of_measurement": "A",
       "description": "Battery current with sign. Positive = charging, negative = discharging. Recommended instead of register 13021 (unsigned).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser"
       ]
     },
     {
@@ -1522,7 +1786,10 @@
       "unit_of_measurement": "A",
       "description": "Maximum charging current as reported by the battery management system (BMS).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1531,7 +1798,12 @@
       "address": 5636,
       "data_type": "U16",
       "unit_of_measurement": "A",
-      "description": "Maximum discharging current as reported by the battery management system (BMS)."
+      "description": "Maximum discharging current as reported by the battery management system (BMS).",
+      "source": [
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "battery_capacity",
@@ -1541,7 +1813,11 @@
       "data_type": "U16",
       "accuracy": 0.01,
       "unit_of_measurement": "kWh",
-      "description": "Battery capacity with 0.01 kWh precision. Recommended instead of register 13039 (0.1 kWh resolution)."
+      "description": "Battery capacity with 0.01 kWh precision. Recommended instead of register 13039 (0.1 kWh resolution).",
+      "source": [
+        "mkaiser",
+        "ha-sungrow"
+      ]
     },
     {
       "name": "phase_a_backup_current",
@@ -1587,7 +1863,10 @@
       "unit_of_measurement": "W",
       "description": "Phase A backup (off-grid) output power.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1598,7 +1877,10 @@
       "unit_of_measurement": "W",
       "description": "Phase B backup (off-grid) output power.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1609,7 +1891,10 @@
       "unit_of_measurement": "W",
       "description": "Phase C backup (off-grid) output power.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1620,7 +1905,8 @@
       "unit_of_measurement": "W",
       "description": "Total backup (off-grid) output power across all phases.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser"
       ]
     },
     {
@@ -1680,7 +1966,9 @@
       "description": "96-entry array: PV power at 15-minute intervals throughout the day.",
       "group": "direct_lan",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1693,7 +1981,9 @@
       "description": "30-entry array: daily PV energy yields for the past 30 days.",
       "group": "direct_lan",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1706,7 +1996,9 @@
       "description": "12-entry array: monthly PV energy yields for the past 12 months.",
       "group": "direct_lan",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1719,7 +2011,8 @@
       "description": "20-entry array: yearly PV energy yields starting from 2019 (valid for 15 years).",
       "group": "direct_lan",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow"
       ]
     },
     {
@@ -1729,7 +2022,11 @@
       "data_type": "U16[96]",
       "unit_of_measurement": "W",
       "description": "96-entry array: direct PV consumption power at 15-minute intervals throughout the day.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "daily_direct_energy_consumption_from_pv",
@@ -1739,7 +2036,11 @@
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
       "description": "31-entry array: daily direct PV consumption for the past 31 days.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "monthly_direct_energy_consumption_from_pv",
@@ -1749,7 +2050,11 @@
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
       "description": "12-entry array: monthly direct PV consumption for the past 12 months.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "yearly_direct_energy_consumption_from_pv",
@@ -1759,7 +2064,10 @@
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
       "description": "20-entry array: yearly direct PV consumption starting from 2019 (valid for 15 years).",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow"
+      ]
     },
     {
       "name": "export_power_from_pv_of_today",
@@ -1773,7 +2081,9 @@
       "unit_of_measurement": "W",
       "description": "96-entry array: PV export power at 15-minute intervals throughout the day.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1789,7 +2099,9 @@
       "unit_of_measurement": "kWh",
       "description": "31-entry array: daily PV export energy for the past 31 days.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1805,7 +2117,9 @@
       "unit_of_measurement": "kWh",
       "description": "12-entry array: monthly PV export energy for the past 12 months.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1821,7 +2135,8 @@
       "unit_of_measurement": "kWh",
       "description": "20-entry array: yearly PV export energy starting from 2019 (valid for 15 years).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow"
       ]
     },
     {
@@ -1837,7 +2152,9 @@
       "unit_of_measurement": "kWh",
       "description": "96-entry array: battery charge power from PV at 15-minute intervals throughout the day.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1851,7 +2168,11 @@
       "data_type": "U16[31]",
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
-      "description": "31-entry array: daily battery charge energy from PV for the past 31 days. For current day scalar value, use daily_battery_charge_energy_from_pv (13012)."
+      "description": "31-entry array: daily battery charge energy from PV for the past 31 days. For current day scalar value, use daily_battery_charge_energy_from_pv (13012).",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "monthly_battery_charge_energy_from_pv",
@@ -1864,7 +2185,11 @@
       "data_type": "U16[12]",
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
-      "description": "12-entry array: monthly battery charge energy from PV for the past 12 months."
+      "description": "12-entry array: monthly battery charge energy from PV for the past 12 months.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "yearly_battery_charge_energy_from_pv",
@@ -1877,7 +2202,10 @@
       "data_type": "U32[20]",
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
-      "description": "20-entry array: yearly battery charge energy from PV starting from 2019 (valid for 15 years)."
+      "description": "20-entry array: yearly battery charge energy from PV starting from 2019 (valid for 15 years).",
+      "source": [
+        "ha-sungrow"
+      ]
     },
     {
       "name": "string_1_current",
@@ -1892,7 +2220,9 @@
       ],
       "description": "PV string 1 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1908,7 +2238,9 @@
       ],
       "description": "PV string 2 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1924,7 +2256,9 @@
       ],
       "description": "PV string 3 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1940,7 +2274,9 @@
       ],
       "description": "PV string 4 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1956,7 +2292,9 @@
       ],
       "description": "PV string 5 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -1972,7 +2310,9 @@
       ],
       "description": "PV string 6 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2021,7 +2361,9 @@
       ],
       "description": "PV string 7 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2069,7 +2411,9 @@
       ],
       "description": "PV string 8 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2109,7 +2453,9 @@
       ],
       "description": "PV string 9 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2147,7 +2493,9 @@
       ],
       "description": "PV string 10 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2180,7 +2528,9 @@
       ],
       "description": "PV string 11 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2213,7 +2563,9 @@
       ],
       "description": "PV string 12 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2243,7 +2595,9 @@
       ],
       "description": "PV string 13 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2278,7 +2632,9 @@
       ],
       "description": "PV string 14 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2304,7 +2660,9 @@
       ],
       "description": "PV string 15 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2330,7 +2688,9 @@
       ],
       "description": "PV string 16 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2353,7 +2713,9 @@
       ],
       "description": "PV string 17 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2376,7 +2738,9 @@
       ],
       "description": "PV string 18 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2391,7 +2755,9 @@
       ],
       "description": "PV string 19 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2406,7 +2772,9 @@
       ],
       "description": "PV string 20 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2421,7 +2789,9 @@
       ],
       "description": "PV string 21 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2436,7 +2806,9 @@
       ],
       "description": "PV string 22 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2451,7 +2823,9 @@
       ],
       "description": "PV string 23 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2466,7 +2840,9 @@
       ],
       "description": "PV string 24 input current. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2511,7 +2887,10 @@
         "37120": "Warn Running"
       },
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2592,7 +2971,10 @@
       "mask": 128,
       "description": "Power flow status Bit7: negative load power (retrofit systems only).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2604,7 +2986,10 @@
       "unit_of_measurement": "kWh",
       "description": "Daily electricity generated through PV modules.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2616,7 +3001,10 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated electricity generated through PV modules.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2629,7 +3017,10 @@
       "unit_of_measurement": "kWh",
       "description": "Daily export electricity to grid from PV generation. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2642,7 +3033,10 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated export electricity to grid from PV generation. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2653,8 +3047,12 @@
       "unit_of_measurement": "W",
       "description": "Power consumed by loads. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11"
-      ]
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ],
+      "unsupported_value": 2147483647
     },
     {
       "name": "export_power",
@@ -2664,8 +3062,12 @@
       "unit_of_measurement": "W",
       "description": "Power delivered by the inverter to the grid. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11"
-      ]
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ],
+      "unsupported_value": 2147483647
     },
     {
       "name": "daily_battery_charge_energy_from_pv",
@@ -2675,7 +3077,12 @@
       "data_type": "U16",
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
-      "description": "Daily electricity that the inverter charges the batteries through the PV modules."
+      "description": "Daily electricity that the inverter charges the batteries through the PV modules.",
+      "source": [
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "total_battery_charge_energy_from_pv",
@@ -2685,7 +3092,12 @@
       "data_type": "U32",
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
-      "description": "Accumulated electricity that the inverter charges the batteries through the PV modules."
+      "description": "Accumulated electricity that the inverter charges the batteries through the PV modules.",
+      "source": [
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "co2_reduction",
@@ -2694,7 +3106,11 @@
       "data_type": "U32",
       "accuracy": 0.1,
       "unit_of_measurement": "kg",
-      "description": "Estimated CO2 reduction from PV generation."
+      "description": "Estimated CO2 reduction from PV generation.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "daily_direct_energy_consumption",
@@ -2703,7 +3119,12 @@
       "data_type": "U16",
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
-      "description": "Daily electricity taken from PV modules by loads directly. Only valid with smart energy meter."
+      "description": "Daily electricity taken from PV modules by loads directly. Only valid with smart energy meter.",
+      "source": [
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "total_direct_energy_consumption",
@@ -2714,7 +3135,10 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated electricity taken from PV modules by the inverter directly. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2727,7 +3151,10 @@
       "unit_of_measurement": "V",
       "description": "Battery pack voltage.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2740,7 +3167,8 @@
       "unit_of_measurement": "A",
       "description": "Battery current (unsigned, no sign for charge/discharge direction). Use battery_current (5631) instead for signed value.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow"
       ]
     },
     {
@@ -2752,7 +3180,8 @@
       "unit_of_measurement": "W",
       "description": "Battery power (U16 without sign). Data type is S16 for SH3.0-6.0RS and SH8.0-10RS. Use battery_power (5214) instead for S32 with full range.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow"
       ]
     },
     {
@@ -2765,7 +3194,10 @@
       "unit_of_measurement": "%",
       "description": "Battery state of charge (SOC) as percentage (0-100%).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2778,7 +3210,10 @@
       "unit_of_measurement": "%",
       "description": "Battery state of health (SOH) as percentage. Indicates remaining battery capacity relative to original.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2791,7 +3226,10 @@
       "unit_of_measurement": "°C",
       "description": "Battery temperature.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2804,7 +3242,10 @@
       "unit_of_measurement": "kWh",
       "description": "Daily battery discharge energy.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2817,7 +3258,10 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated battery discharge energy.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2829,7 +3273,9 @@
       "unit_of_measurement": "%",
       "description": "Self-consumption ratio for today. Percentage of PV energy consumed locally vs exported.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2845,7 +3291,11 @@
       "models_exclude": [
         "SH8.0RT-20"
       ],
-      "unsupported_value": 0
+      "unsupported_value": 0,
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "phase_a_current",
@@ -2856,7 +3306,10 @@
       "unit_of_measurement": "A",
       "description": "Phase A output current. For single-phase inverters, only phase A is valid.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2868,7 +3321,10 @@
       "unit_of_measurement": "A",
       "description": "Phase B output current. Only valid for three-phase inverters.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2880,7 +3336,10 @@
       "unit_of_measurement": "A",
       "description": "Phase C output current. Only valid for three-phase inverters.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2895,7 +3354,10 @@
         "The update frequency of this register is quite low, maybe 10 seconds"
       ],
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2908,7 +3370,10 @@
       "unit_of_measurement": "kWh",
       "description": "Daily energy imported from grid. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2922,7 +3387,10 @@
       "description": "Accumulated energy imported from grid. Group indicator for is_master. Only valid with smart energy meter.",
       "indicator": "is_master",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2936,7 +3404,9 @@
       "description": "Battery capacity (0.1 kWh for Li-ion, 1 Ah for lead-acid). Use battery_capacity (5639) instead for 0.01 kWh precision.",
       "indicator": "has_battery",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2949,7 +3419,10 @@
       "unit_of_measurement": "kWh",
       "description": "Daily total battery charge energy from all sources (PV, grid, etc.).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2962,7 +3435,10 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated total battery charge energy.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2972,7 +3448,9 @@
       "data_type": "U16",
       "description": "Demand Response Mode state (1-9: DRM0-DRM8, other values invalid).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2985,7 +3463,10 @@
       "unit_of_measurement": "kWh",
       "description": "Daily electricity delivered by the inverter to the grid through PV modules or batteries. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -2998,7 +3479,10 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated electricity delivered by the inverter to the grid through PV modules or batteries. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3008,7 +3492,9 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=Fan Alarm, Bit1=AC Lightning, Bit2=DC Lightning, Bit4=Comm Alarm, Bit14=Meter Reversed, Bit30=Meter Comm Alarm, etc.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3018,7 +3504,9 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=Grid Overvoltage, Bit2=Grid Undervoltage, Bit6=Grid Overfrequency, Bit7=Grid Underfrequency, Bit8=Grid Power Outage, Bit10=Excessive Leakage Current, etc.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3028,7 +3516,9 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=Inverter Switch Overtemp, Bit1=BOOST Switch Overtemp, Bit2=PV IR Fault, Bit4=EPS Relay Failure, etc.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3038,7 +3528,9 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=Module Overtemp, Bit3=Low System Insulation, Bit7=Low Ambient Temp, Bit15=Backup Load Overpower, etc.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3048,7 +3540,9 @@
       "data_type": "U32",
       "description": "Bitmask: Bit4=PV Access Failure, Bit9=PV1 Reverse Connection, Bit10=PV2 Reverse Connection, Bit16=Bus Overvoltage HW Fault, etc.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3058,7 +3552,9 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=PV Overcurrent Perm, Bit1=Inversion Overcurrent Perm, Bit3=Bus Overvoltage Perm, Bit4=Relay Perm Fault, etc.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3068,7 +3564,9 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=BDC Charge Overcurrent, Bit1=BDC Discharge Overcurrent, Bit5=Battery Pre-charge Relay Failure, Bit12=BDC Overtemp, etc.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3078,7 +3576,9 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=BDC Overcurrent Perm, Bit2=Battery Overvoltage Perm, Bit4=BDC Self-detect Perm, Bit7=BDC Soft Start Perm, etc.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3089,7 +3589,9 @@
       "data_type": "U32",
       "description": "Bitmask: Bit3=Battery Avg Undervoltage, Bit7=Battery Overtemp, Bit8=Battery Low Temp, Bit11=Battery Transient Overvoltage, Bit14=BMS Comm Fault, Bit16=Abnormal Battery Connection, etc.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3100,7 +3602,9 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=BDC Temp Sensor Open Circuit, Bit1=BDC Temp Sensor Short Circuit.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3110,7 +3614,9 @@
       "data_type": "U32",
       "description": "BMS alarm bitmask.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3120,7 +3626,9 @@
       "data_type": "U32",
       "description": "BMS protection bitmask.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3130,7 +3638,9 @@
       "data_type": "U32",
       "description": "BMS fault 1 bitmask. Uses battery communication address for RS485.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3140,7 +3650,9 @@
       "data_type": "U32",
       "description": "BMS fault 2 bitmask.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3150,7 +3662,9 @@
       "data_type": "U32",
       "description": "BMS alarm 2 bitmask.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3168,7 +3682,11 @@
         "SH4K6-30"
       ],
       "description": "Legacy BMS status. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "max_charging_current",
@@ -3187,7 +3705,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 30,
-      "description": "Legacy BMS maximum charging current. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Legacy BMS maximum charging current. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "max_discharging_current",
@@ -3206,7 +3728,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 30,
-      "description": "Legacy BMS maximum discharging current. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Legacy BMS maximum discharging current. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "warning",
@@ -3223,7 +3749,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 0,
-      "description": "Legacy BMS warning code. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Legacy BMS warning code. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "protection",
@@ -3240,7 +3770,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 0,
-      "description": "Legacy BMS protection code. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Legacy BMS protection code. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "fault1",
@@ -3257,7 +3791,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 0,
-      "description": "Legacy BMS fault 1 code. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Legacy BMS fault 1 code. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "fault2",
@@ -3274,7 +3812,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 0,
-      "description": "Legacy BMS fault 2 code. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Legacy BMS fault 2 code. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "soc",
@@ -3292,7 +3834,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 0,
-      "description": "Legacy BMS state of charge. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Legacy BMS state of charge. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "soh",
@@ -3309,7 +3855,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 0,
-      "description": "Legacy BMS state of health. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Legacy BMS state of health. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "battery_current",
@@ -3328,7 +3878,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 0,
-      "description": "Battery current (unsigned, no sign for charge/discharge direction). Use battery_current (5631) instead for signed value."
+      "description": "Battery current (unsigned, no sign for charge/discharge direction). Use battery_current (5631) instead for signed value.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "battery_voltage",
@@ -3348,7 +3902,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 0,
-      "description": "Battery pack voltage."
+      "description": "Battery pack voltage.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "cycle_count",
@@ -3366,7 +3924,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 0,
-      "description": "Battery cycle count. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Battery cycle count. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "average_cell_voltage",
@@ -3384,7 +3946,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 0,
-      "description": "Average individual cell voltage. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Average individual cell voltage. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "max_cell_voltage",
@@ -3402,7 +3968,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 0,
-      "description": "Maximum individual cell voltage. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Maximum individual cell voltage. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "min_cell_voltage",
@@ -3420,7 +3990,11 @@
         "SH4K6-30"
       ],
       "unsupported_value": 0,
-      "description": "Minimum individual cell voltage. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Minimum individual cell voltage. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "battery_pack_voltage",
@@ -3438,7 +4012,11 @@
         "SH3K6-30",
         "SH4K6-30"
       ],
-      "description": "Battery pack voltage. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Battery pack voltage. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "average_cell_temp",
@@ -3455,7 +4033,11 @@
         "SH3K6-30",
         "SH4K6-30"
       ],
-      "description": "Average cell temperature. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Average cell temperature. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "max_cell_temp",
@@ -3472,7 +4054,11 @@
         "SH3K6-30",
         "SH4K6-30"
       ],
-      "description": "Maximum cell temperature. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Maximum cell temperature. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "min_cell_temp",
@@ -3489,7 +4075,11 @@
         "SH3K6-30",
         "SH4K6-30"
       ],
-      "description": "Minimum cell temperature. Only for SH5K-20/SH3K6/SH4K6 series."
+      "description": "Minimum cell temperature. Only for SH5K-20/SH3K6/SH4K6 series.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "channel_2_total_active_power",
@@ -3544,7 +4134,8 @@
         "MG6RL"
       ],
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser"
       ]
     },
     {
@@ -3563,6 +4154,9 @@
         "SH10RS",
         "MG5RL",
         "MG6RL"
+      ],
+      "source": [
+        "mkaiser"
       ]
     },
     {
@@ -3583,7 +4177,8 @@
         "MG6RL"
       ],
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser"
       ]
     },
     {
@@ -3610,7 +4205,9 @@
       "data_type": "U16",
       "description": "System clock: year (2000-2099). Receives time synchronization from monitoring system.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3620,7 +4217,9 @@
       "data_type": "U16",
       "description": "System clock: month (1-12).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3630,7 +4229,9 @@
       "data_type": "U16",
       "description": "System clock: day (1-31).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3640,7 +4241,9 @@
       "data_type": "U16",
       "description": "System clock: hour (0-23).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3650,7 +4253,9 @@
       "data_type": "U16",
       "description": "System clock: minute (0-59).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3660,7 +4265,9 @@
       "data_type": "U16",
       "description": "System clock: second (0-59).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3674,7 +4281,9 @@
       },
       "description": "Inverter start/stop control (0xCF=Boot, 0xCE=Shutdown).",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3688,7 +4297,9 @@
       },
       "description": "Active power limitation enable/disable.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3700,7 +4311,9 @@
       "unit_of_measurement": "%",
       "description": "Active power limitation percentage.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3724,7 +4337,11 @@
         "170": "Enable"
       },
       "description": "Feed-in power limitation enable/disable. String inverter register.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "export_power_limitation_value",
@@ -3743,7 +4360,11 @@
         "SG20KTL-M"
       ],
       "description": "Feed-in power limitation value in watts. String inverter register.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "current_transformer_output_current",
@@ -3765,7 +4386,9 @@
       "description": "CT output current setting. String inverter register.",
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3788,7 +4411,9 @@
       "description": "CT current range setting. String inverter register.",
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3812,7 +4437,11 @@
         "1": "External"
       },
       "description": "CT type selection: internal or external. String inverter register.",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "export_power_limitation_percentage",
@@ -3838,7 +4467,9 @@
       ],
       "description": "Feed-in power limitation as percentage. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3859,7 +4490,11 @@
         "SG17KTL-M",
         "SG20KTL-M"
       ],
-      "description": "Installed PV power capacity. String inverter register."
+      "description": "Installed PV power capacity. String inverter register.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "power_factor_setting",
@@ -3870,7 +4505,11 @@
       "models_exclude": [
         "SH*"
       ],
-      "description": "Power factor setpoint. String inverter register."
+      "description": "Power factor setpoint. String inverter register.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "scheduling_achieve_active_overload",
@@ -3911,7 +4550,11 @@
         "85": "Disable",
         "170": "Enable"
       },
-      "description": "Scheduling active overload control enable/disable."
+      "description": "Scheduling active overload control enable/disable.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "night_svg_switch",
@@ -3954,7 +4597,11 @@
         "85": "Disable",
         "170": "Enable"
       },
-      "description": "Night SVG (Static Var Generator) enable/disable."
+      "description": "Night SVG (Static Var Generator) enable/disable.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "reactive_power_adjustment_mode",
@@ -3970,7 +4617,9 @@
       },
       "description": "Reactive power adjustment mode: off, PF setting, Q% setting, Q(P), or Q(U).",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3982,7 +4631,9 @@
       "unit_of_measurement": "%",
       "description": "Reactive power percentage setpoint.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -3997,7 +4648,9 @@
       ],
       "description": "Power limitation adjustment value. String inverter register.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -4007,7 +4660,11 @@
       "data_type": "S16",
       "accuracy": 100,
       "unit_of_measurement": "var",
-      "description": "Reactive power adjustment value."
+      "description": "Reactive power adjustment value.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "pid_recovery",
@@ -4061,7 +4718,9 @@
       },
       "description": "PID recovery enable/disable.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -4085,7 +4744,9 @@
       },
       "description": "Anti-PID enable/disable.",
       "source": [
-        "string-v1.1.37"
+        "string-v1.1.37",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -4103,7 +4764,11 @@
         "85": "Disable",
         "170": "Enable"
       },
-      "description": "Full-day PID suppression enable/disable."
+      "description": "Full-day PID suppression enable/disable.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "battery_module_1_max_cell_voltage",
@@ -4134,7 +4799,8 @@
       },
       "description": "Hybrid inverter start/stop control (0xCF=Boot, 0xCE=Shutdown).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow"
       ]
     },
     {
@@ -4153,7 +4819,8 @@
       "data_type": "U16",
       "level": 5,
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser"
       ],
       "description": "From hybrid protocol V1.1.11: Load Control Mode"
     },
@@ -4247,7 +4914,8 @@
       "data_type": "U16",
       "level": 5,
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser"
       ],
       "description": "From hybrid protocol V1.1.11: Load ON/OFF mode"
     },
@@ -4335,7 +5003,10 @@
       },
       "description": "Energy management mode: 0=Self-consumption (default), 2=Compulsory, 3=External EMS, 4=VPP.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -4350,7 +5021,10 @@
       },
       "description": "Battery charge/discharge command: 0xAA = Charge, 0xBB = Discharge, 0xCC = Stop (default).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -4368,7 +5042,10 @@
       ],
       "description": "Battery charge/discharge power setting. 0-100% of BDC rated power (register 5628).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -4380,7 +5057,9 @@
       "accuracy": 0.1,
       "description": "Maximum battery SOC upper limit (50.0-100.0%). Battery stops charging above this value.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow"
       ]
     },
     {
@@ -4392,7 +5071,9 @@
       "accuracy": 0.1,
       "description": "Minimum battery SOC lower limit (0.0-50.0%). Battery stops discharging below this value.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow"
       ]
     },
     {
@@ -4403,7 +5084,9 @@
       "unit_of_measurement": "W",
       "description": "Feed-in power limitation value in watts. Controls max power fed into grid at the meter point.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow"
       ]
     },
     {
@@ -4412,7 +5095,8 @@
       "data_type": "U16",
       "level": 5,
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser"
       ],
       "description": "From hybrid protocol V1.1.11: Off-grid option"
     },
@@ -4441,7 +5125,11 @@
         "SH6.0RT",
         "SH5.0RT"
       ],
-      "description": "Battery charge start power threshold."
+      "description": "Battery charge start power threshold.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "start_discharging_power",
@@ -4458,7 +5146,11 @@
         "SH6.0RT",
         "SH5.0RT"
       ],
-      "description": "Battery discharge start power threshold."
+      "description": "Battery discharge start power threshold.",
+      "source": [
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "meter_comm_detection",
@@ -4478,7 +5170,9 @@
       ],
       "description": "Smart energy meter communication detection enable/disable (0xAA = Enable, 0x55 = Disable).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -4499,7 +5193,10 @@
       ],
       "description": "Feed-in power limitation enable/disable (0xAA = Enable, 0x55 = Disable).",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -4533,7 +5230,8 @@
         "MG6RL"
       ],
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser"
       ]
     },
     {
@@ -4545,7 +5243,8 @@
       "unit_of_measurement": "%",
       "description": "Active power limitation ratio (0-100%). Controls inverter AC output as percentage of rated power. Added in V1.1.7.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser"
       ]
     },
     {
@@ -4561,7 +5260,12 @@
         "SH6.0RT",
         "SH5.0RT"
       ],
-      "description": "Minimum reserved SOC for backup (off-grid) operation (0-100%). Battery enters emergency charging when SOC drops below this."
+      "description": "Minimum reserved SOC for backup (off-grid) operation (0-100%). Battery enters emergency charging when SOC drops below this.",
+      "source": [
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
+      ]
     },
     {
       "name": "feed_in_limitation_value_wide_range",
@@ -4596,7 +5300,10 @@
       "accuracy": 10,
       "description": "Maximum battery charging power limit.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -4608,7 +5315,10 @@
       "accuracy": 10,
       "description": "Maximum battery discharging power limit.",
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "mkaiser",
+        "ha-sungrow",
+        "sungather"
       ]
     },
     {
@@ -4624,7 +5334,10 @@
         "WiNet"
       ],
       "unsupported_value": 0,
-      "description": "Battery capacity setting. Community-sourced register."
+      "description": "Battery capacity setting. Community-sourced register.",
+      "source": [
+        "ha-sungrow"
+      ]
     },
     {
       "name": "charge_discharge_power_wide_range",
@@ -4651,7 +5364,11 @@
       "unit_of_measurement": "W",
       "accuracy": 10,
       "unsupported_value": 0,
-      "description": "Battery charge start power setting."
+      "description": "Battery charge start power setting.",
+      "source": [
+        "mkaiser",
+        "ha-sungrow"
+      ]
     },
     {
       "name": "battery_charge_stop_power",
@@ -4665,7 +5382,11 @@
       "unit_of_measurement": "W",
       "accuracy": 10,
       "unsupported_value": 0,
-      "description": "Battery charge stop power setting."
+      "description": "Battery charge stop power setting.",
+      "source": [
+        "mkaiser",
+        "ha-sungrow"
+      ]
     },
     {
       "name": "weekly_discharging_start_time_1_hour",
@@ -5036,7 +5757,10 @@
         "85": "Disabled",
         "170": "Enabled"
       },
-      "description": "Master/slave mode enable/disable."
+      "description": "Master/slave mode enable/disable.",
+      "source": [
+        "ha-sungrow"
+      ]
     },
     {
       "name": "master_slave_role",
@@ -5050,14 +5774,20 @@
         "163": "Slave 3",
         "164": "Slave 4"
       },
-      "description": "Master/slave role (0xA0=Master, 0xA1=Slave 1, 0xA2=Slave 2, ...)."
+      "description": "Master/slave role (0xA0=Master, 0xA1=Slave 1, 0xA2=Slave 2, ...).",
+      "source": [
+        "ha-sungrow"
+      ]
     },
     {
       "name": "inverter_count",
       "address": 33502,
       "level": 1,
       "data_type": "U16",
-      "description": "Total inverter count in master/slave system (including master)."
+      "description": "Total inverter count in master/slave system (including master).",
+      "source": [
+        "ha-sungrow"
+      ]
     }
   ]
 }

@@ -3,14 +3,18 @@
 # requires-python = ">=3.12"
 # dependencies = ["pyyaml"]
 # ///
-"""Compare the sungrowlib register catalog against external Sungrow register catalogs."""
+"""Compare the sungrowlib register catalog against external Sungrow register catalogs.
+
+With --update: enrich registers-sungrow.json by adding source attribution and
+missing metadata from external catalogs on perfect matches (address + type + data_type).
+"""
 
 from __future__ import annotations
 
 import argparse
 import json
 import sys
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 from pathlib import Path
 from urllib.request import urlopen
 from urllib.error import URLError
@@ -24,6 +28,17 @@ SOURCES: dict[str, str] = {
 }
 
 CACHE_DIR = Path("/tmp/sungrow-catalog-cache")
+CATALOG_PATH = Path(__file__).parent / "registers-sungrow.json"
+
+
+@dataclass
+class ExtraFields:
+    decoded: dict[str, str] | None = None
+    unsupported_value: int | None = None
+    models: list[str] | None = None
+    models_exclude: list[str] | None = None
+    group: str | list[str] | None = None
+    mask: int | None = None
 
 
 @dataclass
@@ -35,6 +50,7 @@ class NormalizedRegister:
     scale: float | None = None
     unit: str | None = None
     source: str = ""
+    extra: ExtraFields = field(default_factory=ExtraFields)
 
 
 @dataclass
@@ -123,6 +139,10 @@ def parse_mkaiser(text: str) -> list[NormalizedRegister]:
         data_type = MKAISER_TYPE_MAP.get(raw_type, raw_type.upper())
         reg_type = MKAISER_INPUT_MAP.get(s["input_type"], s["input_type"])
 
+        extra = ExtraFields()
+        if "nan_value" in s:
+            extra.unsupported_value = int(s["nan_value"])
+
         result.append(NormalizedRegister(
             name=s.get("unique_id", s.get("name", "unknown")),
             address=s["address"] + 1,  # 0-based → 1-based
@@ -131,9 +151,14 @@ def parse_mkaiser(text: str) -> list[NormalizedRegister]:
             scale=s.get("scale"),
             unit=s.get("unit_of_measurement"),
             source="mkaiser",
+            extra=extra,
         ))
 
     return result
+
+
+def _convert_decoded(raw: dict) -> dict[str, str]:
+    return {str(int(str(k), 0)): str(v) for k, v in raw.items()}
 
 
 def parse_ha_sungrow(text: str) -> list[NormalizedRegister]:
@@ -151,6 +176,18 @@ def parse_ha_sungrow(text: str) -> list[NormalizedRegister]:
             raw_dt = entry["data_type"]
             base_dt = raw_dt.split("[")[0] if "[" in str(raw_dt) else str(raw_dt)
 
+            extra = ExtraFields()
+            if "decoded" in entry:
+                extra.decoded = _convert_decoded(entry["decoded"])
+            if "models" in entry:
+                extra.models = entry["models"]
+            if "models_exclude" in entry:
+                extra.models_exclude = entry["models_exclude"]
+            if "group" in entry:
+                extra.group = entry["group"]
+            if "mask" in entry:
+                extra.mask = entry["mask"]
+
             result.append(NormalizedRegister(
                 name=entry.get("name", "unknown"),
                 address=entry["address"],
@@ -159,8 +196,17 @@ def parse_ha_sungrow(text: str) -> list[NormalizedRegister]:
                 scale=entry.get("accuracy") or entry.get("scale"),
                 unit=entry.get("unit_of_measurement"),
                 source="ha-sungrow",
+                extra=extra,
             ))
 
+    return result
+
+
+def _convert_datarange(datarange: list[dict]) -> dict[str, str]:
+    result = {}
+    for item in datarange:
+        if "response" in item and "value" in item:
+            result[str(int(str(item["response"]), 0))] = str(item["value"])
     return result
 
 
@@ -183,6 +229,12 @@ def parse_sungather(text: str) -> list[NormalizedRegister]:
                 raw_dt = str(entry.get("datatype", "U16"))
                 base_dt = raw_dt.split("[")[0] if "[" in raw_dt else raw_dt
 
+                extra = ExtraFields()
+                if "datarange" in entry:
+                    extra.decoded = _convert_datarange(entry["datarange"])
+                if "mask" in entry:
+                    extra.mask = entry["mask"]
+
                 result.append(NormalizedRegister(
                     name=entry["name"],
                     address=entry["address"],
@@ -191,6 +243,7 @@ def parse_sungather(text: str) -> list[NormalizedRegister]:
                     scale=entry.get("accuracy"),
                     unit=entry.get("unit"),
                     source="sungather",
+                    extra=extra,
                 ))
 
     return result
@@ -206,8 +259,7 @@ PARSERS: dict[str, callable] = {
 # -- Our catalog ---------------------------------------------------------------
 
 def load_ours() -> list[NormalizedRegister]:
-    catalog_path = Path(__file__).parent / "registers-sungrow.json"
-    data = json.loads(catalog_path.read_text())
+    data = json.loads(CATALOG_PATH.read_text())
     result: list[NormalizedRegister] = []
 
     for section, reg_type in [("read", "read"), ("hold", "hold")]:
@@ -283,6 +335,78 @@ def compare(ours: list[NormalizedRegister], theirs: list[NormalizedRegister], so
     )
 
 
+# -- Update catalog ------------------------------------------------------------
+
+def update_catalog(all_theirs: dict[str, list[NormalizedRegister]]) -> None:
+    data = json.loads(CATALOG_PATH.read_text())
+
+    catalog_index: dict[tuple[int, str], dict] = {}
+    for section in ("read", "hold"):
+        for entry in data[section]:
+            if "address" in entry:
+                catalog_index[(entry["address"], section)] = entry
+
+    stats: dict[str, int] = {"source_added": 0, "decoded": 0, "unsupported_value": 0,
+                              "models": 0, "models_exclude": 0, "group": 0, "mask": 0}
+
+    for source_name, regs in all_theirs.items():
+        theirs_by_key = {(r.address, r.type): r for r in regs}
+
+        for key, their_reg in theirs_by_key.items():
+            our_entry = catalog_index.get(key)
+            if our_entry is None:
+                continue
+
+            our_dt = our_entry.get("data_type", "U16")
+            our_base_dt = our_dt.split("[")[0] if "[" in str(our_dt) else str(our_dt)
+            if our_base_dt != their_reg.data_type:
+                continue
+
+            # Perfect match — add source
+            sources = our_entry.setdefault("source", [])
+            if source_name not in sources:
+                sources.append(source_name)
+                stats["source_added"] += 1
+
+            ex = their_reg.extra
+
+            if ex.decoded and "decoded" not in our_entry:
+                our_entry["decoded"] = ex.decoded
+                stats["decoded"] += 1
+
+            if ex.unsupported_value is not None and "unsupported_value" not in our_entry:
+                our_entry["unsupported_value"] = ex.unsupported_value
+                stats["unsupported_value"] += 1
+
+            if ex.models and "models" not in our_entry:
+                our_entry["models"] = ex.models
+                stats["models"] += 1
+
+            if ex.models_exclude and "models_exclude" not in our_entry:
+                our_entry["models_exclude"] = ex.models_exclude
+                stats["models_exclude"] += 1
+
+            if ex.group is not None and "group" not in our_entry:
+                our_entry["group"] = ex.group
+                stats["group"] += 1
+
+            if ex.mask is not None and "mask" not in our_entry:
+                our_entry["mask"] = ex.mask
+                stats["mask"] += 1
+
+    for section in ("read", "hold"):
+        data[section].sort(key=lambda e: (e.get("address") is None, e.get("address", 0)))
+
+    with open(CATALOG_PATH, "w") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+
+    print(f"\nUpdated {CATALOG_PATH.name}:", file=sys.stderr)
+    for k, v in stats.items():
+        if v:
+            print(f"  {k}: +{v}", file=sys.stderr)
+
+
 # -- Output --------------------------------------------------------------------
 
 def print_report(results: list[ComparisonResult]) -> None:
@@ -290,7 +414,6 @@ def print_report(results: list[ComparisonResult]) -> None:
     print("  Sungrow Register Catalog Comparison")
     print("=" * 78)
 
-    # Summary table
     print(f"\n{'Source':<15} {'Registers':>10} {'Matched':>10} {'Missing':>10} {'Unique':>10}")
     print("-" * 55)
     for r in results:
@@ -299,7 +422,6 @@ def print_report(results: list[ComparisonResult]) -> None:
     for r in results:
         print(f"{r.source:<15} {r.theirs_count:>10} {r.matched:>10} {len(r.missing_from_ours):>10} {r.unique_to_ours:>10}")
 
-    # Missing from ours (most actionable)
     for r in results:
         if not r.missing_from_ours:
             continue
@@ -314,7 +436,6 @@ def print_report(results: list[ComparisonResult]) -> None:
                 parts.append(f" [{reg.unit}]")
             print("".join(parts))
 
-    # Metadata differences
     for r in results:
         if not r.differences:
             continue
@@ -334,7 +455,10 @@ def print_json(results: list[ComparisonResult]) -> None:
             "theirs_count": r.theirs_count,
             "matched": r.matched,
             "unique_to_ours": r.unique_to_ours,
-            "missing_from_ours": [asdict(reg) for reg in r.missing_from_ours],
+            "missing_from_ours": [
+                {k: v for k, v in asdict(reg).items() if k != "extra"}
+                for reg in r.missing_from_ours
+            ],
             "differences": [asdict(d) for d in r.differences],
         })
     json.dump(output, sys.stdout, indent=2)
@@ -348,12 +472,14 @@ def main() -> None:
     parser.add_argument("--source", choices=list(SOURCES.keys()), help="Compare against a specific source only")
     parser.add_argument("--format", choices=["pretty", "json"], default="pretty")
     parser.add_argument("--cache", action="store_true", help="Cache fetched catalogs in /tmp")
+    parser.add_argument("--update", action="store_true", help="Write source attribution and missing fields into registers-sungrow.json")
     args = parser.parse_args()
 
     sources = {args.source: SOURCES[args.source]} if args.source else SOURCES
     ours = load_ours()
 
     results: list[ComparisonResult] = []
+    all_theirs: dict[str, list[NormalizedRegister]] = {}
     for name, url in sources.items():
         if args.format == "pretty":
             print(f"Fetching {name}...", file=sys.stderr)
@@ -361,12 +487,16 @@ def main() -> None:
         if not text:
             continue
         theirs = PARSERS[name](text)
+        all_theirs[name] = theirs
         results.append(compare(ours, theirs, name))
 
     if args.format == "json":
         print_json(results)
     else:
         print_report(results)
+
+    if args.update:
+        update_catalog(all_theirs)
 
 
 if __name__ == "__main__":

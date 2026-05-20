@@ -49,4 +49,12 @@ All implementations must provide a CLI with these commands and `--format json` o
 
 ## Register Catalog
 
-`registers/registers-sungrow.json` — 311 registers (229 input, 82 holding). This is a standalone product: the JSON file can be consumed directly by any tool or language. See `registers/README.md` for the schema. Edit this file for register changes; conformance tests validate correctness across all implementations.
+`registers/registers-sungrow.json` — 332 registers (230 input, 102 holding). This is a standalone product: the JSON file can be consumed directly by any tool or language. See `registers/README.md` for the schema. Edit this file for register changes; conformance tests validate correctness across all implementations.
+
+Use `jq` for ad-hoc queries on the catalog, not throwaway Python scripts. The data is already JSON.
+
+## Conventions
+
+- Store project knowledge in this file (`CLAUDE.md`), not in private memory or external notes. Everything an AI assistant needs to work on this repo should be in the repo itself.
+- Prefer `uv` over `pip` for Python dependency management.
+- Use `jq` for JSON queries, Python for structured operations that modify files or parse non-JSON sources.
