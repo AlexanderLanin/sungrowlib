@@ -20,7 +20,7 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:conformance": "npm run build && python3 conformance/runner/run.py --scenarios conformance/scenarios/ --cli 'node dist/cli/main.js'",
+    "test:conformance": "npm run build && python3 ../conformance/runner/run.py --scenarios ../conformance/scenarios/ --cli 'node dist/cli/main.js'",
     "check": "tsc --noEmit",
     "build": "tsc",
     "prepublishOnly": "npm run build"

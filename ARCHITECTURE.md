@@ -1,5 +1,26 @@
 # Sungrow-Modul Architektur
 
+## Monorepo-Struktur
+
+```mermaid
+graph TD
+    shared["shared/<br/>registers-sungrow.json<br/>(311 Register)"]
+    conformance["conformance/<br/>17 YAML-Szenarien<br/>Simulator + Runner"]
+    ts["ts/<br/>TypeScript-Implementierung"]
+    py["python/<br/>Python-Implementierung"]
+
+    shared -->|importiert| ts
+    shared -->|importiert| py
+    conformance -->|validiert CLI| ts
+    conformance -->|validiert CLI| py
+```
+
+Jede Implementierung lebt in ihrem eigenen Verzeichnis mit eigener Build-/Testkonfiguration. Das gemeinsame Register-JSON (`shared/registers-sungrow.json`) ist die kanonische Datenquelle. Die Conformance-Tests (`conformance/`) validieren alle Implementierungen gegen denselben Standard.
+
+---
+
+## TypeScript-Modulstruktur
+
 Extrahierbares Modul fuer die Kommunikation mit Sungrow-Hybrid-Wechselrichtern (SH-RT Serie) ueber Modbus TCP. Unabhaengig vom SmartHome-Adapter-Interface nutzbar.
 
 ## Modulstruktur

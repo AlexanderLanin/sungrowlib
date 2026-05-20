@@ -1,5 +1,12 @@
+import { readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { CatalogRegister, CatalogDataType, RegisterType } from '../core/types.js';
-import rawRegisters from './registers-sungrow.json' with { type: 'json' };
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const rawRegisters = JSON.parse(
+  readFileSync(resolve(__dirname, '../../../shared/registers-sungrow.json'), 'utf-8'),
+);
 
 export interface RawJsonEntry {
   name: string;

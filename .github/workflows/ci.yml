@@ -7,11 +7,14 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  typescript:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [18, 20, 22]
+    defaults:
+      run:
+        working-directory: ts
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -22,9 +25,34 @@ jobs:
       - run: npm test
       - run: npm run build
 
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12", "3.13"]
+    defaults:
+      run:
+        working-directory: python
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e ".[dev]"
+      - run: pytest
+
   conformance:
     runs-on: ubuntu-latest
-    needs: test
+    needs: [typescript, python]
+    strategy:
+      matrix:
+        include:
+          - name: typescript
+            setup: cd ts && npm install && npm run build
+            cli: node ts/dist/cli/main.js
+          - name: python
+            setup: cd python && pip install -e .
+            cli: sungrowlib
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -33,7 +61,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: npm install
-      - run: npm run build
       - run: pip install pyyaml
-      - run: python3 conformance/runner/run.py --scenarios conformance/scenarios/ --cli 'node dist/cli/main.js' --verbose
+      - name: Build ${{ matrix.name }}
+        run: ${{ matrix.setup }}
+      - name: Conformance (${{ matrix.name }})
+        run: python3 conformance/runner/run.py --scenarios conformance/scenarios/ --cli '${{ matrix.cli }}' --verbose

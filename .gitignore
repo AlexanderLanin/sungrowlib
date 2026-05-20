@@ -12,7 +12,11 @@ Thumbs.db
 
 coverage/
 
-# Python (conformance tests)
+# Python
 .venv/
 __pycache__/
 *.pyc
+*.egg-info/
+.pytest_cache/
+build/
+*.whl
