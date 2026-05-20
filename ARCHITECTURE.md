@@ -1,29 +1,29 @@
-# Sungrow-Modul Architektur
+# Sungrow Module Architecture
 
-## Monorepo-Struktur
+## Monorepo Structure
 
 ```mermaid
 graph TD
-    shared["shared/<br/>registers-sungrow.json<br/>(311 Register)"]
-    conformance["conformance/<br/>17 YAML-Szenarien<br/>Simulator + Runner"]
-    ts["ts/<br/>TypeScript-Implementierung"]
-    py["python/<br/>Python-Implementierung"]
+    shared["shared/<br/>registers-sungrow.json<br/>(311 registers)"]
+    conformance["conformance/<br/>17 YAML scenarios<br/>Simulator + Runner"]
+    ts["ts/<br/>TypeScript implementation"]
+    py["python/<br/>Python implementation"]
 
-    shared -->|importiert| ts
-    shared -->|importiert| py
-    conformance -->|validiert CLI| ts
-    conformance -->|validiert CLI| py
+    shared -->|imports| ts
+    shared -->|imports| py
+    conformance -->|validates CLI| ts
+    conformance -->|validates CLI| py
 ```
 
-Jede Implementierung lebt in ihrem eigenen Verzeichnis mit eigener Build-/Testkonfiguration. Das gemeinsame Register-JSON (`shared/registers-sungrow.json`) ist die kanonische Datenquelle. Die Conformance-Tests (`conformance/`) validieren alle Implementierungen gegen denselben Standard.
+Each implementation lives in its own directory with its own build/test configuration. The shared register JSON (`shared/registers-sungrow.json`) is the canonical data source. The conformance tests (`conformance/`) validate all implementations against the same standard.
 
 ---
 
-## TypeScript-Modulstruktur
+## TypeScript Module Structure
 
-Extrahierbares Modul fuer die Kommunikation mit Sungrow-Hybrid-Wechselrichtern (SH-RT Serie) ueber Modbus TCP. Unabhaengig vom SmartHome-Adapter-Interface nutzbar.
+Extractable module for communication with Sungrow hybrid inverters (SH-RT series) via Modbus TCP. Usable independently of any SmartHome adapter interface.
 
-## Modulstruktur
+## Module Structure
 
 ```mermaid
 graph TD
@@ -34,11 +34,11 @@ graph TD
     end
 
     subgraph "registers/"
-        catalog[catalog.ts<br/>Register-Katalog]
-        blockio[block-io.ts<br/>Block-Koaleszierung + Read]
-        decode[decode.ts<br/>Decode-Funktionen]
-        computed[computed.ts<br/>Berechnete Register]
-        json[(registers-sungrow.json<br/>311 Register)]
+        catalog[catalog.ts<br/>Register Catalog]
+        blockio[block-io.ts<br/>Block Coalescing + Read]
+        decode[decode.ts<br/>Decode Functions]
+        computed[computed.ts<br/>Computed Registers]
+        json[(registers-sungrow.json<br/>311 registers)]
     end
 
     subgraph "transport/"
@@ -60,13 +60,13 @@ graph TD
     http_tr -.-> transport_if
 ```
 
-Die gestrichelten Pfeile zeigen „implementiert". Die durchgezogenen zeigen „benutzt".
+Dashed arrows indicate "implements". Solid arrows indicate "uses".
 
-## Datentypen
+## Data Types
 
-### Register-Pipeline
+### Register Pipeline
 
-Wie ein Register vom JSON-Katalog zum dekodierten Wert wird:
+How a register goes from the JSON catalog to a decoded value:
 
 ```mermaid
 classDiagram
@@ -111,15 +111,15 @@ classDiagram
         +compute(values) DecodedValue
     }
 
-    BlockPlan --> CatalogRegister : gruppiert
+    BlockPlan --> CatalogRegister : groups
     CatalogRegister ..> RegisterValue : decodeCatalogRegister()
     RegisterValue --> DecodedValue
-    ComputedRegister ..> DecodedValue : berechnet aus anderen Werten
+    ComputedRegister ..> DecodedValue : computed from other values
 ```
 
-### API-Typen
+### API Types
 
-Typen die der Caller (Adapter/App) bekommt und uebergibt:
+Types the caller (adapter/app) receives and passes:
 
 ```mermaid
 classDiagram
@@ -177,7 +177,7 @@ classDiagram
     SungrowInverter ..> ModbusTransaction : onBlockRead hook
 ```
 
-## Verbindungs-Lebenszyklus
+## Connection Lifecycle
 
 ### Connection State Machine
 
@@ -185,35 +185,35 @@ classDiagram
 stateDiagram-v2
     [*] --> idle
     idle --> connecting : connect()
-    connecting --> connected : Erfolg
-    connecting --> idle : Fehler
+    connecting --> connected : success
+    connecting --> idle : error
 
-    connected --> reconnecting : ConnectionError bei read()
+    connected --> reconnecting : ConnectionError on read()
     connected --> disconnected : disconnect()
 
-    reconnecting --> connected : Reconnect erfolgreich
-    reconnecting --> reconnecting : Naechster Versuch (Backoff)
-    reconnecting --> disconnected : maxAttempts erreicht / disconnect()
+    reconnecting --> connected : reconnect succeeded
+    reconnecting --> reconnecting : next attempt (backoff)
+    reconnecting --> disconnected : maxAttempts reached / disconnect()
 
     disconnected --> connecting : connect()
 ```
 
-### Zwei-Stufen-Reconnect
+### Two-Tier Reconnect
 
 ```
-Block-Read schlaegt fehl
-  └→ readBlock Retry bis 4× (schneller TCP-Reconnect, ~5s je Versuch)
-      ├→ Erfolg: readStream liest naechsten Block, Caller merkt nichts
-      └→ Alle Retries fehlgeschlagen: ConnectionError wird geworfen
-          └→ readStream bricht ab, Fehler propagiert zu SungrowSystem.read()
-              └→ System plant Hintergrund-Reconnect (exponentieller Backoff)
-                  ├→ Erfolg: state → 'connected', naechster Poll funktioniert
-                  └→ maxAttempts: state → 'disconnected', Adapter informiert
+Block read fails
+  └→ readBlock retry up to 4× (fast TCP reconnect, ~5s per attempt)
+      ├→ Success: readStream reads next block, caller unaware
+      └→ All retries failed: ConnectionError thrown
+          └→ readStream aborts, error propagates to SungrowSystem.read()
+              └→ System schedules background reconnect (exponential backoff)
+                  ├→ Success: state → 'connected', next poll works
+                  └→ maxAttempts: state → 'disconnected', adapter notified
 ```
 
-**Stufe 1 — Transport-Reconnect** (in `readBlock` via `SungrowInverter.reconnectTransport()`): Nur neue TCP-Verbindung + Slave-ID setzen. Keine Model/Gruppen-Erkennung. Schnell (~5s).
+**Tier 1 — Transport Reconnect** (in `readBlock` via `SungrowInverter.reconnectTransport()`): New TCP connection + set slave ID only. No model/group detection. Fast (~5s).
 
-**Stufe 2 — System-Reconnect** (in `SungrowSystem.doReconnect()`): Neue Inverter-Instanzen, volle Erkennung (Model, Gruppen, Master/Slave-Topologie). Exponentieller Backoff (base × 2^attempt, gedeckelt bei maxDelay).
+**Tier 2 — System Reconnect** (in `SungrowSystem.doReconnect()`): New inverter instances, full detection (model, groups, master/slave topology). Exponential backoff (base × 2^attempt, capped at maxDelay).
 
 ### API
 
@@ -228,12 +228,12 @@ const system = new SungrowSystem({
 });
 await system.connect();
 // system.state === 'connected'
-// Bei ConnectionError: system.state → 'reconnecting' → 'connected'
+// On ConnectionError: system.state → 'reconnecting' → 'connected'
 ```
 
-## Ein Lese-Pfad, Caller entscheidet
+## Single Read Path, Caller Decides
 
-Das Modul hat eine einzige `read(options?)` Methode. Der Caller (Adapter/App) bestimmt per `ReadOptions`, welche Register gelesen werden:
+The module has a single `read(options?)` method. The caller (adapter/app) controls which registers are read via `ReadOptions`:
 
 ```mermaid
 flowchart LR
@@ -243,11 +243,11 @@ flowchart LR
         compose["composeSystemReading()<br/>Map → SolarReading"]
     end
 
-    subgraph "Sungrow-Modul"
+    subgraph "Sungrow Module"
         read["system.read(options)"]
-        cat["RegisterCatalog<br/>Filtern nach Names/Level"]
+        cat["RegisterCatalog<br/>Filter by names/level"]
         blocks["computeBlocks()"]
-        mb["ModbusClient<br/>Block-Reads"]
+        mb["ModbusClient<br/>Block reads"]
         dec["decodeCatalogRegister()"]
     end
 
@@ -261,20 +261,20 @@ flowchart LR
 
 ```typescript
 const system = new SungrowSystem({ hosts: [host], logger });
-await system.connect();  // Model + Groups einmal erkennen und cachen
+await system.connect();  // detect model + groups once and cache
 
-// Caller entscheidet was gelesen wird:
+// Caller decides what to read:
 const data = await system.read({ names: ['total_dc_power', 'battery_soc'] });
 const data = await system.read({ maxLevel: 3 });
-const data = await system.read();  // alles
+const data = await system.read();  // everything
 
 // data: ReadResult ({ values: Map<string, RegisterValue>, transactions: ModbusTransaction[] })
-// system.lastRawWords        — Diagnostik
-// system.lastValues          — RegisterValue[] fuer UI
-// onBlockRead hook           — ModbusTransaction per Modbus-Block (Timing, Status, Retries)
+// system.lastRawWords        — diagnostics
+// system.lastValues          — RegisterValue[] for UI
+// onBlockRead hook           — ModbusTransaction per Modbus block (timing, status, retries)
 ```
 
-### Datenfluss
+### Data Flow
 
 ```mermaid
 sequenceDiagram
@@ -288,7 +288,7 @@ sequenceDiagram
     Sys->>MB: read device_type_code
     Sys->>Cat: filterByModel(model)
     Sys->>MB: read group indicators
-    Note over Sys: Model + Groups gecached
+    Note over Sys: Model + groups cached
 
     loop 10s Poll
         App->>Sys: read({ names: [...] })
@@ -302,172 +302,172 @@ sequenceDiagram
 
     loop 5min Dump
         App->>Sys: read({ maxLevel: 5 })
-        Note over Sys: Gleicher Pfad, mehr Register
+        Note over Sys: Same path, more registers
         Sys-->>App: Map&lt;string, RegisterValue&gt;
-        App->>App: lastRawWords fuer Dump, lastValues fuer UI
+        App->>App: lastRawWords for dump, lastValues for UI
     end
 ```
 
-### Gruppen-System
+### Group System
 
-Zwei JSON-Felder steuern Feature-Gruppen:
+Two JSON fields control feature groups:
 
-- **`group`** (string | string[]) — Register gehoert zu dieser Gruppe(n). `filterByGroups()` in `catalog.ts` prueft `activeGroups[g] === true` fuer alle eingetragenen Gruppen.
-- **`indicator`** (string) — Register ist der Detektor fuer die genannte Gruppe. `detectGroups()` in `inverter.ts` liest Indikator-Register einzeln beim `connect()` via `transport.readInputRegisters()`.
+- **`group`** (string | string[]) — Register belongs to this group(s). `filterByGroups()` in `catalog.ts` checks `activeGroups[g] === true` for all listed groups.
+- **`indicator`** (string) — Register is the detector for the named group. `detectGroups()` in `inverter.ts` reads indicator registers individually during `connect()` via `transport.readInputRegisters()`.
 
-Fluss bei `connect()`:
+Flow during `connect()`:
 
 ```
-1. filterByModel(model) → applicable registers (vor Gruppen-Filter!)
-2. detectGroups(applicable): fuer jedes Register mit indicator ≠ null
-   → einzeln via Transport lesen
-   → Wert 0 oder 0xFFFF oder Error → Gruppe = false
-   → sonst → Gruppe = true
-   → cachedActiveGroups: true-Werte aus Cache ueberschreiben false
+1. filterByModel(model) → applicable registers (before group filtering!)
+2. detectGroups(applicable): for each register with indicator ≠ null
+   → read individually via transport
+   → value 0 or 0xFFFF or error → group = false
+   → otherwise → group = true
+   → cachedActiveGroups: true values from cache override false
 3. filterByGroups(applicable, activeGroups) → _applicableRegisters
 ```
 
-Alle Reads bei connect() (Slave-Probe, Serial, Model, Indikatoren, OutputType, MasterSlave) erzeugen `ModbusTransaction` mit `reason: 'connect'` ueber den `onBlockRead`-Hook.
+All reads during connect() (slave probe, serial, model, indicators, output type, master/slave) produce `ModbusTransaction` with `reason: 'connect'` via the `onBlockRead` hook.
 
-Gruppen und ihre Indikatoren:
+Groups and their indicators:
 
-| Gruppe | Indikator-Register | Bemerkung |
+| Group | Indicator Register | Notes |
 |---|---|---|
 | has_battery | battery_capacity | |
 | has_meter | meter_active_power | |
 | is_master | total_import_energy | |
 | direct_lan | array_insulation_resistance | WiNet vs. LAN |
-| mppt2–mppt12 | mppt_N_current | nachts unzuverlaessig (Strom=0) |
+| mppt2–mppt12 | mppt_N_current | unreliable at night (current=0) |
 
-Register mit mehreren Gruppen (Array): z.B. `group: ["mppt4", "direct_lan"]` — mppt4-12 Indikatoren/Register sind nur ueber Direct-LAN lesbar. Array-Syntax stellt sicher, dass Register auch bei gecachtem `mppt4=true` gefiltert werden wenn `direct_lan=false`.
+Registers with multiple groups (array): e.g. `group: ["mppt4", "direct_lan"]` — mppt4-12 indicators/registers are only readable via direct LAN. Array syntax ensures registers are filtered even when cached `mppt4=true` if `direct_lan=false`.
 
-Beteiligte Dateien:
-- `registers-sungrow.json` — Gruppen-Definitionen (group, indicator)
+Relevant files:
+- `registers-sungrow.json` — group definitions (group, indicator)
 - `catalog.ts` — `filterByGroups()`, `getGroupIndicators()`
 - `inverter.ts` — `detectGroups()`
 - `core/types.ts` — `CatalogRegister.group`, `CatalogRegister.indicator`, `RegisterValue.group`, `RegisterValue.indicator`
-- `block-io.ts` — `decodeBlock()` propagiert group/indicator in RegisterValue
+- `block-io.ts` — `decodeBlock()` propagates group/indicator into RegisterValue
 
-### Progressives Streaming (readStream)
+### Progressive Streaming (readStream)
 
-`readStream()` ist ein AsyncGenerator, der `RegisterValue[]`-Batches yielded, waehrend die Modbus-Bloecke gelesen werden. `read()` ist ein Convenience-Wrapper, der alle Batches sammelt.
+`readStream()` is an AsyncGenerator that yields `RegisterValue[]` batches as Modbus blocks are read. `read()` is a convenience wrapper that collects all batches.
 
 ```mermaid
 flowchart TD
-    START["readStream(options?)"] --> FILT["Register filtern nach names / maxLevel"]
+    START["readStream(options?)"] --> FILT["Filter registers by names / maxLevel"]
     FILT --> BLOCKS["computeBlocks() → BlockPlan[]"]
-    BLOCKS --> LOOP{{"Fuer jeden Block"}}
+    BLOCKS --> LOOP{{"For each block"}}
     LOOP --> READ["readBlock → decodeBlock"]
-    READ --> Y1(["yield RegisterValue[] Batch"])
+    READ --> Y1(["yield RegisterValue[] batch"])
     Y1 --> LOOP
-    LOOP -->|Alle Bloecke fertig| COMP["applyComputed()"]
-    COMP --> Y2(["yield berechnete Werte"])
-    Y2 --> WRAP["read() sammelt alle Batches
+    LOOP -->|All blocks done| COMP["applyComputed()"]
+    COMP --> Y2(["yield computed values"])
+    Y2 --> WRAP["read() collects all batches
     → Map&lt;string, RegisterValue&gt;"]
 ```
 
-`readStream()` yielded `RegisterValue[]`-Batches pro Modbus-Block — fuer UIs die inkrementell anzeigen wollen. `read()` ist der Normalfall: sammelt alles und gibt eine flache `Map&lt;string, RegisterValue&gt;` zurueck (wie im Datenfluss-Diagramm oben).
+`readStream()` yields `RegisterValue[]` batches per Modbus block — for UIs that want incremental display. `read()` is the normal case: collects everything and returns a flat `Map<string, RegisterValue>` (as in the data flow diagram above).
 
-## Register-Katalog
+## Register Catalog
 
-`registers-sungrow.json` enthaelt 311 Register (229 Input, 82 Holding), urspruenglich konvertiert aus der Python-Referenz (`homeassistant-sungrow`) und gegen die offiziellen Sungrow-Kommunikationsprotokolle (V1.0.20–V1.1.9) auditiert. Jeder Eintrag hat:
+`registers-sungrow.json` contains 311 registers (229 input, 82 holding), originally converted from the Python reference (`homeassistant-sungrow`) and audited against the official Sungrow communication protocols (V1.0.20–V1.1.9). Each entry has:
 
-- **name**: Eindeutiger Bezeichner (Duplikate durch `_`-Suffix aufgeloest)
-- **address**: 1-basierte Sungrow-Adresse
-- **data_type**: `U16`, `S16`, `U32`, `S32`, `UTF-8`, Arrays wie `U16[96]`
-- **level** 1-5: Verbindung → Energie → Erweitert → Detail → Debug
-- **group**: string oder string[] — Feature-Gruppe(n). Register wird nur gelesen wenn **alle** Gruppen aktiv (`=== true`). Beispiele: `"has_battery"`, `["mppt4", "direct_lan"]`. Gruppen: `has_battery`, `has_meter`, `is_master`, `direct_lan`, `mppt2`–`mppt12`.
-- **indicator**: string — Dieses Register ist der Detektor fuer die genannte Gruppe. Wird einzeln bei `connect()` gelesen um die Gruppe zu erkennen. Beispiel: `battery_capacity` hat `indicator: "has_battery"`.
-- **models/models_exclude**: fnmatch-Patterns fuer Model-Filterung
-- **decoded**: Wert→String-Map (z.B. `{0: "Stop", 32768: "Run"}`)
-- **mask**: Bitmask fuer Boolean-Extraktion aus geteilten Registern
-- **accuracy/scale**: Skalierungsfaktor
-- **unsupported_value**: Wert der "nicht unterstuetzt" signalisiert
-- **description**: Optionale Beschreibung aus den offiziellen Sungrow-PDFs (z.B. "Recommended instead of 13022")
+- **name**: Unique identifier (duplicates resolved via `_` suffix)
+- **address**: 1-based Sungrow address
+- **data_type**: `U16`, `S16`, `U32`, `S32`, `UTF-8`, arrays like `U16[96]`
+- **level** 1-5: Connection → Energy → Extended → Detail → Debug
+- **group**: string or string[] — feature group(s). Register is only read when **all** groups are active (`=== true`). Examples: `"has_battery"`, `["mppt4", "direct_lan"]`. Groups: `has_battery`, `has_meter`, `is_master`, `direct_lan`, `mppt2`–`mppt12`.
+- **indicator**: string — This register is the detector for the named group. Read individually during `connect()` to detect the group. Example: `battery_capacity` has `indicator: "has_battery"`.
+- **models/models_exclude**: fnmatch patterns for model filtering
+- **decoded**: value→string map (e.g. `{0: "Stop", 32768: "Run"}`)
+- **mask**: bitmask for boolean extraction from shared registers
+- **accuracy/scale**: scaling factor
+- **unsupported_value**: value that signals "not supported"
+- **description**: Optional description from the official Sungrow PDFs (e.g. "Recommended instead of 13022")
 
-### Level-Hierarchie
+### Level Hierarchy
 
-| Level | Name | Beschreibung |
+| Level | Name | Description |
 |-------|------|-------------|
-| 1 | Verbindung | Model, Seriennummer, Firmware |
-| 2 | Energie-Dashboard | PV, Batterie, Netz, Verbrauch |
-| 3 | Erweitert | Temperaturen, Spannungen, Stroeme |
-| 4 | Detaildaten | MPPT-Details, Tages-/Gesamtzaehler |
-| 5 | Debug | Alarm-Codes, interne Zustaende |
+| 1 | Connection | Model, serial number, firmware |
+| 2 | Energy Dashboard | PV, battery, grid, consumption |
+| 3 | Extended | Temperatures, voltages, currents |
+| 4 | Detail Data | MPPT details, daily/total counters |
+| 5 | Debug | Alarm codes, internal states |
 
-### Runtime-Filterung
+### Runtime Filtering
 
-Alle Filterung passiert zur Laufzeit, einmal beim `connect()` und dann pro `read()`:
+All filtering happens at runtime, once during `connect()` and then per `read()`:
 
-1. **Model-Filter** (connect): `fnmatch(model, pattern)` mit `*`-Wildcards
-2. **Model-Overrides** (connect): Bekannte Diskrepanzen korrigieren (SH8.0RT-20: S32→S16)
-3. **Gruppen-Filter** (connect): Gruppen-Indikatoren per Modbus lesen, inaktive Features ausblenden
-4. **Level-Filter** (read): `maxLevel` Option filtert
-5. **Namen-Filter** (read): `names` Option waehlt explizite Register
+1. **Model filter** (connect): `fnmatch(model, pattern)` with `*` wildcards
+2. **Model overrides** (connect): correct known discrepancies (SH8.0RT-20: S32→S16)
+3. **Group filter** (connect): read group indicators via Modbus, hide inactive features
+4. **Level filter** (read): `maxLevel` option filters
+5. **Name filter** (read): `names` option selects explicit registers
 
-## Block-Koaleszierung
+## Block Coalescing
 
-Register werden nach Typ (Input/Holding) getrennt, nach Adresse sortiert und zu Bloecken zusammengefasst:
+Registers are separated by type (input/holding), sorted by address, and combined into blocks:
 
-- Max. 125 Register pro Modbus-Request (Protokoll-Limit)
-- Luecken bis 10 Register werden toleriert (ein Read statt zwei)
-- Zu grosse Bloecke werden an Register-Grenzen gesplittet
+- Max 125 registers per Modbus request (protocol limit)
+- Gaps up to 10 registers are tolerated (one read instead of two)
+- Oversized blocks are split at register boundaries
 
-## Decode-Funktionen
+## Decode Functions
 
-| Funktion | Eingabe | Ausgabe |
-|----------|---------|---------|
+| Function | Input | Output |
+|----------|-------|--------|
 | `decodeRawScalar` | U16/S16/U32/S32 | `number` |
-| `decodeUtf8` | UTF-8 Register | `string` |
+| `decodeUtf8` | UTF-8 registers | `string` |
 | `decodeArray` | U16[n]/U32[n] | `number[]` |
-| `applyMask` | Rohwert + Bitmask | `boolean` |
-| `lookupDecoded` | Rohwert + Map | `string \| number` |
-| `isUnsupported` | Rohwert + Schwellwert | `boolean` |
-| `decodeCatalogRegister` | CatalogRegister + Daten | `{raw, value, supported}` |
+| `applyMask` | raw value + bitmask | `boolean` |
+| `lookupDecoded` | raw value + map | `string \| number` |
+| `isUnsupported` | raw value + threshold | `boolean` |
+| `decodeCatalogRegister` | CatalogRegister + data | `{raw, value, supported}` |
 
-## Signal-Zustandsmaschine
+## Signal State Machine
 
-Sungrow-Wechselrichter geben in Batch-Queries `0` fuer nicht-unterstuetzte Register zurueck — genau wie fuer echte Null-Werte. Der `SignalStateTracker` loest diese Mehrdeutigkeit ueber mehrere Lesezyklen auf:
+Sungrow inverters return `0` for unsupported registers in batch queries — same as for actual zero values. The `SignalStateTracker` resolves this ambiguity over multiple read cycles:
 
 ```mermaid
 stateDiagram-v2
     [*] --> NEVER_ATTEMPTED
 
-    NEVER_ATTEMPTED --> YES : Wert ≠ 0
-    NEVER_ATTEMPTED --> NO : Unsupported-Fehler
-    NEVER_ATTEMPTED --> UNKNOWN_FROM_MULTI : Wert = 0 in Batch
+    NEVER_ATTEMPTED --> YES : value ≠ 0
+    NEVER_ATTEMPTED --> NO : unsupported error
+    NEVER_ATTEMPTED --> UNKNOWN_FROM_MULTI : value = 0 in batch
 
-    UNKNOWN_FROM_MULTI --> YES : Wert ≠ 0
-    UNKNOWN_FROM_MULTI --> CONFIRMED_UNKNOWN : Wert = 0 in Einzelabfrage
+    UNKNOWN_FROM_MULTI --> YES : value ≠ 0
+    UNKNOWN_FROM_MULTI --> CONFIRMED_UNKNOWN : value = 0 in single query
 
-    note right of NEVER_ATTEMPTED : Rang 0
-    note right of UNKNOWN_FROM_MULTI : Rang 1 — braucht Einzelabfrage
-    note left of CONFIRMED_UNKNOWN : Rang 2 — nicht unterstuetzt
-    note left of YES : Rang 3 — terminal
-    note right of NO : Rang 3 — terminal
+    note right of NEVER_ATTEMPTED : rank 0
+    note right of UNKNOWN_FROM_MULTI : rank 1 — needs single query
+    note left of CONFIRMED_UNKNOWN : rank 2 — not supported
+    note left of YES : rank 3 — terminal
+    note right of NO : rank 3 — terminal
 ```
 
-Ranking-Regel: Ein Zustand kann nur auf gleichen oder hoeheren Rang wechseln. `YES` und `NO` sind terminal. `getPendingVerifications()` liefert alle Signale im Zustand `UNKNOWN_FROM_MULTI`, die eine Einzelabfrage brauchen.
+Ranking rule: A state can only transition to the same or higher rank. `YES` and `NO` are terminal. `getPendingVerifications()` returns all signals in state `UNKNOWN_FROM_MULTI` that need a single query.
 
-## Fehler-Hierarchie
+## Error Hierarchy
 
 ```mermaid
 classDiagram
     class SungrowError {
-        Basis fuer alle Fehler
+        Base for all errors
     }
 
     class ConnectionError {
-        TCP-Verbindung fehlgeschlagen
+        TCP connection failed
         ECONNREFUSED / ECONNRESET / EPIPE
     }
 
     class TimeoutError {
-        Connect- oder Read-Timeout
+        Connect or read timeout
     }
 
     class ModbusProtocolError {
-        Gateway-Fehler
+        Gateway error
         Slave Failure / No Response
     }
 
@@ -479,21 +479,21 @@ classDiagram
 
     class BusyError {
         HTTP Code 301
-        WiNet-S besetzt
+        WiNet-S busy
     }
 
     class TokenExpiredError {
         HTTP Code 106
-        WiNet-S Token abgelaufen
+        WiNet-S token expired
     }
 
     class TooManyRetriesError {
         +attempts: number
-        Max Retries erschoepft
+        Max retries exhausted
     }
 
     class InvalidResponseError {
-        Unerwartetes Antwortformat
+        Unexpected response format
     }
 
     SungrowError <|-- ConnectionError
@@ -506,9 +506,9 @@ classDiagram
     SungrowError <|-- InvalidResponseError
 ```
 
-`wrapModbusError(err)` klassifiziert rohe `modbus-serial`-Exceptions anhand von Fehlermeldungs-Patterns in die passende Unterklasse.
+`wrapModbusError(err)` classifies raw `modbus-serial` exceptions by error message patterns into the appropriate subclass.
 
-## Master/Slave-Setup
+## Master/Slave Setup
 
 ```mermaid
 flowchart LR
@@ -517,24 +517,24 @@ flowchart LR
     sys --> slaveN[SungrowInverter<br/>Slave ID n]
 
     master -->|"read({ names: ... })"| dash[Dashboard]
-    master -->|PV Power| sum((Summe))
+    master -->|PV Power| sum((Sum))
     slave1 -->|PV Power| sum
     slaveN -->|PV Power| sum
     sum --> dash
 
-    master -->|"read({ maxLevel: 5 })"| ext[Alle Register]
+    master -->|"read({ maxLevel: 5 })"| ext[All Registers]
 ```
 
-- Slave ID 1 = Master (hat Grid, Batterie, Load, alle Meter-Daten)
-- Slave ID 2+ = Slaves (nur eigene PV-Leistung)
-- `SungrowSystem.read()` liest vom Master
-- `SungrowSystem.readSlaves()` liest von Slaves (z.B. fuer PV-Summierung)
-- PV-Summierung ist App-Logik im Adapter, nicht in der Lib
-- Master/Slave-Erkennung ueber Katalog-Register (decoded Maps: `'Enabled'`, `'Master'`)
+- Slave ID 1 = Master (has grid, battery, load, all meter data)
+- Slave ID 2+ = Slaves (only own PV power)
+- `SungrowSystem.read()` reads from master
+- `SungrowSystem.readSlaves()` reads from slaves (e.g. for PV summation)
+- PV summation is app logic in the adapter, not in the lib
+- Master/slave detection via catalog registers (decoded maps: `'Enabled'`, `'Master'`)
 
-## Transport-Interface
+## Transport Interface
 
-Zwei Implementierungen hinter einem gemeinsamen Interface. `readBlock()` und `SungrowInverter` arbeiten nur mit dem Interface, nie direkt mit ModbusClient oder HTTP.
+Two implementations behind a common interface. `readBlock()` and `SungrowInverter` only work with the interface, never directly with ModbusClient or HTTP.
 
 ```mermaid
 classDiagram
@@ -548,7 +548,7 @@ classDiagram
     }
 
     class ModbusTransport {
-        Erstellt via createModbusTransport()
+        Created via createModbusTransport()
         TCP Port 502
     }
 
@@ -556,7 +556,7 @@ classDiagram
         +host: string
         +connect() Promise~void~
         WebSocket Port 8082 Auth
-        HTTP Port 80 Register lesen
+        HTTP Port 80 Register reads
     }
 
     class ModbusClient {
@@ -572,7 +572,7 @@ classDiagram
     class Throttle {
         +intervalMs: number
         +wait() Promise~void~
-        Mindestabstand 2s zwischen Calls
+        Min 2s interval between calls
     }
 
     class WiNetDevice {
@@ -581,92 +581,93 @@ classDiagram
         +dev_code: number
     }
 
-    Transport <|.. ModbusTransport : implementiert
-    Transport <|.. HttpTransport : implementiert
-    ModbusTransport --> ModbusClient : verwendet
+    Transport <|.. ModbusTransport : implements
+    Transport <|.. HttpTransport : implements
+    ModbusTransport --> ModbusClient : uses
     ModbusTransport --> Throttle : optional
-    HttpTransport --> WiNetDevice : erkennt Geraet
+    HttpTransport --> WiNetDevice : detects device
 ```
 
-## Modbus-Konventionen
+## Modbus Conventions
 
-- Adressen sind 1-basiert (Sungrow-Doku-Konvention)
-- PDU-Adresse = Adresse - 1 (in `modbus.ts` gehandelt)
-- Word Order: **Little-Endian** (Low-Word an niedrigerer Adresse)
-- NA-Werte: `0xFFFF` (U16), `0x7FFF` (S16), `0xFFFFFFFF` (U32), `0x7FFFFFFF` (S32)
-- Protokoll: TCP Port 502, `modbus-serial` Library
+- Addresses are 1-based (Sungrow documentation convention)
+- PDU address = address - 1 (handled in `modbus.ts`)
+- Word order: **little-endian** (low word at lower address)
+- N/A values: `0xFFFF` (U16), `0x7FFF` (S16), `0xFFFFFFFF` (U32), `0x7FFFFFFF` (S32)
+- Protocol: TCP port 502, `modbus-serial` library
 
 ## Raw Register Storage
 
-`solar_register_dumps` speichert alle 5 Minuten den kompletten Raw-Dump:
+`solar_register_dumps` stores the complete raw dump every 5 minutes:
 
 ```
 {address: raw_16bit_word, ...}  →  JSON in SQLite
 ```
 
-Ermoeglicht:
-- Nachtraegliches Testen neuer Decode-Logik gegen echte Daten
-- Plausibilisierung bei Verdacht auf fehlerhafte Dekodierung
-- Historische Analyse ohne laufenden Inverter
+Enables:
+- Retroactive testing of new decode logic against real data
+- Plausibility checks when faulty decoding is suspected
+- Historical analysis without a running inverter
 
-## Verzeichnisstruktur
+## Directory Structure
 
 ```
-src/
-  index.ts                          Public API Exports
-  system.ts                         SungrowSystem (Multi-Inverter, Auto-Discovery)
-  core/                             Grundbausteine (Typen, Fehler, Stats)
-    types.ts                        Reine Typen (CatalogRegister, DecodedValue, ReadOptions, ...)
-    errors.ts                       Fehler-Hierarchie (SungrowError → 8 Subklassen)
+ts/src/
+  index.ts                          Public API exports
+  system.ts                         SungrowSystem (multi-inverter, auto-discovery)
+  core/                             Fundamentals (types, errors, stats)
+    types.ts                        Pure types (CatalogRegister, DecodedValue, ReadOptions, ...)
+    errors.ts                       Error hierarchy (SungrowError → 8 subclasses)
     stats.ts                        ConnectionStats
-    signal-state.ts                 SignalStateTracker (5-Zustands-Maschine)
-  transport/                        Datenuebertragung (Modbus TCP, WiNet-S HTTP)
-    transport.ts                    Transport-Interface
-    modbus.ts                       ModbusClient-Wrapper, Throttle, createModbusTransport
-    http-transport.ts               WiNet-S HTTP/WebSocket-Transport
-    modbus-serial.d.ts              Type-Declaration fuer Peer-Dep
-  registers/                        Register-Definitionen und Dekodierung
-    catalog.ts                      RegisterCatalog, loadCatalog, fnmatch, Model-Overrides
-    decode.ts                       Deserialisierung (Skalar, UTF-8, Array, Mask, Sentinel)
-    block-io.ts                     Block-Koaleszierung, readBlock mit Retry, ProblematicRegisters
-    computed.ts                     ComputedRegister (Timestamp, Alarm, MPPT Power)
-    registers-sungrow.json          Vollstaendiger Register-Katalog (311 Register)
-  inverter/                         Single-Inverter
+    signal-state.ts                 SignalStateTracker (5-state machine)
+  transport/                        Data transport (Modbus TCP, WiNet-S HTTP)
+    transport.ts                    Transport interface
+    modbus.ts                       ModbusClient wrapper, Throttle, createModbusTransport
+    http-transport.ts               WiNet-S HTTP/WebSocket transport
+    modbus-serial.d.ts              Type declaration for peer dep
+  registers/                        Register definitions and decoding
+    catalog.ts                      RegisterCatalog, loadCatalog, fnmatch, model overrides
+    decode.ts                       Deserialization (scalar, UTF-8, array, mask, sentinel)
+    block-io.ts                     Block coalescing, readBlock with retry, ProblematicRegisters
+    computed.ts                     ComputedRegister (timestamp, alarm, MPPT power)
+  inverter/                         Single inverter
     inverter.ts                     SungrowInverter
+shared/
+  registers-sungrow.json            Complete register catalog (311 registers)
 ```
 
 ## Tests
 
-Alle Tests in `*.test.ts` im selben Verzeichnis wie die Quelldatei. Kein `modbus-serial` noetig — alle Tests nutzen Mocks.
+All tests in `*.test.ts` co-located with the source file. No `modbus-serial` needed — all tests use mocks.
 
-| Test | Abdeckung |
-|------|-----------|
-| `core/errors.test.ts` | Fehler-Hierarchie, wrapModbusError |
-| `core/signal-state.test.ts` | Zustandsuebergaenge, Ranking, Pending-Verifications |
-| `transport/modbus.test.ts` | Block-Reads, Adress-Offset (-1) |
-| `transport/http-transport.test.ts` | WiNet-S Protokoll, Token-Management, Retry |
-| `registers/decode.test.ts` | decodeRawScalar (inkl. S32 0x7FFFFFFF Sentinel), UTF-8, Arrays, Masken, Decoded-Maps |
-| `registers/catalog.test.ts` | JSON-Laden, fnmatch, Model-/Level-/Gruppen-Filterung, Overrides |
-| `registers/block-io.test.ts` | Block-Koaleszierung, Retry, ProblematicRegisters |
-| `registers/computed.test.ts` | Computed Registers (Timestamp, MPPT Power) |
-| `inverter/inverter.test.ts` | connect (Model/Groups/Master-Slave), read() mit Names/Level |
-| `inverter/integration.test.ts` | Volle Pipeline: Transport → Katalog → Block-IO → Decode → Computed |
-| `system.test.ts` | SungrowSystem: Multi-Host, Auto-Discovery, Parallel-Connect, Reconnect |
-| `cli/cli.test.ts` | Alle CLI-Commands mit Fake-Inverter |
+| Test | Coverage |
+|------|----------|
+| `core/errors.test.ts` | Error hierarchy, wrapModbusError |
+| `core/signal-state.test.ts` | State transitions, ranking, pending verifications |
+| `transport/modbus.test.ts` | Block reads, address offset (-1) |
+| `transport/http-transport.test.ts` | WiNet-S protocol, token management, retry |
+| `registers/decode.test.ts` | decodeRawScalar (incl. S32 0x7FFFFFFF sentinel), UTF-8, arrays, masks, decoded maps |
+| `registers/catalog.test.ts` | JSON loading, fnmatch, model/level/group filtering, overrides |
+| `registers/block-io.test.ts` | Block coalescing, retry, ProblematicRegisters |
+| `registers/computed.test.ts` | Computed registers (timestamp, MPPT power) |
+| `inverter/inverter.test.ts` | connect (model/groups/master-slave), read() with names/level |
+| `inverter/integration.test.ts` | Full pipeline: transport → catalog → block-IO → decode → computed |
+| `system.test.ts` | SungrowSystem: multi-host, auto-discovery, parallel connect, reconnect |
+| `cli/cli.test.ts` | All CLI commands with fake inverter |
 
 ## Conformance Tests
 
-Sprachuebergreifendes Testsystem unter `conformance/`. Validiert beliebige sungrowlib-Implementierungen gegen denselben Standard — unabhaengig von der Programmiersprache.
+Cross-language test system under `conformance/`. Validates any sungrowlib implementation against the same standard — regardless of programming language.
 
 ```
 conformance/
-  fixtures/               Wiederverwendbare Register-Sets aus echten Dumps
-  scenarios/               17 YAML-Szenarien (detect, read, system, error)
-  simulator/               Modbus TCP Simulator (Python asyncio, kein pymodbus)
-  runner/                  Test-Orchestrator (Python)
-  README.md                Ausfuehrliche Doku
+  fixtures/               Reusable register sets from real dumps
+  scenarios/               17 YAML scenarios (detect, read, system, error)
+  simulator/               Modbus TCP simulator (Python asyncio, no pymodbus)
+  runner/                  Test orchestrator (Python)
+  README.md                Detailed documentation
 ```
 
-Architektur: Runner startet Simulator → ruft CLI mit `--format json` → vergleicht JSON-Output mit YAML-Erwartungen. Pro Szenario ein eigener Port-Bereich, 148 Checks total.
+Architecture: Runner starts simulator → invokes CLI with `--format json` → compares JSON output against YAML expectations. Each scenario gets its own port range, 148 checks total.
 
-CLI-Vertrag fuer neue Implementierungen: `info`/`read` mit `--format json`, Multi-Host via mehrere `-H host:port`. Siehe `conformance/README.md`.
+CLI contract for new implementations: `info`/`read` with `--format json`, multi-host via multiple `-H host:port`. See `conformance/README.md`.
