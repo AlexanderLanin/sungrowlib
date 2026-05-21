@@ -6,10 +6,12 @@
       "address": 4950,
       "data_type": "U32",
       "description": "Deprecated since protocol V1.1.7 (now Reserved). May return 0xFFFFFFFF on new firmware.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L5"
+        }
+      }
     },
     {
       "name": "protocol_version",
@@ -18,11 +20,18 @@
       "data_type": "U32",
       "description": "Protocol version number, e.g. 0x01010700 = V1.1.7.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L67"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L10"
+        }
+      }
     },
     {
       "name": "arm_software_version",
@@ -30,9 +39,12 @@
       "address": 4954,
       "data_type": "UTF-8[15]",
       "description": "Certification version of ARM Software. Changed from U16 to UTF-8 in protocol V1.1.0.",
-      "source": [
-        "mkaiser"
-      ]
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L76"
+        }
+      }
     },
     {
       "name": "dsp_software_version",
@@ -40,9 +52,12 @@
       "address": 4969,
       "data_type": "UTF-8[15]",
       "description": "Certification version of DSP Software. Changed from U16 to UTF-8 in protocol V1.1.0.",
-      "source": [
-        "mkaiser"
-      ]
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L85"
+        }
+      }
     },
     {
       "name": "serial_number",
@@ -52,11 +67,18 @@
       "description": "Inverter serial number (10 UTF-8 characters).",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L94"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L25"
+        }
+      }
     },
     {
       "name": "device_type_code",
@@ -173,11 +195,18 @@
       "description": "Inverter model identification code. See protocol Appendix 1.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L113"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L29"
+        }
+      }
     },
     {
       "name": "nominal_output_power",
@@ -188,11 +217,18 @@
       "unit_of_measurement": "kW",
       "description": "Rated output power of the inverter.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L121"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L222"
+        }
+      }
     },
     {
       "name": "output_type",
@@ -207,10 +243,14 @@
       "description": "Output topology: 0=single-phase, 1=3P4L (three-phase four-wire), 2=3P3L (three-phase three-wire).",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L228"
+        }
+      }
     },
     {
       "name": "daily_output_energy",
@@ -222,11 +262,18 @@
       "description": "Daily active output energy. Includes PV generation and battery discharge.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L133"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L239"
+        }
+      }
     },
     {
       "name": "total_output_energy",
@@ -238,11 +285,18 @@
       "description": "Accumulated active output energy. Includes PV generation and battery discharge.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L146"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L245"
+        }
+      }
     },
     {
       "name": "total_running_time",
@@ -254,13 +308,17 @@
       "unsupported_value": 0,
       "description": "Accumulated running time. String inverter register, reserved for SH hybrid models.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH8.0RT-20"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L250"
+        }
+      }
     },
     {
       "name": "inside_temperature",
@@ -272,11 +330,18 @@
       "description": "Internal temperature of the inverter housing.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L160"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L256"
+        }
+      }
     },
     {
       "name": "total_apparent_power",
@@ -286,10 +351,12 @@
       "unit_of_measurement": "VA",
       "description": "Total apparent power output. String inverter register.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L262"
+        }
+      }
     },
     {
       "name": "mppt_1_voltage",
@@ -301,11 +368,18 @@
       "description": "MPPT 1 input voltage.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L173"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L268"
+        }
+      }
     },
     {
       "name": "mppt_1_current",
@@ -317,11 +391,18 @@
       "description": "MPPT 1 input current.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L186"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L274"
+        }
+      }
     },
     {
       "name": "mppt_2_voltage",
@@ -335,11 +416,18 @@
       "description": "MPPT 2 input voltage.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L199"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L280"
+        }
+      }
     },
     {
       "name": "mppt_2_current",
@@ -354,11 +442,18 @@
       "indicator": "mppt2",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L212"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L287"
+        }
+      }
     },
     {
       "name": "mppt_3_voltage",
@@ -372,14 +467,21 @@
       "description": "MPPT 3 input voltage.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH8.0RT-20"
-      ]
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L228"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L294"
+        }
+      }
     },
     {
       "name": "mppt_3_current",
@@ -394,14 +496,21 @@
       "indicator": "mppt3",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH8.0RT-20"
-      ]
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L245"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L301"
+        }
+      }
     },
     {
       "name": "total_dc_power",
@@ -416,11 +525,18 @@
       ],
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L259"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L308"
+        }
+      }
     },
     {
       "name": "phase_a_voltage",
@@ -431,11 +547,18 @@
       "unit_of_measurement": "V",
       "description": "Phase A voltage (or A-B line voltage for 3P3L output type).",
       "source": [
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L273"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L313"
+        }
+      }
     },
     {
       "name": "phase_b_voltage",
@@ -446,11 +569,18 @@
       "unit_of_measurement": "V",
       "description": "Phase B voltage (or B-C line voltage for 3P3L output type).",
       "source": [
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L286"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L319"
+        }
+      }
     },
     {
       "name": "phase_c_voltage",
@@ -462,11 +592,18 @@
       "description": "Phase C voltage (or C-A line voltage for 3P3L output type).",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L299"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L325"
+        }
+      }
     },
     {
       "name": "phase_a_current",
@@ -478,13 +615,17 @@
       "description": "String inverter register. Reserved in hybrid protocol (use 13031 for SH models).",
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH*"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L331"
+        }
+      }
     },
     {
       "name": "phase_b_current",
@@ -496,13 +637,17 @@
       "description": "String inverter register. Reserved in hybrid protocol (use 13032 for SH models).",
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH*"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L338"
+        }
+      }
     },
     {
       "name": "phase_c_current",
@@ -514,13 +659,17 @@
       "description": "String inverter register. Reserved in hybrid protocol (use 13033 for SH models).",
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH*"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L345"
+        }
+      }
     },
     {
       "name": "total_active_power",
@@ -531,8 +680,7 @@
       "description": "String inverter register. Reserved (5022-5032) in hybrid protocol. Use 13034 for SH models.",
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH*"
@@ -547,11 +695,18 @@
       "description": "Total reactive power output.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L312"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L367"
+        }
+      }
     },
     {
       "name": "power_factor",
@@ -563,11 +718,18 @@
       "description": "Power factor. Positive=leading, negative=lagging.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L326"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L372"
+        }
+      }
     },
     {
       "name": "grid_frequency_low_res",
@@ -579,10 +741,14 @@
       "description": "Grid frequency (0.1Hz resolution). Use grid_frequency (5242) for higher precision (0.01Hz).",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L377"
+        }
+      }
     },
     {
       "name": "work_state_1",
@@ -603,14 +769,16 @@
         "37120": "Alarm Run"
       },
       "description": "Inverter work state. String inverter register, excluded for SH hybrid models.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ],
       "models_unsupported": [
         "SH*",
         "WiNet"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L386"
+        }
+      }
     },
     {
       "name": "alarm_time_year",
@@ -618,14 +786,16 @@
       "address": 5039,
       "data_type": "U16",
       "description": "Alarm timestamp: year. String inverter register.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ],
       "models_unsupported": [
         "SH*",
         "WiNet"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L416"
+        }
+      }
     },
     {
       "name": "alarm_time_month",
@@ -633,14 +803,16 @@
       "address": 5040,
       "data_type": "U16",
       "description": "Alarm timestamp: month. String inverter register.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ],
       "models_unsupported": [
         "SH*",
         "WiNet"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L421"
+        }
+      }
     },
     {
       "name": "alarm_time_day",
@@ -648,14 +820,16 @@
       "address": 5041,
       "data_type": "U16",
       "description": "Alarm timestamp: day. String inverter register.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ],
       "models_unsupported": [
         "SH*",
         "WiNet"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L426"
+        }
+      }
     },
     {
       "name": "alarm_time_hour",
@@ -663,14 +837,16 @@
       "address": 5042,
       "data_type": "U16",
       "description": "Alarm timestamp: hour. String inverter register.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ],
       "models_unsupported": [
         "SH*",
         "WiNet"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L431"
+        }
+      }
     },
     {
       "name": "alarm_time_minute",
@@ -678,14 +854,16 @@
       "address": 5043,
       "data_type": "U16",
       "description": "Alarm timestamp: minute. String inverter register.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ],
       "models_unsupported": [
         "SH*",
         "WiNet"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L436"
+        }
+      }
     },
     {
       "name": "alarm_time_second",
@@ -704,14 +882,16 @@
       "address": 5045,
       "data_type": "U16",
       "description": "Primary alarm code. String inverter register.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ],
       "models_unsupported": [
         "SH*",
         "WiNet"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L446"
+        }
+      }
     },
     {
       "name": "nominal_reactive_power",
@@ -722,10 +902,12 @@
       "unit_of_measurement": "var",
       "description": "Rated reactive power. String inverter register.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L455"
+        }
+      }
     },
     {
       "name": "array_insulation_resistance",
@@ -736,10 +918,12 @@
       "description": "PV array insulation resistance to ground. Group indicator for direct_lan.",
       "indicator": "direct_lan",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L465"
+        }
+      }
     },
     {
       "name": "active_power_regulation_setpoint",
@@ -748,13 +932,15 @@
       "data_type": "U32",
       "unit_of_measurement": "W",
       "description": "Active power regulation setpoint. String inverter register.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ],
       "models_unsupported": [
         "SH8.0RT-20"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L476"
+        }
+      }
     },
     {
       "name": "reactive_power_regulation_setpoint",
@@ -764,10 +950,12 @@
       "unit_of_measurement": "var",
       "description": "Reactive power regulation setpoint. String inverter register.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L482"
+        }
+      }
     },
     {
       "name": "work_state_2",
@@ -792,13 +980,17 @@
       },
       "description": "Extended inverter work state (U32). String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH8.0RT-20"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L488"
+        }
+      }
     },
     {
       "name": "meter_power",
@@ -819,10 +1011,14 @@
         "it's updated more frequently than the phase powers?!"
       ],
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L522"
+        }
+      }
     },
     {
       "name": "meter_a_phase_power",
@@ -835,10 +1031,12 @@
       ],
       "description": "Smart meter phase A active power. String inverter register (SG*KTL-M models).",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L529"
+        }
+      }
     },
     {
       "name": "meter_b_phase_power",
@@ -850,10 +1048,12 @@
         "SG*KTL-M*"
       ],
       "description": "Smart meter phase B active power. String inverter register (SG*KTL-M models).",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L535"
+        }
+      }
     },
     {
       "name": "meter_c_phase_power",
@@ -865,10 +1065,12 @@
         "SG*KTL-M*"
       ],
       "description": "Smart meter phase C active power. String inverter register (SG*KTL-M models).",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L541"
+        }
+      }
     },
     {
       "name": "meter_load_power",
@@ -882,10 +1084,14 @@
       ],
       "description": "Smart meter load power. String inverter register (SG*KTL-M models).",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L547"
+        }
+      }
     },
     {
       "name": "daily_export_energy_string",
@@ -899,10 +1105,14 @@
       ],
       "description": "Daily energy exported to grid. String inverter register (SG*KTL-M models only).",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L554"
+        }
+      }
     },
     {
       "name": "total_export_energy_string",
@@ -916,10 +1126,14 @@
       ],
       "description": "Accumulated energy exported to grid. String inverter register (SG*KTL-M models only).",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L561"
+        }
+      }
     },
     {
       "name": "daily_import_energy_string",
@@ -933,10 +1147,14 @@
       ],
       "description": "Daily energy imported from grid. String inverter register (SG*KTL-M models only).",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L568"
+        }
+      }
     },
     {
       "name": "total_import_energy_string",
@@ -947,13 +1165,17 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated energy imported from grid. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH8.0RT-20"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L575"
+        }
+      }
     },
     {
       "name": "daily_direct_energy_consumption_string",
@@ -967,10 +1189,12 @@
       ],
       "description": "Daily electricity consumed directly from PV by loads. String inverter register, requires smart energy meter.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L582"
+        }
+      }
     },
     {
       "name": "total_direct_energy_consumption_string",
@@ -984,10 +1208,12 @@
       ],
       "description": "Accumulated electricity consumed directly from PV by loads. String inverter register, requires smart energy meter.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L589"
+        }
+      }
     },
     {
       "name": "daily_running_time",
@@ -997,13 +1223,17 @@
       "unit_of_measurement": "min",
       "description": "Daily running time in minutes. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH8.0RT-20"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L598"
+        }
+      }
     },
     {
       "name": "present_country",
@@ -1047,11 +1277,19 @@
       "description": "MPPT 4 input voltage. Large string inverters only.",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L339"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L603"
+        }
+      },
+      "unsupported_value": 65535
     },
     {
       "name": "mppt_4_current",
@@ -1086,11 +1324,19 @@
       "indicator": "mppt4",
       "source": [
         "hybrid-v1.1.11",
-        "string-v1.1.37",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L355"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L610"
+        }
+      },
+      "unsupported_value": 65535
     },
     {
       "name": "mppt_5_voltage",
@@ -1113,10 +1359,14 @@
       "unit_of_measurement": "V",
       "description": "MPPT 5 input voltage. Large string inverters only.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L617"
+        }
+      }
     },
     {
       "name": "mppt_5_current",
@@ -1140,10 +1390,14 @@
       "description": "MPPT 5 input current. Large string inverters only.",
       "indicator": "mppt5",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L624"
+        }
+      }
     },
     {
       "name": "mppt_6_voltage",
@@ -1164,10 +1418,14 @@
       "unit_of_measurement": "V",
       "description": "MPPT 6 input voltage. Large string inverters only.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L631"
+        }
+      }
     },
     {
       "name": "mppt_6_current",
@@ -1189,10 +1447,14 @@
       "description": "MPPT 6 input current. Large string inverters only.",
       "indicator": "mppt6",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L638"
+        }
+      }
     },
     {
       "name": "mppt_7_voltage",
@@ -1213,10 +1475,14 @@
       "unit_of_measurement": "V",
       "description": "MPPT 7 input voltage. Large string inverters only.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L645"
+        }
+      }
     },
     {
       "name": "mppt_7_current",
@@ -1238,10 +1504,14 @@
       "description": "MPPT 7 input current. Large string inverters only.",
       "indicator": "mppt7",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L652"
+        }
+      }
     },
     {
       "name": "mppt_8_voltage",
@@ -1262,10 +1532,14 @@
       "unit_of_measurement": "V",
       "description": "MPPT 8 input voltage. Large string inverters only.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L659"
+        }
+      }
     },
     {
       "name": "mppt_8_current",
@@ -1287,10 +1561,14 @@
       "description": "MPPT 8 input current. Large string inverters only.",
       "indicator": "mppt8",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L666"
+        }
+      }
     },
     {
       "name": "monthly_power_yields",
@@ -1301,13 +1579,15 @@
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
       "description": "Monthly energy yield.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ],
       "models_unsupported": [
         "SH8.0RT-20"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L677"
+        }
+      }
     },
     {
       "name": "mppt_9_voltage",
@@ -1328,10 +1608,14 @@
       "unit_of_measurement": "V",
       "description": "MPPT 9 input voltage. Large string inverters only.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L684"
+        }
+      }
     },
     {
       "name": "mppt_9_current",
@@ -1353,10 +1637,14 @@
       "description": "MPPT 9 input current. Large string inverters only.",
       "indicator": "mppt9",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L691"
+        }
+      }
     },
     {
       "name": "mppt_10_voltage",
@@ -1374,10 +1662,14 @@
       "unit_of_measurement": "V",
       "description": "MPPT 10 input voltage. SG250HX only.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L698"
+        }
+      }
     },
     {
       "name": "mppt_10_current",
@@ -1396,10 +1688,14 @@
       "description": "MPPT 10 input current. SG250HX only.",
       "indicator": "mppt10",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L705"
+        }
+      }
     },
     {
       "name": "mppt_11_voltage",
@@ -1417,10 +1713,14 @@
       "unit_of_measurement": "V",
       "description": "MPPT 11 input voltage. SG250HX only.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L712"
+        }
+      }
     },
     {
       "name": "mppt_11_current",
@@ -1439,10 +1739,14 @@
       "description": "MPPT 11 input current. SG250HX only.",
       "indicator": "mppt11",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L719"
+        }
+      }
     },
     {
       "name": "mppt_12_voltage",
@@ -1460,10 +1764,14 @@
       "unit_of_measurement": "V",
       "description": "MPPT 12 input voltage. SG250HX only.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L726"
+        }
+      }
     },
     {
       "name": "mppt_12_current",
@@ -1482,10 +1790,14 @@
       "description": "MPPT 12 input current. SG250HX only.",
       "indicator": "mppt12",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L733"
+        }
+      }
     },
     {
       "name": "total_power_yields",
@@ -1497,13 +1809,17 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated total energy yield.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH8.0RT-20"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L750"
+        }
+      }
     },
     {
       "name": "negative_voltage_to_the_ground",
@@ -1514,10 +1830,12 @@
       "unit_of_measurement": "V",
       "description": "Negative voltage to ground. String inverter register.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L757"
+        }
+      }
     },
     {
       "name": "bus_voltage",
@@ -1529,10 +1847,14 @@
       "description": "DC bus voltage. String inverter register.",
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L764"
+        }
+      }
     },
     {
       "name": "grid_frequency_5148",
@@ -1544,10 +1866,14 @@
       "description": "Grid frequency from community source (address 5148). Hybrid PDF V1.1.9 lists Grid Frequency at 5242 instead. Kept for dump verification.",
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L771"
+        }
+      }
     },
     {
       "name": "pid_work_state",
@@ -1561,13 +1887,17 @@
       },
       "description": "PID (Potential Induced Degradation) work state. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH8.0RT-20"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L782"
+        }
+      }
     },
     {
       "name": "pid_alarm_code",
@@ -1581,13 +1911,17 @@
       },
       "description": "PID alarm code. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH8.0RT-20"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L794"
+        }
+      }
     },
     {
       "name": "battery_power",
@@ -1598,9 +1932,14 @@
       "unit_of_measurement": "W",
       "description": "Battery power. S32 with full range. Positive = charging, negative = discharging. Recommended instead of register 13022.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L372"
+        }
+      }
     },
     {
       "name": "export_power_string",
@@ -1610,10 +1949,12 @@
       "unit_of_measurement": "W",
       "description": "Power exported to grid. String inverter register (not available on SH hybrid models via WiNet).",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L810"
+        }
+      }
     },
     {
       "name": "power_meter",
@@ -1623,10 +1964,12 @@
       "unit_of_measurement": "W",
       "description": "Power meter reading. String inverter register.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L816"
+        }
+      }
     },
     {
       "name": "grid_frequency",
@@ -1637,9 +1980,14 @@
       "unit_of_measurement": "Hz",
       "description": "Grid frequency with 0.01Hz precision. Recommended instead of register 5036 (0.1Hz resolution).",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L386"
+        }
+      }
     },
     {
       "name": "meter_active_power",
@@ -1651,12 +1999,19 @@
       "indicator": "has_meter",
       "group": "has_meter",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
+        "hybrid-v1.1.11"
       ],
-      "unsupported_value": 2147483647
+      "unsupported_value": 2147483647,
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L401"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L825"
+        }
+      }
     },
     {
       "name": "meter_phase_a_active_power",
@@ -1667,12 +2022,19 @@
       "description": "Smart meter phase A active power. Positive = import from grid, negative = export to grid. Only valid with three-phase meter.",
       "group": "has_meter",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
+        "hybrid-v1.1.11"
       ],
-      "unsupported_value": 2147483647
+      "unsupported_value": 2147483647,
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L418"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L831"
+        }
+      }
     },
     {
       "name": "meter_phase_b_active_power",
@@ -1683,12 +2045,19 @@
       "description": "Smart meter phase B active power. Positive = import from grid, negative = export to grid. Only valid with three-phase meter.",
       "group": "has_meter",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
+        "hybrid-v1.1.11"
       ],
-      "unsupported_value": 2147483647
+      "unsupported_value": 2147483647,
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L435"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L837"
+        }
+      }
     },
     {
       "name": "meter_phase_c_active_power",
@@ -1699,12 +2068,19 @@
       "description": "Smart meter phase C active power. Positive = import from grid, negative = export to grid. Only valid with three-phase meter.",
       "group": "has_meter",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
+        "hybrid-v1.1.11"
       ],
-      "unsupported_value": 2147483647
+      "unsupported_value": 2147483647,
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L452"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L843"
+        }
+      }
     },
     {
       "name": "min_feed_in_power_limitation_value",
@@ -1725,11 +2101,17 @@
         "SH5.0RT"
       ],
       "description": "Minimum configurable feed-in power limitation value. Read-only system parameter.",
-      "source": [
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L468"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L849"
+        }
+      },
+      "unsupported_value": 65535
     },
     {
       "name": "max_feed_in_power_limitation_value",
@@ -1739,11 +2121,17 @@
       "accuracy": 10,
       "unit_of_measurement": "W",
       "description": "Maximum configurable feed-in power limitation value. Read-only system parameter.",
-      "source": [
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L482"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L856"
+        }
+      },
+      "unsupported_value": 65535
     },
     {
       "name": "bdc_rated_power",
@@ -1754,11 +2142,18 @@
       "unit_of_measurement": "W",
       "description": "BDC (bidirectional converter) rated power.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L495"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L863"
+        }
+      }
     },
     {
       "name": "battery_current",
@@ -1770,9 +2165,14 @@
       "unit_of_measurement": "A",
       "description": "Battery current with sign. Positive = charging, negative = discharging. Recommended instead of register 13021 (unsigned).",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L508"
+        }
+      }
     },
     {
       "name": "max_charging_current_bms",
@@ -1782,11 +2182,18 @@
       "unit_of_measurement": "A",
       "description": "Maximum charging current as reported by the battery management system (BMS).",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L521"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L870"
+        }
+      }
     },
     {
       "name": "max_discharging_current_bms",
@@ -1795,11 +2202,16 @@
       "data_type": "U16",
       "unit_of_measurement": "A",
       "description": "Maximum discharging current as reported by the battery management system (BMS).",
-      "source": [
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L534"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L876"
+        }
+      }
     },
     {
       "name": "battery_capacity",
@@ -1810,10 +2222,12 @@
       "accuracy": 0.01,
       "unit_of_measurement": "kWh",
       "description": "Battery capacity with 0.01 kWh precision. Recommended instead of register 13039 (0.1 kWh resolution).",
-      "source": [
-        "mkaiser",
-        "ha-sungrow"
-      ]
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L547"
+        }
+      }
     },
     {
       "name": "phase_a_backup_current",
@@ -1859,11 +2273,18 @@
       "unit_of_measurement": "W",
       "description": "Phase A backup (off-grid) output power.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L559"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L882"
+        }
+      }
     },
     {
       "name": "phase_b_backup_power",
@@ -1873,11 +2294,18 @@
       "unit_of_measurement": "W",
       "description": "Phase B backup (off-grid) output power.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L572"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L888"
+        }
+      }
     },
     {
       "name": "phase_c_backup_power",
@@ -1887,11 +2315,18 @@
       "unit_of_measurement": "W",
       "description": "Phase C backup (off-grid) output power.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L585"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L894"
+        }
+      }
     },
     {
       "name": "total_backup_power",
@@ -1901,9 +2336,14 @@
       "unit_of_measurement": "W",
       "description": "Total backup (off-grid) output power across all phases.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L598"
+        }
+      }
     },
     {
       "name": "phase_a_backup_voltage",
@@ -1962,10 +2402,14 @@
       "description": "96-entry array: PV power at 15-minute intervals throughout the day.",
       "group": "direct_lan",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L906"
+        }
+      }
     },
     {
       "name": "daily_pv_energy_yields",
@@ -1977,10 +2421,14 @@
       "description": "30-entry array: daily PV energy yields for the past 30 days.",
       "group": "direct_lan",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L912"
+        }
+      }
     },
     {
       "name": "monthly_pv_energy_yields",
@@ -1992,10 +2440,14 @@
       "description": "12-entry array: monthly PV energy yields for the past 12 months.",
       "group": "direct_lan",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L919"
+        }
+      }
     },
     {
       "name": "yearly_pv_energy_yields",
@@ -2007,8 +2459,7 @@
       "description": "20-entry array: yearly PV energy yields starting from 2019 (valid for 15 years).",
       "group": "direct_lan",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow"
+        "hybrid-v1.1.11"
       ]
     },
     {
@@ -2019,10 +2470,12 @@
       "unit_of_measurement": "W",
       "description": "96-entry array: direct PV consumption power at 15-minute intervals throughout the day.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L932"
+        }
+      }
     },
     {
       "name": "daily_direct_energy_consumption_from_pv",
@@ -2033,10 +2486,12 @@
       "unit_of_measurement": "kWh",
       "description": "31-entry array: daily direct PV consumption for the past 31 days.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L938"
+        }
+      }
     },
     {
       "name": "monthly_direct_energy_consumption_from_pv",
@@ -2047,10 +2502,12 @@
       "unit_of_measurement": "kWh",
       "description": "12-entry array: monthly direct PV consumption for the past 12 months.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L945"
+        }
+      }
     },
     {
       "name": "yearly_direct_energy_consumption_from_pv",
@@ -2060,10 +2517,7 @@
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
       "description": "20-entry array: yearly direct PV consumption starting from 2019 (valid for 15 years).",
-      "group": "direct_lan",
-      "source": [
-        "ha-sungrow"
-      ]
+      "group": "direct_lan"
     },
     {
       "name": "export_power_from_pv_of_today",
@@ -2077,10 +2531,14 @@
       "unit_of_measurement": "W",
       "description": "96-entry array: PV export power at 15-minute intervals throughout the day.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L959"
+        }
+      }
     },
     {
       "name": "daily_export_energy_from_pv",
@@ -2095,10 +2553,14 @@
       "unit_of_measurement": "kWh",
       "description": "31-entry array: daily PV export energy for the past 31 days.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L965"
+        }
+      }
     },
     {
       "name": "monthly_export_energy_from_pv",
@@ -2113,10 +2575,14 @@
       "unit_of_measurement": "kWh",
       "description": "12-entry array: monthly PV export energy for the past 12 months.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L972"
+        }
+      }
     },
     {
       "name": "yearly_export_energy_from_pv",
@@ -2131,8 +2597,7 @@
       "unit_of_measurement": "kWh",
       "description": "20-entry array: yearly PV export energy starting from 2019 (valid for 15 years).",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow"
+        "hybrid-v1.1.11"
       ]
     },
     {
@@ -2148,10 +2613,14 @@
       "unit_of_measurement": "kWh",
       "description": "96-entry array: battery charge power from PV at 15-minute intervals throughout the day.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L986"
+        }
+      }
     },
     {
       "name": "daily_battery_charge_energy_from_pv_history",
@@ -2165,10 +2634,12 @@
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
       "description": "31-entry array: daily battery charge energy from PV for the past 31 days. For current day scalar value, use daily_battery_charge_energy_from_pv (13012).",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L993"
+        }
+      }
     },
     {
       "name": "monthly_battery_charge_energy_from_pv",
@@ -2182,10 +2653,12 @@
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
       "description": "12-entry array: monthly battery charge energy from PV for the past 12 months.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1000"
+        }
+      }
     },
     {
       "name": "yearly_battery_charge_energy_from_pv",
@@ -2198,10 +2671,7 @@
       "data_type": "U32[20]",
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
-      "description": "20-entry array: yearly battery charge energy from PV starting from 2019 (valid for 15 years).",
-      "source": [
-        "ha-sungrow"
-      ]
+      "description": "20-entry array: yearly battery charge energy from PV starting from 2019 (valid for 15 years)."
     },
     {
       "name": "string_1_current",
@@ -2216,10 +2686,14 @@
       ],
       "description": "PV string 1 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1015"
+        }
+      }
     },
     {
       "name": "string_2_current",
@@ -2234,10 +2708,14 @@
       ],
       "description": "PV string 2 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1022"
+        }
+      }
     },
     {
       "name": "string_3_current",
@@ -2252,10 +2730,14 @@
       ],
       "description": "PV string 3 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1029"
+        }
+      }
     },
     {
       "name": "string_4_current",
@@ -2270,10 +2752,14 @@
       ],
       "description": "PV string 4 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1036"
+        }
+      }
     },
     {
       "name": "string_5_current",
@@ -2288,10 +2774,14 @@
       ],
       "description": "PV string 5 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1043"
+        }
+      }
     },
     {
       "name": "string_6_current",
@@ -2306,10 +2796,14 @@
       ],
       "description": "PV string 6 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1050"
+        }
+      }
     },
     {
       "name": "string_7_current",
@@ -2357,10 +2851,14 @@
       ],
       "description": "PV string 7 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1057"
+        }
+      }
     },
     {
       "name": "string_8_current",
@@ -2407,10 +2905,14 @@
       ],
       "description": "PV string 8 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1064"
+        }
+      }
     },
     {
       "name": "string_9_current",
@@ -2449,10 +2951,14 @@
       ],
       "description": "PV string 9 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1071"
+        }
+      }
     },
     {
       "name": "string_10_current",
@@ -2489,10 +2995,14 @@
       ],
       "description": "PV string 10 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1078"
+        }
+      }
     },
     {
       "name": "string_11_current",
@@ -2524,10 +3034,14 @@
       ],
       "description": "PV string 11 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1085"
+        }
+      }
     },
     {
       "name": "string_12_current",
@@ -2559,10 +3073,14 @@
       ],
       "description": "PV string 12 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1092"
+        }
+      }
     },
     {
       "name": "string_13_current",
@@ -2591,10 +3109,14 @@
       ],
       "description": "PV string 13 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1099"
+        }
+      }
     },
     {
       "name": "string_14_current",
@@ -2628,10 +3150,14 @@
       ],
       "description": "PV string 14 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1106"
+        }
+      }
     },
     {
       "name": "string_15_current",
@@ -2656,10 +3182,14 @@
       ],
       "description": "PV string 15 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1113"
+        }
+      }
     },
     {
       "name": "string_16_current",
@@ -2684,10 +3214,14 @@
       ],
       "description": "PV string 16 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1120"
+        }
+      }
     },
     {
       "name": "string_17_current",
@@ -2709,10 +3243,14 @@
       ],
       "description": "PV string 17 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1127"
+        }
+      }
     },
     {
       "name": "string_18_current",
@@ -2734,10 +3272,14 @@
       ],
       "description": "PV string 18 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1134"
+        }
+      }
     },
     {
       "name": "string_19_current",
@@ -2751,10 +3293,14 @@
       ],
       "description": "PV string 19 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1141"
+        }
+      }
     },
     {
       "name": "string_20_current",
@@ -2768,10 +3314,14 @@
       ],
       "description": "PV string 20 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1148"
+        }
+      }
     },
     {
       "name": "string_21_current",
@@ -2785,10 +3335,14 @@
       ],
       "description": "PV string 21 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1155"
+        }
+      }
     },
     {
       "name": "string_22_current",
@@ -2802,10 +3356,14 @@
       ],
       "description": "PV string 22 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1162"
+        }
+      }
     },
     {
       "name": "string_23_current",
@@ -2819,10 +3377,14 @@
       ],
       "description": "PV string 23 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1169"
+        }
+      }
     },
     {
       "name": "string_24_current",
@@ -2836,10 +3398,14 @@
       ],
       "description": "PV string 24 input current. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1176"
+        }
+      }
     },
     {
       "name": "running_state",
@@ -2883,11 +3449,18 @@
         "37120": "Warn Running"
       },
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L699"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1184"
+        }
+      }
     },
     {
       "name": "state_power_generated_from_pv",
@@ -2967,11 +3540,18 @@
       "mask": 128,
       "description": "Power flow status Bit7: negative load power (retrofit systems only).",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L713"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1254"
+        }
+      }
     },
     {
       "name": "daily_pv_generation",
@@ -2982,11 +3562,18 @@
       "unit_of_measurement": "kWh",
       "description": "Daily electricity generated through PV modules.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L724"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1260"
+        }
+      }
     },
     {
       "name": "total_pv_generation",
@@ -2997,11 +3584,18 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated electricity generated through PV modules.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L737"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1267"
+        }
+      }
     },
     {
       "name": "daily_export_power_from_pv",
@@ -3013,11 +3607,18 @@
       "unit_of_measurement": "kWh",
       "description": "Daily export electricity to grid from PV generation. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L751"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1274"
+        }
+      }
     },
     {
       "name": "total_export_energy_from_pv",
@@ -3029,11 +3630,18 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated export electricity to grid from PV generation. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L764"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1281"
+        }
+      }
     },
     {
       "name": "load_power",
@@ -3043,12 +3651,19 @@
       "unit_of_measurement": "W",
       "description": "Power consumed by loads. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
+        "hybrid-v1.1.11"
       ],
-      "unsupported_value": 2147483647
+      "unsupported_value": 2147483647,
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L778"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1288"
+        }
+      }
     },
     {
       "name": "export_power",
@@ -3058,12 +3673,19 @@
       "unit_of_measurement": "W",
       "description": "Power delivered by the inverter to the grid. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
+        "hybrid-v1.1.11"
       ],
-      "unsupported_value": 2147483647
+      "unsupported_value": 2147483647,
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L794"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1294"
+        }
+      }
     },
     {
       "name": "daily_battery_charge_energy_from_pv",
@@ -3074,11 +3696,16 @@
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
       "description": "Daily electricity that the inverter charges the batteries through the PV modules.",
-      "source": [
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L809"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1300"
+        }
+      }
     },
     {
       "name": "total_battery_charge_energy_from_pv",
@@ -3089,11 +3716,16 @@
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
       "description": "Accumulated electricity that the inverter charges the batteries through the PV modules.",
-      "source": [
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L822"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1307"
+        }
+      }
     },
     {
       "name": "co2_reduction",
@@ -3103,10 +3735,12 @@
       "accuracy": 0.1,
       "unit_of_measurement": "kg",
       "description": "Estimated CO2 reduction from PV generation.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1314"
+        }
+      }
     },
     {
       "name": "daily_direct_energy_consumption",
@@ -3116,11 +3750,16 @@
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
       "description": "Daily electricity taken from PV modules by loads directly. Only valid with smart energy meter.",
-      "source": [
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L836"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1321"
+        }
+      }
     },
     {
       "name": "total_direct_energy_consumption",
@@ -3131,11 +3770,18 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated electricity taken from PV modules by the inverter directly. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L849"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1328"
+        }
+      }
     },
     {
       "name": "battery_voltage",
@@ -3147,11 +3793,18 @@
       "unit_of_measurement": "V",
       "description": "Battery pack voltage.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L863"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1335"
+        }
+      }
     },
     {
       "name": "battery_current_legacy",
@@ -3163,8 +3816,7 @@
       "unit_of_measurement": "A",
       "description": "Battery current (unsigned, no sign for charge/discharge direction). Use battery_current (5631) instead for signed value.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow"
+        "hybrid-v1.1.11"
       ]
     },
     {
@@ -3176,8 +3828,7 @@
       "unit_of_measurement": "W",
       "description": "Battery power (U16 without sign). Data type is S16 for SH3.0-6.0RS and SH8.0-10RS. Use battery_power (5214) instead for S32 with full range.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow"
+        "hybrid-v1.1.11"
       ]
     },
     {
@@ -3190,11 +3841,18 @@
       "unit_of_measurement": "%",
       "description": "Battery state of charge (SOC) as percentage (0-100%).",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L912"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1355"
+        }
+      }
     },
     {
       "name": "battery_soh",
@@ -3206,11 +3864,18 @@
       "unit_of_measurement": "%",
       "description": "Battery state of health (SOH) as percentage. Indicates remaining battery capacity relative to original.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L926"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1362"
+        }
+      }
     },
     {
       "name": "battery_temperature",
@@ -3222,11 +3887,18 @@
       "unit_of_measurement": "°C",
       "description": "Battery temperature.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L938"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1369"
+        }
+      }
     },
     {
       "name": "daily_battery_discharge_energy",
@@ -3238,11 +3910,18 @@
       "unit_of_measurement": "kWh",
       "description": "Daily battery discharge energy.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L951"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1376"
+        }
+      }
     },
     {
       "name": "total_battery_discharge_energy",
@@ -3254,11 +3933,18 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated battery discharge energy.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L964"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1383"
+        }
+      }
     },
     {
       "name": "self_consumption_of_today",
@@ -3269,10 +3955,14 @@
       "unit_of_measurement": "%",
       "description": "Self-consumption ratio for today. Percentage of PV energy consumed locally vs exported.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1390"
+        }
+      }
     },
     {
       "name": "grid_state",
@@ -3285,13 +3975,15 @@
       },
       "description": "Reserved in protocol V1.1.9. May not return valid data on newer firmware.",
       "unsupported_value": 0,
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ],
       "models_unsupported": [
         "SH8.0RT-20"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1397"
+        }
+      }
     },
     {
       "name": "phase_a_current",
@@ -3302,11 +3994,18 @@
       "unit_of_measurement": "A",
       "description": "Phase A output current. For single-phase inverters, only phase A is valid.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L978"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1407"
+        }
+      }
     },
     {
       "name": "phase_b_current",
@@ -3317,11 +4016,18 @@
       "unit_of_measurement": "A",
       "description": "Phase B output current. Only valid for three-phase inverters.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L991"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1414"
+        }
+      }
     },
     {
       "name": "phase_c_current",
@@ -3332,11 +4038,18 @@
       "unit_of_measurement": "A",
       "description": "Phase C output current. Only valid for three-phase inverters.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1004"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1421"
+        }
+      }
     },
     {
       "name": "total_active_power_hybrid",
@@ -3350,11 +4063,18 @@
         "The update frequency of this register is quite low, maybe 10 seconds"
       ],
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1017"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1428"
+        }
+      }
     },
     {
       "name": "daily_import_energy",
@@ -3366,11 +4086,18 @@
       "unit_of_measurement": "kWh",
       "description": "Daily energy imported from grid. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1031"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1434"
+        }
+      }
     },
     {
       "name": "total_import_energy",
@@ -3383,11 +4110,18 @@
       "description": "Accumulated energy imported from grid. Group indicator for is_master. Only valid with smart energy meter.",
       "indicator": "is_master",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1044"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1441"
+        }
+      }
     },
     {
       "name": "battery_capacity_legacy",
@@ -3400,10 +4134,14 @@
       "description": "Battery capacity (0.1 kWh for Li-ion, 1 Ah for lead-acid). Use battery_capacity (5639) instead for 0.01 kWh precision.",
       "indicator": "has_battery",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1448"
+        }
+      }
     },
     {
       "name": "daily_charge_energy",
@@ -3415,11 +4153,18 @@
       "unit_of_measurement": "kWh",
       "description": "Daily total battery charge energy from all sources (PV, grid, etc.).",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1058"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1455"
+        }
+      }
     },
     {
       "name": "total_charge_energy",
@@ -3431,11 +4176,18 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated total battery charge energy.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1071"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1462"
+        }
+      }
     },
     {
       "name": "drm_state",
@@ -3444,10 +4196,14 @@
       "data_type": "U16",
       "description": "Demand Response Mode state (1-9: DRM0-DRM8, other values invalid).",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1469"
+        }
+      }
     },
     {
       "name": "daily_export_energy",
@@ -3459,11 +4215,18 @@
       "unit_of_measurement": "kWh",
       "description": "Daily electricity delivered by the inverter to the grid through PV modules or batteries. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1085"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1474"
+        }
+      }
     },
     {
       "name": "total_export_energy",
@@ -3475,11 +4238,18 @@
       "unit_of_measurement": "kWh",
       "description": "Accumulated electricity delivered by the inverter to the grid through PV modules or batteries. Only valid with smart energy meter.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1098"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1481"
+        }
+      }
     },
     {
       "name": "inverter_alarm",
@@ -3488,10 +4258,14 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=Fan Alarm, Bit1=AC Lightning, Bit2=DC Lightning, Bit4=Comm Alarm, Bit14=Meter Reversed, Bit30=Meter Comm Alarm, etc.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1488"
+        }
+      }
     },
     {
       "name": "grid_side_fault",
@@ -3500,10 +4274,14 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=Grid Overvoltage, Bit2=Grid Undervoltage, Bit6=Grid Overfrequency, Bit7=Grid Underfrequency, Bit8=Grid Power Outage, Bit10=Excessive Leakage Current, etc.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1494"
+        }
+      }
     },
     {
       "name": "system_fault_1",
@@ -3512,10 +4290,14 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=Inverter Switch Overtemp, Bit1=BOOST Switch Overtemp, Bit2=PV IR Fault, Bit4=EPS Relay Failure, etc.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1500"
+        }
+      }
     },
     {
       "name": "system_fault_2",
@@ -3524,10 +4306,14 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=Module Overtemp, Bit3=Low System Insulation, Bit7=Low Ambient Temp, Bit15=Backup Load Overpower, etc.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1506"
+        }
+      }
     },
     {
       "name": "dc_side_fault",
@@ -3536,10 +4322,14 @@
       "data_type": "U32",
       "description": "Bitmask: Bit4=PV Access Failure, Bit9=PV1 Reverse Connection, Bit10=PV2 Reverse Connection, Bit16=Bus Overvoltage HW Fault, etc.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1512"
+        }
+      }
     },
     {
       "name": "permanent_fault",
@@ -3548,10 +4338,14 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=PV Overcurrent Perm, Bit1=Inversion Overcurrent Perm, Bit3=Bus Overvoltage Perm, Bit4=Relay Perm Fault, etc.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1518"
+        }
+      }
     },
     {
       "name": "bdc_side_fault",
@@ -3560,10 +4354,14 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=BDC Charge Overcurrent, Bit1=BDC Discharge Overcurrent, Bit5=Battery Pre-charge Relay Failure, Bit12=BDC Overtemp, etc.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1524"
+        }
+      }
     },
     {
       "name": "bdc_side_permanent_fault",
@@ -3572,10 +4370,14 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=BDC Overcurrent Perm, Bit2=Battery Overvoltage Perm, Bit4=BDC Self-detect Perm, Bit7=BDC Soft Start Perm, etc.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1530"
+        }
+      }
     },
     {
       "name": "battery_fault",
@@ -3585,10 +4387,14 @@
       "data_type": "U32",
       "description": "Bitmask: Bit3=Battery Avg Undervoltage, Bit7=Battery Overtemp, Bit8=Battery Low Temp, Bit11=Battery Transient Overvoltage, Bit14=BMS Comm Fault, Bit16=Abnormal Battery Connection, etc.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1536"
+        }
+      }
     },
     {
       "name": "battery_alarm",
@@ -3598,10 +4404,14 @@
       "data_type": "U32",
       "description": "Bitmask: Bit0=BDC Temp Sensor Open Circuit, Bit1=BDC Temp Sensor Short Circuit.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1542"
+        }
+      }
     },
     {
       "name": "bms_alarm",
@@ -3610,10 +4420,14 @@
       "data_type": "U32",
       "description": "BMS alarm bitmask.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1548"
+        }
+      }
     },
     {
       "name": "bms_protection",
@@ -3622,10 +4436,14 @@
       "data_type": "U32",
       "description": "BMS protection bitmask.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1553"
+        }
+      }
     },
     {
       "name": "bms_fault_1",
@@ -3634,10 +4452,14 @@
       "data_type": "U32",
       "description": "BMS fault 1 bitmask. Uses battery communication address for RS485.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1558"
+        }
+      }
     },
     {
       "name": "bms_fault_2",
@@ -3646,10 +4468,14 @@
       "data_type": "U32",
       "description": "BMS fault 2 bitmask.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1563"
+        }
+      }
     },
     {
       "name": "bms_alarm_2",
@@ -3658,10 +4484,14 @@
       "data_type": "U32",
       "description": "BMS alarm 2 bitmask.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1568"
+        }
+      }
     },
     {
       "name": "bms_status",
@@ -3679,10 +4509,12 @@
       ],
       "description": "Legacy BMS status. Only for SH5K-20/SH3K6/SH4K6 series.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1573"
+        }
+      }
     },
     {
       "name": "max_charging_current",
@@ -3702,10 +4534,12 @@
       ],
       "unsupported_value": 30,
       "description": "Legacy BMS maximum charging current. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1578"
+        }
+      }
     },
     {
       "name": "max_discharging_current",
@@ -3725,10 +4559,12 @@
       ],
       "unsupported_value": 30,
       "description": "Legacy BMS maximum discharging current. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1584"
+        }
+      }
     },
     {
       "name": "warning",
@@ -3746,10 +4582,12 @@
       ],
       "unsupported_value": 0,
       "description": "Legacy BMS warning code. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1590"
+        }
+      }
     },
     {
       "name": "protection",
@@ -3767,10 +4605,12 @@
       ],
       "unsupported_value": 0,
       "description": "Legacy BMS protection code. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1595"
+        }
+      }
     },
     {
       "name": "fault1",
@@ -3788,10 +4628,12 @@
       ],
       "unsupported_value": 0,
       "description": "Legacy BMS fault 1 code. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1600"
+        }
+      }
     },
     {
       "name": "fault2",
@@ -3809,10 +4651,12 @@
       ],
       "unsupported_value": 0,
       "description": "Legacy BMS fault 2 code. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1605"
+        }
+      }
     },
     {
       "name": "soc",
@@ -3831,10 +4675,12 @@
       ],
       "unsupported_value": 0,
       "description": "Legacy BMS state of charge. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1610"
+        }
+      }
     },
     {
       "name": "soh",
@@ -3852,10 +4698,12 @@
       ],
       "unsupported_value": 0,
       "description": "Legacy BMS state of health. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1616"
+        }
+      }
     },
     {
       "name": "battery_current",
@@ -3875,10 +4723,12 @@
       ],
       "unsupported_value": 0,
       "description": "Battery current (unsigned, no sign for charge/discharge direction). Use battery_current (5631) instead for signed value.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1621"
+        }
+      }
     },
     {
       "name": "battery_voltage",
@@ -3899,10 +4749,12 @@
       ],
       "unsupported_value": 0,
       "description": "Battery pack voltage.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1627"
+        }
+      }
     },
     {
       "name": "cycle_count",
@@ -3921,10 +4773,12 @@
       ],
       "unsupported_value": 0,
       "description": "Battery cycle count. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1634"
+        }
+      }
     },
     {
       "name": "average_cell_voltage",
@@ -3943,10 +4797,12 @@
       ],
       "unsupported_value": 0,
       "description": "Average individual cell voltage. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1640"
+        }
+      }
     },
     {
       "name": "max_cell_voltage",
@@ -3965,10 +4821,12 @@
       ],
       "unsupported_value": 0,
       "description": "Maximum individual cell voltage. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1646"
+        }
+      }
     },
     {
       "name": "min_cell_voltage",
@@ -3987,10 +4845,12 @@
       ],
       "unsupported_value": 0,
       "description": "Minimum individual cell voltage. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1652"
+        }
+      }
     },
     {
       "name": "battery_pack_voltage",
@@ -4009,10 +4869,12 @@
         "SH4K6-30"
       ],
       "description": "Battery pack voltage. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1658"
+        }
+      }
     },
     {
       "name": "average_cell_temp",
@@ -4030,10 +4892,12 @@
         "SH4K6-30"
       ],
       "description": "Average cell temperature. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1664"
+        }
+      }
     },
     {
       "name": "max_cell_temp",
@@ -4051,10 +4915,12 @@
         "SH4K6-30"
       ],
       "description": "Maximum cell temperature. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1670"
+        }
+      }
     },
     {
       "name": "min_cell_temp",
@@ -4072,10 +4938,12 @@
         "SH4K6-30"
       ],
       "description": "Minimum cell temperature. Only for SH5K-20/SH3K6/SH4K6 series.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1676"
+        }
+      }
     },
     {
       "name": "channel_2_total_active_power",
@@ -4119,8 +4987,7 @@
       "data_type": "UTF-8[15]",
       "description": "Inverter firmware version string. Added in protocol V1.1.7. SH3.0-10RS and MG5-6RL not supported.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser"
+        "hybrid-v1.1.11"
       ],
       "models_unsupported": [
         "SH3.0RS",
@@ -4132,7 +4999,13 @@
         "SH10RS",
         "MG5RL",
         "MG6RL"
-      ]
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1285"
+        }
+      }
     },
     {
       "name": "communication_module_firmware_version",
@@ -4140,9 +5013,6 @@
       "address": 13265,
       "data_type": "UTF-8[15]",
       "description": "WiNet-S/S2/Logger communication module firmware version. Added in protocol V1.1.7.",
-      "source": [
-        "mkaiser"
-      ],
       "models_unsupported": [
         "SH3.0RS",
         "SH3.6RS",
@@ -4153,7 +5023,13 @@
         "SH10RS",
         "MG5RL",
         "MG6RL"
-      ]
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1296"
+        }
+      }
     },
     {
       "name": "battery_firmware_version",
@@ -4162,8 +5038,7 @@
       "data_type": "UTF-8[15]",
       "description": "Battery firmware version string. Added in protocol V1.1.7.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser"
+        "hybrid-v1.1.11"
       ],
       "models_unsupported": [
         "SH3.0RS",
@@ -4175,7 +5050,13 @@
         "SH10RS",
         "MG5RL",
         "MG6RL"
-      ]
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1307"
+        }
+      }
     },
     {
       "name": "alarm_time",
@@ -4201,10 +5082,14 @@
       "data_type": "U16",
       "description": "System clock: year (2000-2099). Receives time synchronization from monitoring system.",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1684"
+        }
+      }
     },
     {
       "name": "month",
@@ -4213,10 +5098,14 @@
       "data_type": "U16",
       "description": "System clock: month (1-12).",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1689"
+        }
+      }
     },
     {
       "name": "day",
@@ -4225,10 +5114,14 @@
       "data_type": "U16",
       "description": "System clock: day (1-31).",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1694"
+        }
+      }
     },
     {
       "name": "hour",
@@ -4237,10 +5130,14 @@
       "data_type": "U16",
       "description": "System clock: hour (0-23).",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1699"
+        }
+      }
     },
     {
       "name": "minute",
@@ -4249,10 +5146,14 @@
       "data_type": "U16",
       "description": "System clock: minute (0-59).",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1704"
+        }
+      }
     },
     {
       "name": "second",
@@ -4261,10 +5162,14 @@
       "data_type": "U16",
       "description": "System clock: second (0-59).",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1709"
+        }
+      }
     },
     {
       "name": "start_stop",
@@ -4277,10 +5182,14 @@
       },
       "description": "Inverter start/stop control (0xCF=Boot, 0xCE=Shutdown).",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1714"
+        }
+      }
     },
     {
       "name": "power_limitation_switch",
@@ -4293,10 +5202,14 @@
       },
       "description": "Active power limitation enable/disable.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1723"
+        }
+      }
     },
     {
       "name": "power_limitation_setting",
@@ -4307,10 +5220,14 @@
       "unit_of_measurement": "%",
       "description": "Active power limitation percentage.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1732"
+        }
+      }
     },
     {
       "name": "export_power_limitation",
@@ -4334,10 +5251,12 @@
       },
       "description": "Feed-in power limitation enable/disable. String inverter register.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1742"
+        }
+      }
     },
     {
       "name": "export_power_limitation_value",
@@ -4357,10 +5276,12 @@
       ],
       "description": "Feed-in power limitation value in watts. String inverter register.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1752"
+        }
+      }
     },
     {
       "name": "current_transformer_output_current",
@@ -4382,10 +5303,14 @@
       "description": "CT output current setting. String inverter register.",
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1757"
+        }
+      }
     },
     {
       "name": "current_transformer_range",
@@ -4407,10 +5332,14 @@
       "description": "CT current range setting. String inverter register.",
       "group": "direct_lan",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1763"
+        }
+      }
     },
     {
       "name": "current_transformer",
@@ -4434,10 +5363,12 @@
       },
       "description": "CT type selection: internal or external. String inverter register.",
       "group": "direct_lan",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1769"
+        }
+      }
     },
     {
       "name": "export_power_limitation_percentage",
@@ -4463,10 +5394,14 @@
       ],
       "description": "Feed-in power limitation as percentage. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1779"
+        }
+      }
     },
     {
       "name": "installed_pv_power",
@@ -4487,10 +5422,12 @@
         "SG20KTL-M"
       ],
       "description": "Installed PV power capacity. String inverter register.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1786"
+        }
+      }
     },
     {
       "name": "power_factor_setting",
@@ -4499,13 +5436,15 @@
       "data_type": "U16",
       "accuracy": 0.001,
       "description": "Power factor setpoint. String inverter register.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ],
       "models_unsupported": [
         "SH*"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1793"
+        }
+      }
     },
     {
       "name": "scheduling_achieve_active_overload",
@@ -4547,10 +5486,12 @@
         "0xAA": "Enable"
       },
       "description": "Scheduling active overload control enable/disable.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1798"
+        }
+      }
     },
     {
       "name": "night_svg_switch",
@@ -4594,10 +5535,12 @@
         "0xAA": "Enable"
       },
       "description": "Night SVG (Static Var Generator) enable/disable.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1811"
+        }
+      }
     },
     {
       "name": "reactive_power_adjustment_mode",
@@ -4613,10 +5556,14 @@
       },
       "description": "Reactive power adjustment mode: off, PF setting, Q% setting, Q(P), or Q(U).",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1821"
+        }
+      }
     },
     {
       "name": "reactive_power_percentage_setting",
@@ -4627,10 +5574,14 @@
       "unit_of_measurement": "%",
       "description": "Reactive power percentage setpoint.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1836"
+        }
+      }
     },
     {
       "name": "power_limitation_adjustment",
@@ -4641,13 +5592,17 @@
       "unit_of_measurement": "kW",
       "description": "Power limitation adjustment value. String inverter register.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
+        "string-v1.1.37"
       ],
       "models_unsupported": [
         "SH*"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1844"
+        }
+      }
     },
     {
       "name": "reactive_power_adjustment",
@@ -4657,10 +5612,12 @@
       "accuracy": 100,
       "unit_of_measurement": "var",
       "description": "Reactive power adjustment value.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1850"
+        }
+      }
     },
     {
       "name": "pid_recovery",
@@ -4714,10 +5671,14 @@
       },
       "description": "PID recovery enable/disable.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1856"
+        }
+      }
     },
     {
       "name": "anti_pid",
@@ -4740,10 +5701,14 @@
       },
       "description": "Anti-PID enable/disable.",
       "source": [
-        "string-v1.1.37",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "string-v1.1.37"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1866"
+        }
+      }
     },
     {
       "name": "fullday_pid_suppression",
@@ -4761,10 +5726,12 @@
         "0xAA": "Enable"
       },
       "description": "Full-day PID suppression enable/disable.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1876"
+        }
+      }
     },
     {
       "name": "battery_module_1_max_cell_voltage",
@@ -4795,8 +5762,7 @@
       },
       "description": "Hybrid inverter start/stop control (0xCF=Boot, 0xCE=Shutdown).",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow"
+        "hybrid-v1.1.11"
       ]
     },
     {
@@ -4815,10 +5781,15 @@
       "data_type": "U16",
       "level": 5,
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser"
+        "hybrid-v1.1.11"
       ],
-      "description": "From hybrid protocol V1.1.11: Load Control Mode"
+      "description": "From hybrid protocol V1.1.11: Load Control Mode",
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1115"
+        }
+      }
     },
     {
       "name": "load_timing_period_1_start_hour",
@@ -4910,10 +5881,15 @@
       "data_type": "U16",
       "level": 5,
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser"
+        "hybrid-v1.1.11"
       ],
-      "description": "From hybrid protocol V1.1.11: Load ON/OFF mode"
+      "description": "From hybrid protocol V1.1.11: Load ON/OFF mode",
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1124"
+        }
+      }
     },
     {
       "name": "load_power_optimized_mode_start_hour",
@@ -5011,11 +5987,18 @@
       },
       "description": "Energy management mode: 0=Self-consumption (default), 2=Compulsory, 3=External EMS, 4=VPP.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1147"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1893"
+        }
+      }
     },
     {
       "name": "charge_discharge_command",
@@ -5029,11 +6012,18 @@
       },
       "description": "Battery charge/discharge command: 0xAA = Charge, 0xBB = Discharge, 0xCC = Stop (default).",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1156"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1905"
+        }
+      }
     },
     {
       "name": "charge_discharge_power",
@@ -5050,11 +6040,18 @@
       ],
       "description": "Battery charge/discharge power setting. 0-100% of BDC rated power (register 5628).",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1166"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1917"
+        }
+      }
     },
     {
       "name": "max_soc",
@@ -5065,10 +6062,14 @@
       "accuracy": 0.1,
       "description": "Maximum battery SOC upper limit (50.0-100.0%). Battery stops charging above this value.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1182"
+        }
+      }
     },
     {
       "name": "min_soc",
@@ -5079,10 +6080,14 @@
       "accuracy": 0.1,
       "description": "Minimum battery SOC lower limit (0.0-50.0%). Battery stops discharging below this value.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1195"
+        }
+      }
     },
     {
       "name": "feed_in_limitation_value",
@@ -5092,10 +6097,14 @@
       "unit_of_measurement": "W",
       "description": "Feed-in power limitation value in watts. Controls max power fed into grid at the meter point.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1209"
+        }
+      }
     },
     {
       "name": "off_grid_option",
@@ -5103,10 +6112,15 @@
       "data_type": "U16",
       "level": 5,
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser"
+        "hybrid-v1.1.11"
       ],
-      "description": "From hybrid protocol V1.1.11: Off-grid option"
+      "description": "From hybrid protocol V1.1.11: Off-grid option",
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1223"
+        }
+      }
     },
     {
       "name": "external_ems_heartbeat",
@@ -5134,10 +6148,12 @@
         "SH5.0RT"
       ],
       "description": "Battery charge start power threshold.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1924"
+        }
+      }
     },
     {
       "name": "start_discharging_power",
@@ -5155,10 +6171,12 @@
         "SH5.0RT"
       ],
       "description": "Battery discharge start power threshold.",
-      "source": [
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1931"
+        }
+      }
     },
     {
       "name": "meter_comm_detection",
@@ -5178,10 +6196,14 @@
       ],
       "description": "Smart energy meter communication detection enable/disable (0xAA = Enable, 0x55 = Disable).",
       "source": [
-        "hybrid-v1.1.11",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1938"
+        }
+      }
     },
     {
       "name": "feed_in_limitation",
@@ -5201,11 +6223,18 @@
       ],
       "description": "Feed-in power limitation enable/disable (0xAA = Enable, 0x55 = Disable).",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1233"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1948"
+        }
+      }
     },
     {
       "name": "feed_in_limitation_ratio",
@@ -5235,13 +6264,18 @@
       "description": "Active power limitation enable/disable. Controls inverter AC output port (vs feed-in at grid connection point). Added in V1.1.7. On some SH*T firmware, this register returns 0xFFFF; use active_power_limit_enable (31204) instead.",
       "source": [
         "hybrid-v1.1.11",
-        "mkaiser",
         "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/issues/554"
       ],
       "models_unsupported": [
         "MG5RL",
         "MG6RL"
-      ]
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1249"
+        }
+      }
     },
     {
       "name": "active_power_limit_ratio",
@@ -5253,9 +6287,14 @@
       "description": "Active power limitation ratio (0-100%). Controls inverter AC output as percentage of rated power. Added in V1.1.7. On some SH*T firmware, this register returns 0xFFFF; use active_power_limit_percent (31205) instead.",
       "source": [
         "hybrid-v1.1.11",
-        "mkaiser",
         "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/issues/554"
-      ]
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1260"
+        }
+      }
     },
     {
       "name": "reserved_soc_for_backup",
@@ -5271,11 +6310,16 @@
         "SH5.0RT"
       ],
       "description": "Minimum reserved SOC for backup (off-grid) operation (0-100%). Battery enters emergency charging when SOC drops below this.",
-      "source": [
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1271"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1958"
+        }
+      }
     },
     {
       "name": "active_power_limit_enable",
@@ -5315,7 +6359,13 @@
       "description": "When On, the inverter shuts down if the active power limitation ratio (31205) reaches 0%. Set to Off before lowering active_power_limit_percent to 0% to avoid an unintended shutdown.",
       "source": [
         "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/issues/554"
-      ]
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1319"
+        }
+      }
     },
     {
       "name": "feed_in_limitation_value_wide_range",
@@ -5350,11 +6400,18 @@
       "accuracy": 10,
       "description": "Maximum battery charging power limit.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1329"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1965"
+        }
+      }
     },
     {
       "name": "max_discharging_power",
@@ -5365,11 +6422,18 @@
       "accuracy": 10,
       "description": "Maximum battery discharging power limit.",
       "source": [
-        "hybrid-v1.1.11",
-        "mkaiser",
-        "ha-sungrow",
-        "sungather"
-      ]
+        "hybrid-v1.1.11"
+      ],
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1343"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1972"
+        }
+      }
     },
     {
       "name": "battery_capacity_2",
@@ -5381,9 +6445,6 @@
       "accuracy": 0.01,
       "unsupported_value": 0,
       "description": "Battery capacity setting. Community-sourced register.",
-      "source": [
-        "ha-sungrow"
-      ],
       "models_unsupported": [
         "SH8.0RT-20",
         "WiNet"
@@ -5415,10 +6476,12 @@
       "accuracy": 10,
       "unsupported_value": 0,
       "description": "Battery charge start power setting.",
-      "source": [
-        "mkaiser",
-        "ha-sungrow"
-      ]
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1356"
+        }
+      }
     },
     {
       "name": "battery_charge_stop_power",
@@ -5433,10 +6496,12 @@
       "accuracy": 10,
       "unsupported_value": 0,
       "description": "Battery charge stop power setting.",
-      "source": [
-        "mkaiser",
-        "ha-sungrow"
-      ]
+      "other_registries": {
+        "mkaiser": {
+          "name": "mkaiser",
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L1369"
+        }
+      }
     },
     {
       "name": "weekly_discharging_start_time_1_hour",
@@ -5807,10 +6872,7 @@
         "0x55": "Disabled",
         "0xAA": "Enabled"
       },
-      "description": "Master/slave mode enable/disable.",
-      "source": [
-        "ha-sungrow"
-      ]
+      "description": "Master/slave mode enable/disable."
     },
     {
       "name": "master_slave_role",
@@ -5824,20 +6886,14 @@
         "0xA3": "Slave 3",
         "0xA4": "Slave 4"
       },
-      "description": "Master/slave role (0xA0=Master, 0xA1=Slave 1, 0xA2=Slave 2, ...).",
-      "source": [
-        "ha-sungrow"
-      ]
+      "description": "Master/slave role (0xA0=Master, 0xA1=Slave 1, 0xA2=Slave 2, ...)."
     },
     {
       "name": "inverter_count",
       "address": 33502,
       "level": 1,
       "data_type": "U16",
-      "description": "Total inverter count in master/slave system (including master).",
-      "source": [
-        "ha-sungrow"
-      ]
+      "description": "Total inverter count in master/slave system (including master)."
     }
   ]
 }

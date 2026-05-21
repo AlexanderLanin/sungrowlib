@@ -24,8 +24,12 @@ import yaml  # pyright: ignore[reportMissingModuleSource]
 
 SOURCES: dict[str, str] = {
     "mkaiser": "https://raw.githubusercontent.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/main/modbus_sungrow.yaml",
-    "ha-sungrow": "https://raw.githubusercontent.com/AlexanderLanin/homeassistant-sungrow/main/custom_components/sungrow/core/registers-sungrow.yaml",
     "sungather": "https://raw.githubusercontent.com/bohdan-s/SunGather/main/SunGather/registers-sungrow.yaml",
+}
+
+REGISTRY_NAMES: dict[str, str] = {
+    "mkaiser": "mkaiser",
+    "sungather": "SunGather",
 }
 
 CACHE_DIR = Path("/tmp/sungrow-catalog-cache")
@@ -255,65 +259,6 @@ def _convert_decoded(raw: dict[Any, Any]) -> dict[str, str]:
     return {str(int(str(k), 0)): str(v) for k, v in raw.items()}
 
 
-def _ha_sungrow_line_index(text: str) -> dict[tuple[int, str], int]:
-    try:
-        doc = yaml.compose(text, Loader=yaml.SafeLoader)
-        result: dict[tuple[int, str], int] = {}
-        for section, reg_type in [("read", "read"), ("hold", "hold")]:
-            for item in _node_seq(_node_get(doc, section)):
-                addr_str = _node_scalar(item, "address")
-                if addr_str is None:
-                    continue
-                result[(int(addr_str), reg_type)] = item.start_mark.line + 1
-        return result
-    except Exception:
-        return {}
-
-
-def parse_ha_sungrow(text: str) -> list[NormalizedRegister]:
-    if not text:
-        return []
-
-    line_index = _ha_sungrow_line_index(text)
-    data: dict[str, Any] = yaml.safe_load(text) or {}
-    result: list[NormalizedRegister] = []
-
-    for section, reg_type in [("read", "read"), ("hold", "hold")]:
-        for entry in data.get(section, []):
-            if "address" not in entry or "data_type" not in entry:
-                continue
-
-            raw_dt: str = str(entry["data_type"])
-            base_dt = raw_dt.split("[")[0] if "[" in raw_dt else raw_dt
-            addr: int = int(entry["address"])
-
-            extra = ExtraFields()
-            if "decoded" in entry:
-                extra.decoded = _convert_decoded(entry["decoded"])
-            if "models" in entry:
-                extra.models = entry["models"]
-            if "models_exclude" in entry:
-                extra.models_exclude = entry["models_exclude"]
-            if "group" in entry:
-                extra.group = entry["group"]
-            if "mask" in entry:
-                extra.mask = entry["mask"]
-
-            result.append(NormalizedRegister(
-                name=str(entry.get("name", "unknown")),
-                address=addr,
-                type=reg_type,
-                data_type=base_dt,
-                scale=entry.get("accuracy") or entry.get("scale"),
-                unit=entry.get("unit_of_measurement"),
-                source="ha-sungrow",
-                source_line=line_index.get((addr, reg_type)),
-                extra=extra,
-            ))
-
-    return result
-
-
 def _convert_datarange(datarange: list[dict[Any, Any]]) -> dict[str, str]:
     result = {}
     for item in datarange:
@@ -382,7 +327,6 @@ def parse_sungather(text: str) -> list[NormalizedRegister]:
 
 PARSERS: dict[str, Callable[[str], list[NormalizedRegister]]] = {
     "mkaiser": parse_mkaiser,
-    "ha-sungrow": parse_ha_sungrow,
     "sungather": parse_sungather,
 }
 
@@ -480,8 +424,8 @@ def update_catalog(all_theirs: dict[str, list[NormalizedRegister]]) -> None:
             if "address" in entry:
                 catalog_index[(entry["address"], section)] = entry
 
-    stats: dict[str, int] = {"source_added": 0, "decoded": 0, "unsupported_value": 0,
-                              "models": 0, "models_exclude": 0, "group": 0, "mask": 0}
+    stats: dict[str, int] = {"other_registries": 0, "decoded": 0, "unsupported_value": 0,
+                              "models": 0, "models_unsupported": 0, "group": 0, "mask": 0}
 
     for source_name, regs in all_theirs.items():
         theirs_by_key = {(r.address, r.type): r for r in regs}
@@ -496,10 +440,22 @@ def update_catalog(all_theirs: dict[str, list[NormalizedRegister]]) -> None:
             if our_base_dt != their_reg.data_type:
                 continue
 
-            sources: list[str] = our_entry.setdefault("source", [])
-            if source_name not in sources:
-                sources.append(source_name)
-                stats["source_added"] += 1
+            # Build other_registries entry with direct line-anchored link
+            link = (
+                _github_line_url(source_name, their_reg.source_line)
+                if their_reg.source_line is not None
+                else _raw_to_github_file_url(SOURCES[source_name])
+            )
+            other_registries: dict[str, Any] = our_entry.setdefault("other_registries", {})
+            if source_name not in other_registries:
+                stats["other_registries"] += 1
+            other_registries[source_name] = {"name": REGISTRY_NAMES[source_name], "link": link}
+
+            # Remove community handle from source (now expressed in other_registries)
+            if "source" in our_entry and source_name in our_entry["source"]:
+                our_entry["source"].remove(source_name)
+                if not our_entry["source"]:
+                    del our_entry["source"]
 
             ex = their_reg.extra
 
@@ -515,9 +471,9 @@ def update_catalog(all_theirs: dict[str, list[NormalizedRegister]]) -> None:
                 our_entry["models"] = ex.models
                 stats["models"] += 1
 
-            if ex.models_exclude and "models_exclude" not in our_entry:
-                our_entry["models_exclude"] = ex.models_exclude
-                stats["models_exclude"] += 1
+            if ex.models_exclude and "models_unsupported" not in our_entry:
+                our_entry["models_unsupported"] = ex.models_exclude
+                stats["models_unsupported"] += 1
 
             if ex.group is not None and "group" not in our_entry:
                 our_entry["group"] = ex.group

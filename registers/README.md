@@ -39,7 +39,8 @@ Each entry:
 | `decoded` | object | | Map of raw value → human-readable string (e.g. `{"0": "Stop", "32768": "Run"}`) |
 | `mask` | number | | Bitmask for boolean extraction (e.g. `1` = bit 0) |
 | `unsupported_value` | number \| null \| `"None"` | | Raw value that means "not supported". Omit when the value equals the type's implicit N/A sentinel (`0xFFFF` for U16, `0x7FFF` for S16, `0xFFFFFFFF` for U32, `0x7FFFFFFF` for S32) — those are already implied by the type. Only set this field for non-standard sentinels (e.g. `0` meaning absent). |
-| `source` | string[] | | Official protocol document(s) defining this register (see below) |
+| `source` | string[] | | Official protocol document short IDs or direct URLs (issues, PRs) for this register (see below) |
+| `other_registries` | object | | Map of community registry handle → `{name, link}` where `link` is a direct line-anchored URL in that registry's source file. Populated by `compare.py --update`. |
 
 ### Detail Levels
 
@@ -60,7 +61,7 @@ Each register can have a `source` field indicating which official Sungrow protoc
 | `hybrid-v1.1.11` | Communication Protocol of Residential Hybrid Inverter V1.1.11 |
 | `string-v1.1.37` | Communication Protocol of PV Grid-Connected String Inverters V1.1.37 |
 
-Always an array. Entries are either short identifiers (see table above) or full URLs to community threads, issues, or PRs where the register was documented. Registers without a `source` field originate from community projects (homeassistant-sungrow, SunGather, mkaiser) and have not been verified against an official protocol document.
+Always an array. Entries are official protocol short IDs (see table above) or full URLs to community threads, issues, or PRs. Community registry handles are no longer stored here — they appear in `other_registries` instead. Registers without a `source` field have not been verified against an official protocol document.
 
 The protocol PDFs and their text extractions are in [`docs/`](docs/).
 
