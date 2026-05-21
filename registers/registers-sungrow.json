@@ -251,15 +251,15 @@
       "address": 5006,
       "data_type": "U32",
       "unit_of_measurement": "h",
-      "models_exclude": [
-        "SH8.0RT-20"
-      ],
       "unsupported_value": 0,
       "description": "Accumulated running time. String inverter register, reserved for SH hybrid models.",
       "source": [
         "string-v1.1.37",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20"
       ]
     },
     {
@@ -368,9 +368,6 @@
       "data_type": "U16",
       "accuracy": 0.1,
       "unit_of_measurement": "V",
-      "models_exclude": [
-        "SH8.0RT-20"
-      ],
       "unsupported_value": "None",
       "description": "MPPT 3 input voltage.",
       "source": [
@@ -379,6 +376,9 @@
         "mkaiser",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20"
       ]
     },
     {
@@ -389,9 +389,6 @@
       "data_type": "U16",
       "accuracy": 0.1,
       "unit_of_measurement": "A",
-      "models_exclude": [
-        "SH8.0RT-20"
-      ],
       "unsupported_value": "None",
       "description": "MPPT 3 input current.",
       "indicator": "mppt3",
@@ -401,6 +398,9 @@
         "mkaiser",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20"
       ]
     },
     {
@@ -476,14 +476,14 @@
       "accuracy": 0.1,
       "unit_of_measurement": "A",
       "description": "String inverter register. Reserved in hybrid protocol (use 13031 for SH models).",
-      "models_exclude": [
-        "SH*"
-      ],
       "group": "direct_lan",
       "source": [
         "string-v1.1.37",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH*"
       ]
     },
     {
@@ -494,14 +494,14 @@
       "accuracy": 0.1,
       "unit_of_measurement": "A",
       "description": "String inverter register. Reserved in hybrid protocol (use 13032 for SH models).",
-      "models_exclude": [
-        "SH*"
-      ],
       "group": "direct_lan",
       "source": [
         "string-v1.1.37",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH*"
       ]
     },
     {
@@ -512,14 +512,14 @@
       "accuracy": 0.1,
       "unit_of_measurement": "A",
       "description": "String inverter register. Reserved in hybrid protocol (use 13033 for SH models).",
-      "models_exclude": [
-        "SH*"
-      ],
       "group": "direct_lan",
       "source": [
         "string-v1.1.37",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH*"
       ]
     },
     {
@@ -529,13 +529,13 @@
       "data_type": "S32",
       "unit_of_measurement": "W",
       "description": "String inverter register. Reserved (5022-5032) in hybrid protocol. Use 13034 for SH models.",
-      "models_exclude": [
-        "SH*"
-      ],
       "group": "direct_lan",
       "source": [
         "string-v1.1.37",
         "ha-sungrow"
+      ],
+      "models_unsupported": [
+        "SH*"
       ]
     },
     {
@@ -602,14 +602,14 @@
         "33280": "Dispatch Run",
         "37120": "Alarm Run"
       },
-      "models_exclude": [
-        "SH*",
-        "WiNet"
-      ],
       "description": "Inverter work state. String inverter register, excluded for SH hybrid models.",
       "source": [
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH*",
+        "WiNet"
       ]
     },
     {
@@ -617,14 +617,14 @@
       "level": 5,
       "address": 5039,
       "data_type": "U16",
-      "models_exclude": [
-        "SH*",
-        "WiNet"
-      ],
       "description": "Alarm timestamp: year. String inverter register.",
       "source": [
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH*",
+        "WiNet"
       ]
     },
     {
@@ -632,14 +632,14 @@
       "level": 5,
       "address": 5040,
       "data_type": "U16",
-      "models_exclude": [
-        "SH*",
-        "WiNet"
-      ],
       "description": "Alarm timestamp: month. String inverter register.",
       "source": [
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH*",
+        "WiNet"
       ]
     },
     {
@@ -647,14 +647,14 @@
       "level": 5,
       "address": 5041,
       "data_type": "U16",
-      "models_exclude": [
-        "SH*",
-        "WiNet"
-      ],
       "description": "Alarm timestamp: day. String inverter register.",
       "source": [
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH*",
+        "WiNet"
       ]
     },
     {
@@ -662,14 +662,14 @@
       "level": 5,
       "address": 5042,
       "data_type": "U16",
-      "models_exclude": [
-        "SH*",
-        "WiNet"
-      ],
       "description": "Alarm timestamp: hour. String inverter register.",
       "source": [
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH*",
+        "WiNet"
       ]
     },
     {
@@ -677,14 +677,14 @@
       "level": 5,
       "address": 5043,
       "data_type": "U16",
-      "models_exclude": [
-        "SH*",
-        "WiNet"
-      ],
       "description": "Alarm timestamp: minute. String inverter register.",
       "source": [
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH*",
+        "WiNet"
       ]
     },
     {
@@ -692,25 +692,25 @@
       "level": 5,
       "address": 5045,
       "data_type": "U16",
-      "models_exclude": [
+      "description": "Alarm timestamp: second. String inverter register.",
+      "models_unsupported": [
         "SH*",
         "WiNet"
-      ],
-      "description": "Alarm timestamp: second. String inverter register."
+      ]
     },
     {
       "name": "alarm_code_1",
       "level": 5,
       "address": 5045,
       "data_type": "U16",
-      "models_exclude": [
-        "SH*",
-        "WiNet"
-      ],
       "description": "Primary alarm code. String inverter register.",
       "source": [
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH*",
+        "WiNet"
       ]
     },
     {
@@ -747,13 +747,13 @@
       "address": 5077,
       "data_type": "U32",
       "unit_of_measurement": "W",
-      "models_exclude": [
-        "SH8.0RT-20"
-      ],
       "description": "Active power regulation setpoint. String inverter register.",
       "source": [
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20"
       ]
     },
     {
@@ -790,14 +790,14 @@
         "17": "Total Run Bit",
         "18": "Total Fault Bit"
       },
-      "models_exclude": [
-        "SH8.0RT-20"
-      ],
       "description": "Extended inverter work state (U32). String inverter register.",
       "source": [
         "string-v1.1.37",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20"
       ]
     },
     {
@@ -945,14 +945,14 @@
       "data_type": "U32",
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
-      "models_exclude": [
-        "SH8.0RT-20"
-      ],
       "description": "Accumulated energy imported from grid. String inverter register.",
       "source": [
         "string-v1.1.37",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20"
       ]
     },
     {
@@ -995,14 +995,14 @@
       "address": 5113,
       "data_type": "U16",
       "unit_of_measurement": "min",
-      "models_exclude": [
-        "SH8.0RT-20"
-      ],
       "description": "Daily running time in minutes. String inverter register.",
       "source": [
         "string-v1.1.37",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20"
       ]
     },
     {
@@ -1051,8 +1051,7 @@
         "mkaiser",
         "ha-sungrow",
         "sungather"
-      ],
-      "unsupported_value": 65535
+      ]
     },
     {
       "name": "mppt_4_current",
@@ -1091,8 +1090,7 @@
         "mkaiser",
         "ha-sungrow",
         "sungather"
-      ],
-      "unsupported_value": 65535
+      ]
     },
     {
       "name": "mppt_5_voltage",
@@ -1302,13 +1300,13 @@
       "data_type": "U32",
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
-      "models_exclude": [
-        "SH8.0RT-20"
-      ],
       "description": "Monthly energy yield.",
       "source": [
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20"
       ]
     },
     {
@@ -1497,14 +1495,14 @@
       "data_type": "U32",
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
-      "models_exclude": [
-        "SH8.0RT-20"
-      ],
       "description": "Accumulated total energy yield.",
       "source": [
         "string-v1.1.37",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20"
       ]
     },
     {
@@ -1561,14 +1559,14 @@
         "4": "Anti-PID Operation",
         "8": "PID Abnormity"
       },
-      "models_exclude": [
-        "SH8.0RT-20"
-      ],
       "description": "PID (Potential Induced Degradation) work state. String inverter register.",
       "source": [
         "string-v1.1.37",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20"
       ]
     },
     {
@@ -1581,14 +1579,14 @@
         "433": "PID function abnormal",
         "434": "PID overvoltage/overcurrent protection"
       },
-      "models_exclude": [
-        "SH8.0RT-20"
-      ],
       "description": "PID alarm code. String inverter register.",
       "source": [
         "string-v1.1.37",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20"
       ]
     },
     {
@@ -1731,8 +1729,7 @@
         "mkaiser",
         "ha-sungrow",
         "sungather"
-      ],
-      "unsupported_value": 65535
+      ]
     },
     {
       "name": "max_feed_in_power_limitation_value",
@@ -1746,8 +1743,7 @@
         "mkaiser",
         "ha-sungrow",
         "sungather"
-      ],
-      "unsupported_value": 65535
+      ]
     },
     {
       "name": "bdc_rated_power",
@@ -3284,17 +3280,17 @@
       "address": 13030,
       "data_type": "U16",
       "decoded": {
-        "85": "On-grid",
-        "170": "Off-grid"
+        "0x55": "On-grid",
+        "0xAA": "Off-grid"
       },
       "description": "Reserved in protocol V1.1.9. May not return valid data on newer firmware.",
-      "models_exclude": [
-        "SH8.0RT-20"
-      ],
       "unsupported_value": 0,
       "source": [
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20"
       ]
     },
     {
@@ -4122,7 +4118,11 @@
       "address": 13250,
       "data_type": "UTF-8[15]",
       "description": "Inverter firmware version string. Added in protocol V1.1.7. SH3.0-10RS and MG5-6RL not supported.",
-      "models_exclude": [
+      "source": [
+        "hybrid-v1.1.11",
+        "mkaiser"
+      ],
+      "models_unsupported": [
         "SH3.0RS",
         "SH3.6RS",
         "SH4.0RS",
@@ -4132,10 +4132,6 @@
         "SH10RS",
         "MG5RL",
         "MG6RL"
-      ],
-      "source": [
-        "hybrid-v1.1.11",
-        "mkaiser"
       ]
     },
     {
@@ -4144,7 +4140,10 @@
       "address": 13265,
       "data_type": "UTF-8[15]",
       "description": "WiNet-S/S2/Logger communication module firmware version. Added in protocol V1.1.7.",
-      "models_exclude": [
+      "source": [
+        "mkaiser"
+      ],
+      "models_unsupported": [
         "SH3.0RS",
         "SH3.6RS",
         "SH4.0RS",
@@ -4154,9 +4153,6 @@
         "SH10RS",
         "MG5RL",
         "MG6RL"
-      ],
-      "source": [
-        "mkaiser"
       ]
     },
     {
@@ -4165,7 +4161,11 @@
       "address": 13280,
       "data_type": "UTF-8[15]",
       "description": "Battery firmware version string. Added in protocol V1.1.7.",
-      "models_exclude": [
+      "source": [
+        "hybrid-v1.1.11",
+        "mkaiser"
+      ],
+      "models_unsupported": [
         "SH3.0RS",
         "SH3.6RS",
         "SH4.0RS",
@@ -4175,10 +4175,6 @@
         "SH10RS",
         "MG5RL",
         "MG6RL"
-      ],
-      "source": [
-        "hybrid-v1.1.11",
-        "mkaiser"
       ]
     },
     {
@@ -4276,8 +4272,8 @@
       "address": 5006,
       "data_type": "U16",
       "decoded": {
-        "206": "Stop",
-        "207": "Start"
+        "0xCE": "Stop",
+        "0xCF": "Start"
       },
       "description": "Inverter start/stop control (0xCF=Boot, 0xCE=Shutdown).",
       "source": [
@@ -4292,8 +4288,8 @@
       "address": 5007,
       "data_type": "U16",
       "decoded": {
-        "85": "Disable",
-        "170": "Enable"
+        "0x55": "Disable",
+        "0xAA": "Enable"
       },
       "description": "Active power limitation enable/disable.",
       "source": [
@@ -4333,8 +4329,8 @@
         "SG20KTL-M"
       ],
       "decoded": {
-        "85": "Disable",
-        "170": "Enable"
+        "0x55": "Disable",
+        "0xAA": "Enable"
       },
       "description": "Feed-in power limitation enable/disable. String inverter register.",
       "group": "direct_lan",
@@ -4502,13 +4498,13 @@
       "address": 5019,
       "data_type": "U16",
       "accuracy": 0.001,
-      "models_exclude": [
-        "SH*"
-      ],
       "description": "Power factor setpoint. String inverter register.",
       "source": [
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH*"
       ]
     },
     {
@@ -4547,8 +4543,8 @@
         "SG20RT"
       ],
       "decoded": {
-        "85": "Disable",
-        "170": "Enable"
+        "0x55": "Disable",
+        "0xAA": "Enable"
       },
       "description": "Scheduling active overload control enable/disable.",
       "source": [
@@ -4594,8 +4590,8 @@
         "SG75CX"
       ],
       "decoded": {
-        "85": "Disable",
-        "170": "Enable"
+        "0x55": "Disable",
+        "0xAA": "Enable"
       },
       "description": "Night SVG (Static Var Generator) enable/disable.",
       "source": [
@@ -4609,11 +4605,11 @@
       "address": 5036,
       "data_type": "U16",
       "decoded": {
-        "85": "Off",
-        "161": "Power factor setting",
-        "162": "Reactive power percentage setting",
-        "163": "Enable Q(P)",
-        "164": "Enable Q(U)"
+        "0x55": "Off",
+        "0xA1": "Power factor setting",
+        "0xA2": "Reactive power percentage setting",
+        "0xA3": "Enable Q(P)",
+        "0xA4": "Enable Q(U)"
       },
       "description": "Reactive power adjustment mode: off, PF setting, Q% setting, Q(P), or Q(U).",
       "source": [
@@ -4643,14 +4639,14 @@
       "data_type": "U16",
       "accuracy": 0.1,
       "unit_of_measurement": "kW",
-      "models_exclude": [
-        "SH*"
-      ],
       "description": "Power limitation adjustment value. String inverter register.",
       "source": [
         "string-v1.1.37",
         "ha-sungrow",
         "sungather"
+      ],
+      "models_unsupported": [
+        "SH*"
       ]
     },
     {
@@ -4713,8 +4709,8 @@
         "SG225HX"
       ],
       "decoded": {
-        "85": "Disable",
-        "170": "Enable"
+        "0x55": "Disable",
+        "0xAA": "Enable"
       },
       "description": "PID recovery enable/disable.",
       "source": [
@@ -4739,8 +4735,8 @@
         "SG225HX"
       ],
       "decoded": {
-        "85": "Disable",
-        "170": "Enable"
+        "0x55": "Disable",
+        "0xAA": "Enable"
       },
       "description": "Anti-PID enable/disable.",
       "source": [
@@ -4761,8 +4757,8 @@
         "SG225HX"
       ],
       "decoded": {
-        "85": "Disable",
-        "170": "Enable"
+        "0x55": "Disable",
+        "0xAA": "Enable"
       },
       "description": "Full-day PID suppression enable/disable.",
       "source": [
@@ -4794,8 +4790,8 @@
       "address": 13000,
       "data_type": "U16",
       "decoded": {
-        "206": "Stop",
-        "207": "Start"
+        "0xCE": "Stop",
+        "0xCF": "Start"
       },
       "description": "Hybrid inverter start/stop control (0xCF=Boot, 0xCE=Shutdown).",
       "source": [
@@ -4988,9 +4984,21 @@
       "data_type": "U16",
       "level": 5,
       "source": [
-        "hybrid-v1.1.11"
+        "hybrid-v1.1.11",
+        "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/issues/554"
       ],
-      "description": "From hybrid protocol V1.1.11: PV power limitation"
+      "description": "Disables all PV generation when Enabled, forcing house loads and battery charging from the grid.",
+      "decoded": {
+        "0x55": "Disabled",
+        "0xAA": "Enabled"
+      },
+      "models_observed": [
+        "SH15T"
+      ],
+      "models_unsupported": [
+        "SH*RT*",
+        "SH*RS*"
+      ]
     },
     {
       "name": "ems_mode_selection",
@@ -4998,8 +5006,8 @@
       "address": 13050,
       "data_type": "U16",
       "decoded": {
-        "206": "Stop",
-        "207": "Start"
+        "0xCE": "Stop",
+        "0xCF": "Start"
       },
       "description": "Energy management mode: 0=Self-consumption (default), 2=Compulsory, 3=External EMS, 4=VPP.",
       "source": [
@@ -5015,9 +5023,9 @@
       "address": 13051,
       "data_type": "U16",
       "decoded": {
-        "170": "Forced Charge",
-        "187": "Forced Discharge",
-        "204": "Stop"
+        "0xAA": "Forced Charge",
+        "0xBB": "Forced Discharge",
+        "0xCC": "Stop"
       },
       "description": "Battery charge/discharge command: 0xAA = Charge, 0xBB = Discharge, 0xCC = Stop (default).",
       "source": [
@@ -5158,8 +5166,8 @@
       "level": 5,
       "data_type": "U16",
       "decoded": {
-        "85": "Disabled",
-        "170": "Enabled"
+        "0x55": "Disabled",
+        "0xAA": "Enabled"
       },
       "models": [
         "SH10RT",
@@ -5181,8 +5189,8 @@
       "level": 5,
       "data_type": "U16",
       "decoded": {
-        "85": "Disabled",
-        "170": "Enabled"
+        "0x55": "Disabled",
+        "0xAA": "Enabled"
       },
       "models": [
         "SH10RT",
@@ -5207,12 +5215,12 @@
       "accuracy": 0.1,
       "unit_of_measurement": "%",
       "description": "Feed-in limitation as percentage of rated power. Added in protocol V1.1.7. Takes precedence over register 13074 when both set.",
-      "models_exclude": [
-        "MG5RL",
-        "MG6RL"
-      ],
       "source": [
         "hybrid-v1.1.11"
+      ],
+      "models_unsupported": [
+        "MG5RL",
+        "MG6RL"
       ]
     },
     {
@@ -5221,17 +5229,18 @@
       "level": 5,
       "data_type": "U16",
       "decoded": {
-        "85": "Disabled",
-        "170": "Enabled"
+        "0x55": "Disabled",
+        "0xAA": "Enabled"
       },
-      "description": "Active power limitation enable/disable. Controls inverter AC output port (vs feed-in at grid connection point). Added in V1.1.7.",
-      "models_exclude": [
-        "MG5RL",
-        "MG6RL"
-      ],
+      "description": "Active power limitation enable/disable. Controls inverter AC output port (vs feed-in at grid connection point). Added in V1.1.7. On some SH*T firmware, this register returns 0xFFFF; use active_power_limit_enable (31204) instead.",
       "source": [
         "hybrid-v1.1.11",
-        "mkaiser"
+        "mkaiser",
+        "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/issues/554"
+      ],
+      "models_unsupported": [
+        "MG5RL",
+        "MG6RL"
       ]
     },
     {
@@ -5241,10 +5250,11 @@
       "data_type": "U16",
       "accuracy": 0.1,
       "unit_of_measurement": "%",
-      "description": "Active power limitation ratio (0-100%). Controls inverter AC output as percentage of rated power. Added in V1.1.7.",
+      "description": "Active power limitation ratio (0-100%). Controls inverter AC output as percentage of rated power. Added in V1.1.7. On some SH*T firmware, this register returns 0xFFFF; use active_power_limit_percent (31205) instead.",
       "source": [
         "hybrid-v1.1.11",
-        "mkaiser"
+        "mkaiser",
+        "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/issues/554"
       ]
     },
     {
@@ -5265,6 +5275,46 @@
         "mkaiser",
         "ha-sungrow",
         "sungather"
+      ]
+    },
+    {
+      "name": "active_power_limit_enable",
+      "address": 31204,
+      "level": 5,
+      "data_type": "U16",
+      "decoded": {
+        "0x55": "Disabled",
+        "0xAA": "Enabled"
+      },
+      "description": "Active power limitation enable/disable (iSolarCloud path). When Enabled, caps AC output to the ratio set in active_power_limit_percent (31205). Works on SH*T models where the official-spec register 13089 returns 0xFFFF. Discovered via iSolarCloud reverse-engineering.",
+      "source": [
+        "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/issues/554"
+      ]
+    },
+    {
+      "name": "active_power_limit_percent",
+      "address": 31205,
+      "level": 5,
+      "data_type": "U16",
+      "accuracy": 0.1,
+      "unit_of_measurement": "%",
+      "description": "Active power limitation ratio (iSolarCloud path). Sets maximum AC output as a percentage of rated power (0-100%). Paired with active_power_limit_enable (31204). Active Power Gradient Control causes the change to take effect gradually — allow a few minutes. Note: setting this to 0% while active_power_limit_shutdown_at_zero (31213) is On will shut down the inverter.",
+      "source": [
+        "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/issues/554"
+      ]
+    },
+    {
+      "name": "active_power_limit_shutdown_at_zero",
+      "address": 31213,
+      "level": 5,
+      "data_type": "U16",
+      "decoded": {
+        "0x55": "Off",
+        "0xAA": "On"
+      },
+      "description": "When On, the inverter shuts down if the active power limitation ratio (31205) reaches 0%. Set to Off before lowering active_power_limit_percent to 0% to avoid an unintended shutdown.",
+      "source": [
+        "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/issues/554"
       ]
     },
     {
@@ -5329,14 +5379,14 @@
       "data_type": "U16",
       "unit_of_measurement": "kWh",
       "accuracy": 0.01,
-      "models_exclude": [
-        "SH8.0RT-20",
-        "WiNet"
-      ],
       "unsupported_value": 0,
       "description": "Battery capacity setting. Community-sourced register.",
       "source": [
         "ha-sungrow"
+      ],
+      "models_unsupported": [
+        "SH8.0RT-20",
+        "WiNet"
       ]
     },
     {
@@ -5483,8 +5533,8 @@
       "level": 5,
       "data_type": "U16",
       "decoded": {
-        "85": "Disabled",
-        "170": "Enabled"
+        "0x55": "Disabled",
+        "0xAA": "Enabled"
       },
       "models": [
         "SH*RT*"
@@ -5564,8 +5614,8 @@
       "level": 5,
       "data_type": "U16",
       "decoded": {
-        "85": "Disabled",
-        "170": "Enabled"
+        "0x55": "Disabled",
+        "0xAA": "Enabled"
       },
       "models": [
         "SH*RT*"
@@ -5754,8 +5804,8 @@
       "level": 1,
       "data_type": "U16",
       "decoded": {
-        "85": "Disabled",
-        "170": "Enabled"
+        "0x55": "Disabled",
+        "0xAA": "Enabled"
       },
       "description": "Master/slave mode enable/disable.",
       "source": [
@@ -5768,11 +5818,11 @@
       "level": 1,
       "data_type": "U16",
       "decoded": {
-        "160": "Master",
-        "161": "Slave 1",
-        "162": "Slave 2",
-        "163": "Slave 3",
-        "164": "Slave 4"
+        "0xA0": "Master",
+        "0xA1": "Slave 1",
+        "0xA2": "Slave 2",
+        "0xA3": "Slave 3",
+        "0xA4": "Slave 4"
       },
       "description": "Master/slave role (0xA0=Master, 0xA1=Slave 1, 0xA2=Slave 2, ...).",
       "source": [

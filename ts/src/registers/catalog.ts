@@ -20,7 +20,7 @@ export interface RawJsonEntry {
   group?: string | string[];
   indicator?: string;
   models?: string[];
-  models_exclude?: string[];
+  models_unsupported?: string[];
   decoded?: Record<string, string>;
   mask?: number;
   unsupported_value?: number | null | string;
@@ -85,7 +85,7 @@ function parseEntries(entries: RawJsonEntry[], type: RegisterType): CatalogRegis
     if (entry.decoded) {
       decoded = {};
       for (const [k, v] of Object.entries(entry.decoded)) {
-        decoded[parseInt(k, 10)] = v;
+        decoded[Number(k)] = v;
       }
     }
 
@@ -111,7 +111,7 @@ function parseEntries(entries: RawJsonEntry[], type: RegisterType): CatalogRegis
       ...(entry.group && { group: entry.group }),
       ...(entry.indicator && { indicator: entry.indicator }),
       ...(entry.models && { models: entry.models }),
-      ...(entry.models_exclude && { modelsExclude: entry.models_exclude }),
+      ...(entry.models_unsupported && { modelsExclude: entry.models_unsupported }),
       ...(decoded && { decoded }),
       ...(entry.mask != null && { mask: entry.mask }),
       ...(unsupportedValue !== undefined && { unsupportedValue }),

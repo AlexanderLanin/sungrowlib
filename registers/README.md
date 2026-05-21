@@ -34,10 +34,11 @@ Each entry:
 | `group` | string \| string[] | | Feature group(s) this register belongs to |
 | `indicator` | string | | If present, this register detects whether the named group is active |
 | `models` | string[] | | fnmatch glob patterns — register only applies to matching models |
-| `models_exclude` | string[] | | fnmatch glob patterns — register excluded from matching models |
+| `models_unsupported` | string[] | | Model identifiers or fnmatch glob patterns confirmed to not support this register (e.g. `["SH*RT*", "SH*RS*"]`) |
+| `models_observed` | string[] | | Specific model identifiers where this register was confirmed working by community testing (e.g. `["SH15T"]`) |
 | `decoded` | object | | Map of raw value → human-readable string (e.g. `{"0": "Stop", "32768": "Run"}`) |
 | `mask` | number | | Bitmask for boolean extraction (e.g. `1` = bit 0) |
-| `unsupported_value` | number \| null \| `"None"` | | Raw value that means "not supported" (e.g. `0xFFFF`) |
+| `unsupported_value` | number \| null \| `"None"` | | Raw value that means "not supported". Omit when the value equals the type's implicit N/A sentinel (`0xFFFF` for U16, `0x7FFF` for S16, `0xFFFFFFFF` for U32, `0x7FFFFFFF` for S32) — those are already implied by the type. Only set this field for non-standard sentinels (e.g. `0` meaning absent). |
 | `source` | string[] | | Official protocol document(s) defining this register (see below) |
 
 ### Detail Levels
@@ -59,7 +60,7 @@ Each register can have a `source` field indicating which official Sungrow protoc
 | `hybrid-v1.1.11` | Communication Protocol of Residential Hybrid Inverter V1.1.11 |
 | `string-v1.1.37` | Communication Protocol of PV Grid-Connected String Inverters V1.1.37 |
 
-Always an array, e.g. `["hybrid-v1.1.11"]` or `["hybrid-v1.1.11", "string-v1.1.37"]`. Registers without a `source` field originate from community projects (homeassistant-sungrow, SunGather, mkaiser) and have not been verified against an official protocol document.
+Always an array. Entries are either short identifiers (see table above) or full URLs to community threads, issues, or PRs where the register was documented. Registers without a `source` field originate from community projects (homeassistant-sungrow, SunGather, mkaiser) and have not been verified against an official protocol document.
 
 The protocol PDFs and their text extractions are in [`docs/`](docs/).
 
