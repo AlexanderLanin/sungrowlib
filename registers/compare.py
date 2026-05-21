@@ -384,7 +384,9 @@ def compare(ours: list[NormalizedRegister], theirs: list[NormalizedRegister], so
                 source_line=their_reg.source_line,
             ))
 
-        if our_reg.scale != their_reg.scale and not (our_reg.scale is None and their_reg.scale is None):
+        scales_differ = our_reg.scale != their_reg.scale
+        scales_equivalent = our_reg.scale is None and their_reg.scale == 1
+        if scales_differ and not scales_equivalent:
             differences.append(Difference(
                 address=key[0], type=key[1],
                 ours_name=our_reg.name, theirs_name=their_reg.name,

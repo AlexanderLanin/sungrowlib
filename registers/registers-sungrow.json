@@ -265,8 +265,8 @@
       "level": 1,
       "address": 5001,
       "data_type": "U16",
-      "accuracy": 0.1,
-      "unit_of_measurement": "kW",
+      "accuracy": 100,
+      "unit_of_measurement": "W",
       "description": "Rated output power of the inverter.",
       "source": [
         "hybrid-v1.1.11"
@@ -5541,8 +5541,8 @@
       "level": 4,
       "address": 5016,
       "data_type": "U16",
-      "accuracy": 0.01,
-      "unit_of_measurement": "KW",
+      "accuracy": 10,
+      "unit_of_measurement": "W",
       "models": [
         "SG5KTL-MT",
         "SG6KTL-MT",
@@ -5721,8 +5721,8 @@
       "level": 5,
       "address": 5039,
       "data_type": "U16",
-      "accuracy": 0.1,
-      "unit_of_measurement": "kW",
+      "accuracy": 100,
+      "unit_of_measurement": "W",
       "description": "Power limitation adjustment value. String inverter register.",
       "source": [
         "string-v1.1.37"
@@ -6993,8 +6993,8 @@
         "hybrid-v1.1.11"
       ],
       "description": "From hybrid protocol V1.1.11: Load Rated Power",
-      "accuracy": 0.01,
-      "unit_of_measurement": "kW"
+      "accuracy": 10,
+      "unit_of_measurement": "W"
     },
     {
       "name": "master_slave_mode",
