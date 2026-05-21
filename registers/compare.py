@@ -394,7 +394,7 @@ def compare(ours: list[NormalizedRegister], theirs: list[NormalizedRegister], so
                 source_line=their_reg.source_line,
             ))
 
-        if our_reg.unit != their_reg.unit and not (our_reg.unit is None and their_reg.unit is None):
+        if (our_reg.unit or "").lower() != (their_reg.unit or "").lower() and not (our_reg.unit is None and their_reg.unit is None):
             differences.append(Difference(
                 address=key[0], type=key[1],
                 ours_name=our_reg.name, theirs_name=their_reg.name,
@@ -439,8 +439,6 @@ def update_catalog(all_theirs: dict[str, list[NormalizedRegister]]) -> None:
 
             our_dt: str = str(our_entry.get("data_type", "U16"))
             our_base_dt = our_dt.split("[")[0] if "[" in our_dt else our_dt
-            if our_base_dt != their_reg.data_type:
-                continue
 
             # Build other_registries entry with direct line-anchored link
             link = (
@@ -451,7 +449,23 @@ def update_catalog(all_theirs: dict[str, list[NormalizedRegister]]) -> None:
             other_registries: dict[str, Any] = our_entry.setdefault("other_registries", {})
             if source_name not in other_registries:
                 stats["other_registries"] += 1
-            other_registries[source_name] = {"name": REGISTRY_NAMES[source_name], "link": link}
+            registry_entry: dict[str, Any] = {"name": REGISTRY_NAMES[source_name], "link": link}
+
+            # Record known differences as free text
+            diffs: list[str] = []
+            if our_base_dt != their_reg.data_type:
+                diffs.append(f"data_type {their_reg.data_type}")
+            our_scale = our_entry.get("accuracy") or our_entry.get("scale")
+            if their_reg.scale is not None and their_reg.scale != 1 and their_reg.scale != our_scale:
+                diffs.append(f"scale {their_reg.scale}")
+            their_unit = their_reg.unit
+            our_unit = our_entry.get("unit_of_measurement")
+            if their_unit and their_unit.lower() != (our_unit or "").lower():
+                diffs.append(f"unit {their_unit}")
+            if diffs:
+                registry_entry["differences"] = ", ".join(diffs)
+
+            other_registries[source_name] = registry_entry
 
             # Remove community handle from source (now expressed in other_registries)
             if "source" in our_entry and source_name in our_entry["source"]:

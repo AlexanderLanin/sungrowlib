@@ -95,6 +95,11 @@
         "mkaiser": {
           "name": "mkaiser",
           "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L76"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L15",
+          "differences": "data_type U16"
         }
       }
     },
@@ -108,6 +113,11 @@
         "mkaiser": {
           "name": "mkaiser",
           "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L85"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L20",
+          "differences": "data_type U16"
         }
       }
     },
@@ -278,7 +288,8 @@
         },
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L222"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L222",
+          "differences": "scale 0.1, unit kW"
         }
       }
     },
@@ -736,7 +747,14 @@
       ],
       "models_unsupported": [
         "SH*"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L361",
+          "differences": "data_type U32"
+        }
+      }
     },
     {
       "name": "total_reactive_power",
@@ -752,7 +770,8 @@
       "other_registries": {
         "mkaiser": {
           "name": "mkaiser",
-          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L312"
+          "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L312",
+          "differences": "unit W"
         },
         "sungather": {
           "name": "SunGather",
@@ -943,7 +962,13 @@
       "models_unsupported": [
         "SH*",
         "WiNet"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L446"
+        }
+      }
     },
     {
       "name": "nominal_reactive_power",
@@ -957,7 +982,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L455"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L455",
+          "differences": "scale 0.1, unit kVar"
         }
       }
     },
@@ -2394,6 +2420,11 @@
         "mkaiser": {
           "name": "mkaiser",
           "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L598"
+        },
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L900",
+          "differences": "data_type S16"
         }
       }
     },
@@ -2459,7 +2490,8 @@
           "name": "mkaiser",
           "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L613"
         }
-      }
+      },
+      "unsupported_value": 32767
     },
     {
       "name": "meter_phase_b_voltage",
@@ -2475,7 +2507,8 @@
           "name": "mkaiser",
           "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L627"
         }
-      }
+      },
+      "unsupported_value": 32767
     },
     {
       "name": "meter_phase_c_voltage",
@@ -2491,7 +2524,8 @@
           "name": "mkaiser",
           "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L641"
         }
-      }
+      },
+      "unsupported_value": 32767
     },
     {
       "name": "meter_phase_a_current",
@@ -2507,7 +2541,8 @@
           "name": "mkaiser",
           "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L655"
         }
-      }
+      },
+      "unsupported_value": 65535
     },
     {
       "name": "meter_phase_b_current",
@@ -2523,7 +2558,8 @@
           "name": "mkaiser",
           "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L669"
         }
-      }
+      },
+      "unsupported_value": 65535
     },
     {
       "name": "meter_phase_c_current",
@@ -2539,7 +2575,8 @@
           "name": "mkaiser",
           "link": "https://github.com/mkaiser/Sungrow-SHx-Inverter-Modbus-Home-Assistant/blob/main/modbus_sungrow.yaml#L683"
         }
-      }
+      },
+      "unsupported_value": 65535
     },
     {
       "name": "pv_power_of_today",
@@ -2608,7 +2645,14 @@
       "group": "direct_lan",
       "source": [
         "hybrid-v1.1.11"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L925",
+          "differences": "data_type U16"
+        }
+      }
     },
     {
       "name": "direct_power_consumption_of_today_from_pv",
@@ -2665,7 +2709,14 @@
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
       "description": "20-entry array: yearly direct PV consumption starting from 2019 (valid for 15 years).",
-      "group": "direct_lan"
+      "group": "direct_lan",
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L952",
+          "differences": "data_type U16"
+        }
+      }
     },
     {
       "name": "export_power_from_pv_of_today",
@@ -2746,7 +2797,14 @@
       "description": "20-entry array: yearly PV export energy starting from 2019 (valid for 15 years).",
       "source": [
         "hybrid-v1.1.11"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L979",
+          "differences": "data_type U16"
+        }
+      }
     },
     {
       "name": "battery_charge_power_of_today",
@@ -2819,7 +2877,14 @@
       "data_type": "U32[20]",
       "accuracy": 0.1,
       "unit_of_measurement": "kWh",
-      "description": "20-entry array: yearly battery charge energy from PV starting from 2019 (valid for 15 years)."
+      "description": "20-entry array: yearly battery charge energy from PV starting from 2019 (valid for 15 years).",
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1007",
+          "differences": "data_type U16"
+        }
+      }
     },
     {
       "name": "string_1_current",
@@ -3965,7 +4030,14 @@
       "description": "Battery current (unsigned, no sign for charge/discharge direction). Use battery_current (5631) instead for signed value.",
       "source": [
         "hybrid-v1.1.11"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1342",
+          "differences": "data_type S16"
+        }
+      }
     },
     {
       "name": "battery_power_legacy",
@@ -3977,7 +4049,14 @@
       "description": "Battery power (U16 without sign). Data type is S16 for SH3.0-6.0RS and SH8.0-10RS. Use battery_power (5214) instead for S32 with full range.",
       "source": [
         "hybrid-v1.1.11"
-      ]
+      ],
+      "other_registries": {
+        "sungather": {
+          "name": "SunGather",
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1349",
+          "differences": "data_type S16"
+        }
+      }
     },
     {
       "name": "battery_soc",
@@ -4411,7 +4490,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1488"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1488",
+          "differences": "scale 0.1"
         }
       }
     },
@@ -4427,7 +4507,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1494"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1494",
+          "differences": "scale 0.1"
         }
       }
     },
@@ -4443,7 +4524,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1500"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1500",
+          "differences": "scale 0.1"
         }
       }
     },
@@ -4459,7 +4541,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1506"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1506",
+          "differences": "scale 0.1"
         }
       }
     },
@@ -4475,7 +4558,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1512"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1512",
+          "differences": "scale 0.1"
         }
       }
     },
@@ -4491,7 +4575,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1518"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1518",
+          "differences": "scale 0.1"
         }
       }
     },
@@ -4507,7 +4592,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1524"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1524",
+          "differences": "scale 0.1"
         }
       }
     },
@@ -4523,7 +4609,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1530"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1530",
+          "differences": "scale 0.1"
         }
       }
     },
@@ -4540,7 +4627,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1536"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1536",
+          "differences": "scale 0.1"
         }
       }
     },
@@ -4557,7 +4645,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1542"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1542",
+          "differences": "scale 0.1"
         }
       }
     },
@@ -5220,7 +5309,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1684"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1684",
+          "differences": "unit YYYY"
         }
       }
     },
@@ -5236,7 +5326,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1689"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1689",
+          "differences": "unit MM"
         }
       }
     },
@@ -5252,7 +5343,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1694"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1694",
+          "differences": "unit DD"
         }
       }
     },
@@ -5268,7 +5360,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1699"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1699",
+          "differences": "unit HH"
         }
       }
     },
@@ -5284,7 +5377,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1704"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1704",
+          "differences": "unit MM"
         }
       }
     },
@@ -5300,7 +5394,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1709"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1709",
+          "differences": "unit SS"
         }
       }
     },
@@ -5558,7 +5653,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1786"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1786",
+          "differences": "scale 0.01, unit KW"
         }
       }
     },
@@ -5733,7 +5829,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1844"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1844",
+          "differences": "scale 0.1, unit kW"
         }
       }
     },
@@ -5748,7 +5845,8 @@
       "other_registries": {
         "sungather": {
           "name": "SunGather",
-          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1850"
+          "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1850",
+          "differences": "scale 0.1, unit kVar"
         }
       }
     },

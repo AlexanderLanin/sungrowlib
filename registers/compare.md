@@ -19,7 +19,7 @@
 ## sungather
 
 
-### Differences (41)
+### Differences (39)
 
 | Address | Type | Register | Field | Ours | Theirs |
 |--------:|------|----------|-------|------|--------|
@@ -41,11 +41,9 @@
 | [5001](https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L222) | read | nominal_output_power / nominal_active_power | unit | W | kW |
 | [5004](https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L245) | read | total_output_energy / total_power_yields | scale | 0.1 | None |
 | [5031](https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L361) | read | total_active_power | data_type | S32 | U32 |
-| [5033](https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L367) | read | total_reactive_power | unit | var | Var |
 | [5035](https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L372) | read | power_factor | unit | % | None |
 | [5049](https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L455) | read | nominal_reactive_power | scale | 100 | 0.1 |
 | [5049](https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L455) | read | nominal_reactive_power | unit | var | kVar |
-| [5079](https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L482) | read | reactive_power_regulation_setpoint | unit | var | Var |
 | [5726](https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L900) | read | total_backup_power | data_type | S32 | S16 |
 | [6227](https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L919) | read | monthly_pv_energy_yields | scale | 0.1 | None |
 | [6250](https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L925) | read | yearly_pv_energy_yields | data_type | U32 | U16 |
