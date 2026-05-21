@@ -867,7 +867,7 @@ describe('SungrowInverter', () => {
       const bp = result.values.get('battery_power');
       expect(bp).toBeDefined();
       expect(bp!.value).toBe(0);
-      expect(bp!.supported).toBe(false);
+      expect(bp!.supported).toBe('unknown');
     });
 
     it('corrects values when verification returns non-zero', async () => {
@@ -896,7 +896,7 @@ describe('SungrowInverter', () => {
       const bp = result.values.get('battery_power');
       expect(bp).toBeDefined();
       expect(bp!.value).toBe(500);
-      expect(bp!.supported).toBe(true);
+      expect(bp!.supported).toBe('yes');
       expect(inv.signalStates.getState('battery_power')).toBe(SupportState.YES);
     });
 
@@ -931,6 +931,8 @@ describe('SungrowInverter', () => {
         (tx) => tx.reason === 'verification' && tx.registerNames[0] === 'battery_soc',
       );
       expect(unsupportedTx?.status).toBe('unsupported');
+      const batterySoc = inv.lastValues.find((v) => v.name === 'battery_soc');
+      expect(batterySoc?.supported).toBe('unsupported');
     });
 
     it('does not verify when all values are non-zero', async () => {

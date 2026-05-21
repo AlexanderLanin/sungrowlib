@@ -1,9 +1,9 @@
 import { connectInverter, connectSystem } from '../connection.js';
+import type { RegisterValue } from '../../core/types.js';
 import type { GlobalOptions } from '../main.js';
 
 export interface DumpCommandOptions {
   level: number;
-  includeValues: boolean;
 }
 
 export async function runDump(global: GlobalOptions, options: DumpCommandOptions): Promise<void> {
@@ -29,10 +29,7 @@ async function runInverterDump(global: GlobalOptions, options: DumpCommandOption
       slaveId: info.slaveId,
       activeGroups: inverter.activeGroups,
       rawWords: inverter.lastRawWords,
-    };
-
-    if (options.includeValues) {
-      output['values'] = inverter.lastValues.map((rv) => ({
+      values: inverter.lastValues.map((rv) => ({
         name: rv.name,
         address: rv.address,
         type: rv.type,
@@ -41,8 +38,8 @@ async function runInverterDump(global: GlobalOptions, options: DumpCommandOption
         value: rv.value,
         unit: rv.unit,
         supported: rv.supported,
-      }));
-    }
+      })),
+    };
 
     console.log(JSON.stringify(output, null, 2));
   } finally {
@@ -58,24 +55,8 @@ async function runSystemDump(global: GlobalOptions, options: DumpCommandOptions)
     await system.readSlaves({ maxLevel: options.level });
 
     const info = system.info!;
-    const output: Record<string, unknown> = {
-      timestamp: new Date().toISOString(),
-      model: info.model,
-      serialNumber: info.serialNumber,
-      connectionMode: info.connectionMode,
-      slaveId: info.slaveId,
-      activeGroups: system.activeGroups,
-      rawWords: system.lastRawWords,
-      slaveDetails: system.slaveDetails.map((s) => ({
-        host: s.host,
-        slaveId: s.slaveId,
-        model: s.model,
-        rawWords: s.lastRawWords,
-      })),
-    };
-
-    if (options.includeValues) {
-      output['values'] = system.lastValues.map((rv) => ({
+    const serializeValues = (values: readonly RegisterValue[]) =>
+      values.map((rv) => ({
         name: rv.name,
         address: rv.address,
         type: rv.type,
@@ -85,7 +66,24 @@ async function runSystemDump(global: GlobalOptions, options: DumpCommandOptions)
         unit: rv.unit,
         supported: rv.supported,
       }));
-    }
+
+    const output: Record<string, unknown> = {
+      timestamp: new Date().toISOString(),
+      model: info.model,
+      serialNumber: info.serialNumber,
+      connectionMode: info.connectionMode,
+      slaveId: info.slaveId,
+      activeGroups: system.activeGroups,
+      rawWords: system.lastRawWords,
+      values: serializeValues(system.lastValues),
+      slaveDetails: system.slaveDetails.map((s) => ({
+        host: s.host,
+        slaveId: s.slaveId,
+        model: s.model,
+        rawWords: s.lastRawWords,
+        values: serializeValues(s.lastValues),
+      })),
+    };
 
     console.log(JSON.stringify(output, null, 2));
   } finally {

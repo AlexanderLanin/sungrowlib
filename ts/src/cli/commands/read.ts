@@ -79,7 +79,7 @@ async function runInverterRead(global: GlobalOptions, options: ReadCommandOption
 
     let values = Array.from(data.values.values());
     if (options.supportedOnly) {
-      values = values.filter((v) => v.supported);
+      values = values.filter((v) => v.supported === 'yes');
     }
 
     outputValues(values, global.format);
@@ -99,7 +99,7 @@ async function runSystemRead(global: GlobalOptions, options: ReadCommandOptions)
 
     let values = Array.from(data.values.values());
     if (options.supportedOnly) {
-      values = values.filter((v) => v.supported);
+      values = values.filter((v) => v.supported === 'yes');
     }
 
     outputValues(values, global.format, 'Register Values (Master)');

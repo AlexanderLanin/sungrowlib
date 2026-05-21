@@ -114,31 +114,31 @@ describe('decodeCatalogRegister', () => {
   it('decodes simple U16', () => {
     const reg = makeReg({});
     const result = decodeCatalogRegister(reg, [42], 0);
-    expect(result).toEqual({ raw: 42, value: 42, supported: true });
+    expect(result).toEqual({ raw: 42, value: 42, supported: 'yes' });
   });
 
   it('decodes with scale', () => {
     const reg = makeReg({ scale: 0.1 });
     const result = decodeCatalogRegister(reg, [500], 0);
-    expect(result).toEqual({ raw: 500, value: 50, supported: true });
+    expect(result).toEqual({ raw: 500, value: 50, supported: 'yes' });
   });
 
   it('decodes with decoded map', () => {
     const reg = makeReg({ decoded: { 170: 'Enabled', 85: 'Disabled' } });
     const result = decodeCatalogRegister(reg, [170], 0);
-    expect(result).toEqual({ raw: 170, value: 'Enabled', supported: true });
+    expect(result).toEqual({ raw: 170, value: 'Enabled', supported: 'yes' });
   });
 
   it('decodes with mask', () => {
     const reg = makeReg({ mask: 2 });
     const result = decodeCatalogRegister(reg, [6], 0);
-    expect(result).toEqual({ raw: 6, value: true, supported: true });
+    expect(result).toEqual({ raw: 6, value: true, supported: 'yes' });
   });
 
   it('marks unsupported', () => {
     const reg = makeReg({ unsupportedValue: 0 });
     const result = decodeCatalogRegister(reg, [0], 0);
-    expect(result!.supported).toBe(false);
+    expect(result!.supported).toBe('not-applicable');
   });
 
   it('decodes UTF-8', () => {
@@ -153,8 +153,8 @@ describe('decodeCatalogRegister', () => {
     expect(result!.value).toEqual([10, 20, 30]);
   });
 
-  it('returns null for NA', () => {
+  it('emits supported=false with raw word for NA sentinel', () => {
     const reg = makeReg({});
-    expect(decodeCatalogRegister(reg, [0xFFFF], 0)).toBeNull();
+    expect(decodeCatalogRegister(reg, [0xFFFF], 0)).toEqual({ raw: 0xFFFF, value: null, supported: 'not-applicable' });
   });
 });

@@ -9,7 +9,7 @@ export {
 
 export type {
   RegisterType, CatalogDataType, DecodedValue, TransactionReason,
-  RegisterValue, ModbusTransaction, ReadResult, ExtendedReadResult,
+  RegisterValue, Support, ModbusTransaction, ReadResult, ExtendedReadResult,
   ConnectionMode, InverterInfo, ReadOptions, Logger,
   ConnectionState, ReconnectOptions, ConnectionStateCallback,
 } from './core/types.js';

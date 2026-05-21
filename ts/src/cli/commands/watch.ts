@@ -50,7 +50,7 @@ export async function runWatch(global: GlobalOptions, options: WatchCommandOptio
       });
       readCount++;
 
-      const values = Array.from(data.values.values()).filter((v) => v.supported);
+      const values = Array.from(data.values.values()).filter((v) => v.supported === 'yes');
       const rows = values.map((rv) => ({
         name: rv.name,
         value: formatValue(rv),

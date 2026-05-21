@@ -95,7 +95,6 @@ Options:
   -p, --port <n>        Modbus TCP port (default: 502)
   -s, --slave-id <n>    Modbus slave ID (default: auto-detect)
   -l, --level <n>       Max register level (default: 5)
-  --include-values      Include decoded values alongside raw data
   -v, --verbose         Enable debug logging
   -h, --help            Show help
 `.trim();
@@ -268,7 +267,6 @@ async function main(): Promise<void> {
           'slave-id': { type: 'string', short: 's' },
           verbose: { type: 'boolean', short: 'v', default: false },
           level: { type: 'string', short: 'l' },
-          'include-values': { type: 'boolean', default: false },
         },
         strict: true,
       });
@@ -276,7 +274,6 @@ async function main(): Promise<void> {
       const { runDump } = await import('./commands/dump.js');
       await runDump(global, {
         level: values.level ? parseInt(values.level, 10) : 5,
-        includeValues: values['include-values'] ?? false,
       });
       break;
     }

@@ -3,7 +3,8 @@ name: unsupported-sentinels
 tags: [read, decode]
 description: >
   Tests that built-in sentinel values (0xFFFF for U16, 0x7FFF for S16,
-  0xFFFFFFFF for U32/S32) cause registers to be absent from read output.
+  0xFFFFFFFF for U32, 0x7FFFFFFF for S32) are reported as supported=not-applicable
+  with the raw sentinel word preserved.
 
 inverters:
   - id: default
@@ -13,12 +14,12 @@ inverters:
       5000: 0xE12
       5001: 80
       5002: 0
-      # inside_temperature (S16 addr 5008) = 0x7FFF → S16 sentinel → absent
+      # inside_temperature (S16 addr 5008) = 0x7FFF → S16 sentinel → not-applicable
       5008: 0x7FFF
       5071: 1500
-      # meter_active_power (S32 addr 5601-5602) = 0xFFFFFFFF → U32 sentinel → absent
-      5601: [0xFFFF, 0xFFFF]
-      # daily_pv_generation (U16 addr 13002) = 0xFFFF → U16 sentinel → absent
+      # total_reactive_power (S32 addr 5033-5034) = 0x7FFFFFFF → S32 sentinel → not-applicable
+      5033: [0xFFFF, 0x7FFF]
+      # daily_pv_generation (U16 addr 13002) = 0xFFFF → U16 sentinel → not-applicable
       13002: 0xFFFF
       13037: [500, 0]
       13039: 160
@@ -33,11 +34,11 @@ inverters:
 
 expect:
   read:
-    # U16 sentinel: 0xFFFF → null → absent
-    daily_pv_generation: absent
-    # S16 sentinel: 0x7FFF → null → absent
-    inside_temperature: absent
-    # S32 sentinel: 0xFFFFFFFF → null → absent
-    meter_active_power: absent
+    # U16 sentinel: 0xFFFF → not-applicable, raw word preserved
+    daily_pv_generation: { supported: "not-applicable" }
+    # S16 sentinel: 0x7FFF → not-applicable, raw word preserved
+    inside_temperature: { supported: "not-applicable" }
+    # S32 sentinel: 0x7FFFFFFF → not-applicable, raw word preserved
+    total_reactive_power: { supported: "not-applicable" }
     # Sanity: a normal register is still present
     array_insulation_resistance: { value: 1500, unit: "k-ohm" }

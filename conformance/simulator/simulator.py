@@ -88,6 +88,9 @@ def check_faults(faults: list[dict], sungrow_addr: int, count: int) -> int | Non
         # Fault triggers if any requested register falls in the fault range
         req_end = sungrow_addr + count - 1
         if sungrow_addr <= f_end and req_end >= f_start:
+            # single_only: only trigger for single-register reads (count == 1)
+            if fault.get("single_only") and count != 1:
+                continue
             error_name = fault.get("error", "illegal_data_address")
             return {
                 "illegal_data_address": 0x02,

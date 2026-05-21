@@ -33,6 +33,14 @@ export interface ReadOptions {
   maxLevel?: number;
 }
 
+/**
+ * 'yes'            — confirmed supported (non-zero value observed)
+ * 'unsupported'    — Modbus exception; register does not exist on this device
+ * 'not-applicable' — register exists but returned a built-in or catalog NA value
+ * 'unknown'        — returned 0 on all reads; may be inactive or genuinely zero
+ */
+export type Support = 'yes' | 'unsupported' | 'not-applicable' | 'unknown';
+
 export interface RegisterValue {
   name: string;
   address: number;
@@ -44,7 +52,7 @@ export interface RegisterValue {
   unit?: string;
   raw: number | number[];
   value: DecodedValue;
-  supported: boolean;
+  supported: Support;
 }
 
 export type TransactionReason = 'read' | 'verification' | 'connect';

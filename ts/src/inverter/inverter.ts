@@ -236,9 +236,9 @@ export class SungrowInverter {
         const isMulti = block.registers.length > 1;
         for (const v of decoded) {
           const rawNum = typeof v.raw === 'number' ? v.raw : null;
-          this._signalStates.update(v.name, rawNum, isMulti ? 'multi' : 'single');
-          const supported = this._signalStates.isSupported(v.name);
-          if (supported !== undefined) v.supported = supported;
+          this._signalStates.update(v.name, rawNum, isMulti ? 'multi' : 'single', v.supported === 'not-applicable');
+          const isSupp = this._signalStates.isSupported(v.name);
+          if (isSupp === false && v.supported === 'yes') v.supported = 'unknown';
           allDecoded.set(v.name, v.value);
           allValues.push(v);
         }
@@ -306,6 +306,12 @@ export class SungrowInverter {
 
           if (wasUnsupported) {
             this._signalStates.update(name, null, 'single', true);
+            const existingIdx = allValues.findIndex((av) => av.name === name);
+            if (existingIdx >= 0) {
+              const updated = { ...allValues[existingIdx], supported: 'unsupported' as const };
+              allValues[existingIdx] = updated;
+              verificationValues.push(updated);
+            }
           } else {
             for (const [addr, val] of rawMap) {
               allRawWords[addr] = val;
@@ -317,8 +323,8 @@ export class SungrowInverter {
             for (const v of decoded) {
               const rawNum = typeof v.raw === 'number' ? v.raw : null;
               this._signalStates.update(v.name, rawNum, 'single');
-              const supported = this._signalStates.isSupported(v.name);
-              if (supported !== undefined) v.supported = supported;
+              const isSupp = this._signalStates.isSupported(v.name);
+              if (isSupp === false && v.supported === 'yes') v.supported = 'unknown';
               allDecoded.set(v.name, v.value);
               verificationValues.push(v);
               const existingIdx = allValues.findIndex((av) => av.name === v.name);
@@ -369,7 +375,7 @@ export class SungrowInverter {
         ...(cr.unit && { unit: cr.unit }),
         raw: 0,
         value,
-        supported: true,
+        supported: 'yes',
       };
       computedBatch.push(rv);
       allValues.push(rv);

@@ -1,4 +1,4 @@
-import type { CatalogDataType, CatalogRegister, DecodedValue } from '../core/types.js';
+import type { CatalogDataType, CatalogRegister, DecodedValue, Support } from '../core/types.js';
 
 const NA_U16 = 0xFFFF;
 const NA_U32 = 0xFFFFFFFF;
@@ -75,15 +75,34 @@ export function isUnsupported(raw: number, unsupportedValue: number | null | und
   return raw === unsupportedValue;
 }
 
+function extractRawWord(data: number[], offset: number, dataType: CatalogDataType): number | null {
+  if (dataType === 'U16' || dataType === 'S16') {
+    return data[offset] ?? null;
+  }
+  if (dataType === 'U32' || dataType === 'S32') {
+    const low = data[offset];
+    const high = data[offset + 1];
+    if (low === undefined || high === undefined) return null;
+    return high * 65536 + low;
+  }
+  return null;
+}
+
+export type DecodeResult = {
+  raw: number | number[];
+  value: DecodedValue;
+  supported: Support;
+};
+
 export function decodeCatalogRegister(
   reg: CatalogRegister,
   data: number[],
   offset: number
-): { raw: number | number[]; value: DecodedValue; supported: boolean } | null {
+): DecodeResult | null {
   if (reg.baseDataType === 'UTF-8') {
     const str = decodeUtf8(data, offset, reg.registerWidth);
     return str != null
-      ? { raw: data.slice(offset, offset + reg.registerWidth), value: str, supported: true }
+      ? { raw: data.slice(offset, offset + reg.registerWidth), value: str, supported: 'yes' }
       : null;
   }
 
@@ -91,13 +110,17 @@ export function decodeCatalogRegister(
     const arr = decodeArray(data, offset, reg.baseDataType, reg.arrayLength, reg.scale);
     if (!arr) return null;
     const rawArr = data.slice(offset, offset + reg.registerWidth);
-    return { raw: rawArr, value: arr, supported: true };
+    return { raw: rawArr, value: arr, supported: 'yes' };
   }
 
   const rawVal = decodeRawScalar(data, offset, reg.baseDataType);
-  if (rawVal === null) return null;
+  if (rawVal === null) {
+    const rawWord = extractRawWord(data, offset, reg.baseDataType);
+    if (rawWord === null) return null;
+    return { raw: rawWord, value: null, supported: 'not-applicable' };
+  }
 
-  const supported = !isUnsupported(rawVal, reg.unsupportedValue);
+  const supported: Support = isUnsupported(rawVal, reg.unsupportedValue) ? 'not-applicable' : 'yes';
 
   if (reg.mask != null) {
     return { raw: rawVal, value: applyMask(rawVal, reg.mask), supported };
