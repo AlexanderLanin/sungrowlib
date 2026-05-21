@@ -2008,7 +2008,7 @@
       "address": 5214,
       "data_type": "S32",
       "unit_of_measurement": "W",
-      "description": "Battery power. S32 with full range. Positive = charging, negative = discharging. Recommended instead of register 13022.",
+      "description": "Battery power. S32 with full range. Positive = discharging, negative = charging. Recommended instead of register 13022.",
       "source": [
         "hybrid-v1.1.11"
       ],
@@ -3673,7 +3673,10 @@
           "name": "SunGather",
           "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1184"
         }
-      }
+      },
+      "notes": [
+        "In older protocol versions this register was called 'system state'; renamed to 'running state' in later revisions."
+      ]
     },
     {
       "name": "state_power_generated_from_pv",
@@ -4037,7 +4040,10 @@
           "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1342",
           "differences": "data_type S16"
         }
-      }
+      },
+      "notes": [
+        "mkaiser reports this may actually be signed (S16) despite the datasheet specifying U16 — see mkaiser issue #304. Use battery_current (5631) which is definitively S16."
+      ]
     },
     {
       "name": "battery_power_legacy",
@@ -4056,7 +4062,10 @@
           "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1349",
           "differences": "data_type S16"
         }
-      }
+      },
+      "notes": [
+        "Firmware behavior changed around October 2024: older firmware always returns a positive value (no charge/discharge direction); newer firmware uses signed S16 (positive = charging, negative = discharging). Use battery_power (5214) for consistent S32 signed value across all firmware versions."
+      ]
     },
     {
       "name": "battery_soc",
@@ -4079,7 +4088,10 @@
           "name": "SunGather",
           "link": "https://github.com/bohdan-s/SunGather/blob/main/SunGather/registers-sungrow.yaml#L1355"
         }
-      }
+      },
+      "notes": [
+        "Returns absolute SOC (0-100%). The battery operates between min_soc and max_soc (hold registers 13059/13058), but this register always shows the full 0-100% range."
+      ]
     },
     {
       "name": "battery_soh",
@@ -4089,7 +4101,7 @@
       "data_type": "U16",
       "accuracy": 0.1,
       "unit_of_measurement": "%",
-      "description": "Battery state of health (SOH) as percentage. Indicates remaining battery capacity relative to original.",
+      "description": "Battery state of health (SOH) as percentage. Indicates remaining battery capacity relative to original. Calculated internally by BMS load balancing.",
       "source": [
         "hybrid-v1.1.11"
       ],
