@@ -6,6 +6,7 @@ Multi-language monorepo for Sungrow inverter communication. Two primary products
 
 - `registers/` — canonical register catalog (`registers-sungrow.json`), standalone product usable from any language
 - `conformance/` — language-agnostic test suite (Python runner + Modbus simulator)
+- `dumps/` — real-world inverter dumps captured via `sungrowlib dump`; useful as development reference and for community contributions
 - `ts/` — TypeScript implementation (library + CLI)
 - `python/` — Python implementation (placeholder)
 
@@ -29,7 +30,7 @@ pytest
 
 ## Conformance Tests
 
-Validates any implementation's CLI against 17 YAML scenarios (148 checks).
+Validates any implementation's CLI against 18 YAML scenarios.
 Requires Python 3.12+ with `pyyaml`.
 
 ```bash
