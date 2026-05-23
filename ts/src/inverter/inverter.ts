@@ -3,7 +3,6 @@ import type {
   CatalogRegister,
   DecodedValue,
   RegisterValue,
-  RegisterType,
   ModbusTransaction,
   ReadResult,
   ReadOptions,
@@ -17,9 +16,9 @@ import {
   createModbusTransport,
 } from '../transport/modbus.js';
 import { ConnectionError } from '../core/errors.js';
-import { decodeUtf8 } from '../registers/decode.js';
 import { loadCatalog, type RegisterCatalog } from '../registers/catalog.js';
 import { computeBlocks, readBlock, decodeBlock, ProblematicRegisters, type BlockPlan } from '../registers/block-io.js';
+
 import { type ConnectionStats, createStats } from '../core/stats.js';
 import { SignalStateTracker } from '../core/signal-state.js';
 import { applyComputed, BUILTIN_COMPUTED, type ComputedRegister } from '../registers/computed.js';
@@ -63,6 +62,7 @@ export class SungrowInverter {
   private _model: string | null = null;
   private _activeGroups: Record<string, boolean> = {};
   private _applicableRegisters: CatalogRegister[] = [];
+  private _applicableRegistersReady = false;
   private _lastRawWords: Record<number, number> = {};
   private _lastValues: RegisterValue[] = [];
   private _state: ConnectionState = 'idle';
@@ -110,6 +110,7 @@ export class SungrowInverter {
   }
 
   private async doConnect(): Promise<InverterInfo> {
+    this._applicableRegistersReady = false;
     this.client = await this.clientFactory(this.host, this.port);
     this.transport = createModbusTransport(this.client);
     this._stats.connections++;
@@ -131,7 +132,7 @@ export class SungrowInverter {
       applicable = this.catalog.applyModelOverrides(applicable, this._model);
     }
 
-    this._activeGroups = await this.detectGroups(applicable);
+    this._activeGroups = await this.detectGroups();
     if (this.logger) this.logger(`groups=${JSON.stringify(this._activeGroups)}`);
 
     this._applicableRegisters = this.catalog.filterByGroups(applicable, this._activeGroups);
@@ -151,6 +152,7 @@ export class SungrowInverter {
     };
 
     await this.detectMasterSlave();
+    this._applicableRegistersReady = true;
 
     const isMasterByGroups = this._activeGroups['is_master'] === true;
     const isMasterByRole = this._info.connectionMode !== 'slave';
@@ -187,8 +189,18 @@ export class SungrowInverter {
   async *readStream(options?: ReadOptions): AsyncGenerator<ReadResult> {
     this.requireTransport();
     let registers: CatalogRegister[];
+    const useFullCatalog = !this._applicableRegistersReady;
 
-    if (options?.names && options?.maxLevel) {
+    if (useFullCatalog) {
+      if (options?.names) {
+        const nameSet = new Set(options.names);
+        registers = [...nameSet]
+          .map((n) => this.catalog.getByName(n))
+          .filter((r): r is CatalogRegister => r != null);
+      } else {
+        registers = this.catalog.getAll();
+      }
+    } else if (options?.names && options?.maxLevel) {
       const nameSet = new Set(options.names);
       const byLevel = this._applicableRegisters.filter((r) => r.level <= options.maxLevel!);
       const byName = this._applicableRegisters.filter((r) => nameSet.has(r.name));
@@ -205,7 +217,9 @@ export class SungrowInverter {
       registers = this._applicableRegisters;
     }
 
-    const blocks = computeBlocks(registers, this._problematic);
+    const blocks = useFullCatalog
+      ? computeBlocks(registers)
+      : computeBlocks(registers, this._problematic);
     const registersByName = new Map(registers.map((r) => [r.name, r]));
     const allRawWords: Record<number, number> = {};
     const allValues: RegisterValue[] = [];
@@ -217,12 +231,13 @@ export class SungrowInverter {
       try {
         const currentTransport = this.requireTransport();
         const rawMap = await readBlock(currentTransport, block, {
-          reconnect: () => this.reconnectTransport(),
+          reconnect: useFullCatalog ? undefined : () => this.reconnectTransport(),
           onRetry: () => retries++,
         });
         this._stats.readCallsSuccess++;
+        const txReason = useFullCatalog ? 'connect' as const : 'read' as const;
         const tx: ModbusTransaction = {
-          host: this.host, reason: 'read', type: block.type, startAddress: block.start, length: block.length,
+          host: this.host, reason: txReason, type: block.type, startAddress: block.start, length: block.length,
           registerNames: block.registers.map((r) => r.name),
           durationMs: Date.now() - blockStart, retries,
           status: rawMap.size === 0 ? 'unsupported' : 'ok',
@@ -232,9 +247,31 @@ export class SungrowInverter {
           allRawWords[addr] = val;
         }
         const decoded = decodeBlock(block, rawMap);
-        this._stats.retrievedSignalsSuccess += decoded.length;
+
+        const incidentals: RegisterValue[] = [];
+        if (options?.includeIncidental) {
+          const requestedAddrs = new Set<number>();
+          for (const reg of block.registers) {
+            for (let i = 0; i < reg.registerWidth; i++) requestedAddrs.add(reg.address + i);
+          }
+          const seen = new Set<string>();
+          for (const [addr] of rawMap) {
+            if (requestedAddrs.has(addr)) continue;
+            const incReg = this.catalog.getByAddress(addr, block.type);
+            if (!incReg || seen.has(incReg.name)) continue;
+            seen.add(incReg.name);
+            const miniBlock: BlockPlan = {
+              type: block.type, start: incReg.address, length: incReg.registerWidth, registers: [incReg],
+            };
+            for (const v of decodeBlock(miniBlock, rawMap)) {
+              incidentals.push({ ...v, incidental: true });
+            }
+          }
+        }
+
+        this._stats.retrievedSignalsSuccess += decoded.length + incidentals.length;
         const isMulti = block.registers.length > 1;
-        for (const v of decoded) {
+        for (const v of [...decoded, ...incidentals]) {
           const rawNum = typeof v.raw === 'number' ? v.raw : null;
           this._signalStates.update(v.name, rawNum, isMulti ? 'multi' : 'single', v.supported === 'not-applicable');
           const isSupp = this._signalStates.isSupported(v.name);
@@ -248,13 +285,13 @@ export class SungrowInverter {
         this._stats.lastReadTimestamp = new Date().toISOString();
 
         yield {
-          values: new Map(decoded.map((v) => [v.name, v])),
+          values: new Map([...decoded, ...incidentals].map((v) => [v.name, v])),
           transactions: [tx],
         };
       } catch (err) {
         this._stats.readCallsFailed++;
         const tx: ModbusTransaction = {
-          host: this.host, reason: 'read', type: block.type, startAddress: block.start, length: block.length,
+          host: this.host, reason: useFullCatalog ? 'connect' : 'read', type: block.type, startAddress: block.start, length: block.length,
           registerNames: block.registers.map((r) => r.name),
           durationMs: Date.now() - blockStart, retries,
           status: 'error',
@@ -270,7 +307,7 @@ export class SungrowInverter {
       }
     }
 
-    const pendingNames = this._signalStates.getPendingVerifications();
+    const pendingNames = useFullCatalog ? [] : this._signalStates.getPendingVerifications();
     if (pendingNames.length > 0) {
       const verificationValues: RegisterValue[] = [];
       const verificationTransactions: ModbusTransaction[] = [];
@@ -390,48 +427,17 @@ export class SungrowInverter {
     }
   }
 
-  private async connectRead(
-    type: RegisterType, address: number, length: number, registerNames: string[],
-  ): Promise<Map<number, number>> {
-    const transport = this.requireTransport();
-    const start = Date.now();
-    try {
-      const result = type === 'hold'
-        ? await transport.readHoldingRegisters(address, length)
-        : await transport.readInputRegisters(address, length);
-      this._stats.readCallsSuccess++;
-      this._stats.retrievedSignalsSuccess += length;
-      this.onBlockRead?.({
-        host: this.host, reason: 'connect', type, startAddress: address, length,
-        registerNames, durationMs: Date.now() - start, retries: 0, status: 'ok',
-      });
-      return result;
-    } catch (err) {
-      this._stats.readCallsFailed++;
-      this._stats.retrievedSignalsFailed += length;
-      this.onBlockRead?.({
-        host: this.host, reason: 'connect', type, startAddress: address, length,
-        registerNames, durationMs: Date.now() - start, retries: 0, status: 'error',
-        errorMessage: err instanceof Error ? err.message : String(err),
-      });
-      throw err;
-    }
-  }
-
   private async probeSlaveId(): Promise<number> {
     const transport = this.requireTransport();
-    const dtcReg = this.catalog.getByName('device_type_code');
 
     for (const id of this.probeSlaveIds) {
       transport.setSlaveId(id);
       try {
-        if (dtcReg) {
-          const block = await this.connectRead('read', dtcReg.address, 1, [dtcReg.name]);
-          const raw = block.get(dtcReg.address);
-          if (raw !== undefined && raw !== 0xFFFF && raw !== 0) {
-            if (this.logger) this.logger(`slave ID ${id} responded`);
-            return id;
-          }
+        const result = await this.read({ names: ['device_type_code'] });
+        const v = result.values.get('device_type_code');
+        if (v && v.supported !== 'unsupported' && v.supported !== 'not-applicable' && v.value !== null && v.value !== 0) {
+          if (this.logger) this.logger(`slave ID ${id} responded`);
+          return id;
         }
       } catch {
         if (this.logger) this.logger(`slave ID ${id} did not respond`);
@@ -445,50 +451,41 @@ export class SungrowInverter {
   }
 
   private async detectSerialNumber(): Promise<string | null> {
-    const snReg = this.catalog.getByName('serial_number');
-    if (!snReg) return null;
-
     try {
-      const block = await this.connectRead('read', snReg.address, snReg.registerWidth, [snReg.name]);
-      const data: number[] = [];
-      for (let i = 0; i < snReg.registerWidth; i++) {
-        const v = block.get(snReg.address + i);
-        if (v === undefined) break;
-        data.push(v);
-      }
-      return decodeUtf8(data, 0, data.length);
+      const result = await this.read({ names: ['serial_number'] });
+      const v = result.values.get('serial_number');
+      return typeof v?.value === 'string' ? v.value : null;
     } catch {
       return null;
     }
   }
 
   private async detectModel(): Promise<string | null> {
-    const dtcReg = this.catalog.getByName('device_type_code');
-    if (!dtcReg) return null;
-
     try {
-      const block = await this.connectRead('read', dtcReg.address, 1, [dtcReg.name]);
-      const raw = block.get(dtcReg.address);
-      if (raw === undefined || raw === 0xFFFF) return null;
-      return dtcReg.decoded?.[raw] ?? null;
+      const result = await this.read({ names: ['device_type_code'] });
+      const v = result.values.get('device_type_code');
+      return typeof v?.value === 'string' ? v.value : null;
     } catch {
       return null;
     }
   }
 
-  private async detectGroups(applicable: CatalogRegister[]): Promise<Record<string, boolean>> {
-    const indicators = applicable.filter((r) => r.indicator != null);
+  private async detectGroups(): Promise<Record<string, boolean>> {
+    const indicators = this.catalog.getGroupIndicators();
     const groups: Record<string, boolean> = {};
 
-    for (const ind of indicators) {
-      try {
-        const block = await this.connectRead(ind.type, ind.address, ind.registerWidth, [ind.name]);
-        const raw = block.get(ind.address);
-        const isActive = raw !== undefined && raw !== 0xFFFF && raw !== 0;
-        groups[ind.indicator!] = isActive;
-      } catch {
-        groups[ind.indicator!] = false;
+    try {
+      const result = await this.read({ names: indicators.map((r) => r.name) });
+      for (const ind of indicators) {
+        const v = result.values.get(ind.name);
+        groups[ind.indicator!] = v != null
+          && v.supported !== 'unsupported'
+          && v.supported !== 'not-applicable'
+          && v.value !== null
+          && v.value !== 0;
       }
+    } catch {
+      for (const ind of indicators) groups[ind.indicator!] = false;
     }
 
     if (this.cachedActiveGroups) {
@@ -503,14 +500,10 @@ export class SungrowInverter {
   }
 
   private async detectOutputType(): Promise<string | null> {
-    const reg = this.catalog.getByName('output_type');
-    if (!reg) return null;
-
     try {
-      const block = await this.connectRead('read', reg.address, 1, [reg.name]);
-      const raw = block.get(reg.address);
-      if (raw === undefined || raw === 0xFFFF) return null;
-      return reg.decoded?.[raw] ?? null;
+      const result = await this.read({ names: ['output_type'] });
+      const v = result.values.get('output_type');
+      return typeof v?.value === 'string' ? v.value : null;
     } catch {
       return null;
     }
@@ -531,51 +524,16 @@ export class SungrowInverter {
   private async detectMasterSlave(): Promise<void> {
     if (!this._info) return;
 
-    const modeReg = this.catalog.getByName('master_slave_mode');
-    const roleReg = this.catalog.getByName('master_slave_role');
-    const countReg = this.catalog.getByName('inverter_count');
-    if (!modeReg || !roleReg || !countReg) return;
-
     try {
-      const regsToRead = [modeReg, roleReg, countReg];
-      const blocks = computeBlocks(regsToRead);
-      const decoded = new Map<string, DecodedValue>();
-
-      for (const block of blocks) {
-        const blockStart = Date.now();
-        let rawMap: Map<number, number>;
-        try {
-          rawMap = await readBlock(this.requireTransport(), block);
-        } catch (err) {
-          this.onBlockRead?.({
-            host: this.host, reason: 'connect', type: block.type,
-            startAddress: block.start, length: block.length,
-            registerNames: block.registers.map((r) => r.name),
-            durationMs: Date.now() - blockStart, retries: 0,
-            status: 'error',
-            errorMessage: err instanceof Error ? err.message : String(err),
-          });
-          throw err;
-        }
-        this.onBlockRead?.({
-          host: this.host, reason: 'connect', type: block.type,
-          startAddress: block.start, length: block.length,
-          registerNames: block.registers.map((r) => r.name),
-          durationMs: Date.now() - blockStart, retries: 0,
-          status: rawMap.size === 0 ? 'unsupported' : 'ok',
-        });
-        for (const v of decodeBlock(block, rawMap)) {
-          decoded.set(v.name, v.value);
-        }
-      }
-
-      if (decoded.get('master_slave_mode') === 'Enabled') {
-        const count = decoded.get('inverter_count');
+      const result = await this.read({ names: ['master_slave_mode', 'master_slave_role', 'inverter_count'] });
+      if (result.values.get('master_slave_mode')?.value === 'Enabled') {
+        const count = result.values.get('inverter_count')?.value;
         this._info.slaveCount = typeof count === 'number' ? count - 1 : 0;
 
-        if (decoded.get('master_slave_role') === 'Master') {
+        const role = result.values.get('master_slave_role')?.value;
+        if (role === 'Master') {
           this._info.connectionMode = 'master';
-        } else if (decoded.get('master_slave_role') != null) {
+        } else if (role != null) {
           this._info.connectionMode = 'slave';
         }
       }

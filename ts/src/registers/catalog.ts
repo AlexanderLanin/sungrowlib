@@ -127,10 +127,12 @@ function parseEntries(entries: RawJsonEntry[], type: RegisterType): CatalogRegis
 export class RegisterCatalog {
   private readonly registers: CatalogRegister[];
   private readonly byName: Map<string, CatalogRegister>;
+  private readonly byAddress: Map<string, CatalogRegister>;
 
   constructor(registers: CatalogRegister[]) {
     this.registers = registers;
     this.byName = new Map(registers.map((r) => [r.name, r]));
+    this.byAddress = new Map(registers.map((r) => [`${r.type}:${r.address}`, r]));
   }
 
   getAll(): CatalogRegister[] {
@@ -139,6 +141,10 @@ export class RegisterCatalog {
 
   getByName(name: string): CatalogRegister | undefined {
     return this.byName.get(name);
+  }
+
+  getByAddress(address: number, type: RegisterType): CatalogRegister | undefined {
+    return this.byAddress.get(`${type}:${address}`);
   }
 
   filterByModel(model: string): CatalogRegister[] {

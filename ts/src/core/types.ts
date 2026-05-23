@@ -31,6 +31,8 @@ export type Logger = (msg: string, data?: unknown) => void;
 export interface ReadOptions {
   names?: readonly string[];
   maxLevel?: number;
+  /** Also return registers that were incidentally read as part of block coalescing. */
+  includeIncidental?: boolean;
 }
 
 /**
@@ -53,6 +55,8 @@ export interface RegisterValue {
   raw: number | number[];
   value: DecodedValue;
   supported: Support;
+  /** Present when this register was not explicitly requested but fell within a coalesced block. */
+  incidental?: true;
 }
 
 export type TransactionReason = 'read' | 'verification' | 'connect';

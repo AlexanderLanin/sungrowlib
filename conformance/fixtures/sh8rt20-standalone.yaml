@@ -23,7 +23,7 @@ input:
   5020: 2377
   5021: 2371
   5071: 1500                    # direct_lan
-  5601: 0xFFFF                  # meter unsupported
+  5601: [0xFFFF, 0x7FFF]        # meter_active_power S32 unsupported sentinel (0x7FFFFFFF)
   13000: 207
   13003: [255, 0]               # total_pv_generation = 25.5 kWh
   13008: 402                    # load_power = 402 W
