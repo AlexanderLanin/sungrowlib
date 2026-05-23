@@ -980,14 +980,13 @@ describe('SungrowInverter', () => {
     });
 
     it('propagates ConnectionError during verification', async () => {
-      let readCallCount = 0;
+      let connectDone = false;
       const factory: ClientFactory = async () => {
         const client = createMockClientFromData(MASTER_INPUT, MASTER_HOLDING);
         const origRead = client.readInputRegisters;
         client.readInputRegisters = vi.fn(async (addr: number, count: number) => {
-          readCallCount++;
-          // Fail on single-register verification reads
-          if (count === 1) {
+          // Only fail single-register reads after connect completes (verification phase)
+          if (connectDone && count === 1) {
             throw new ConnectionError('ECONNRESET');
           }
           return (origRead as typeof client.readInputRegisters)(addr, count);
@@ -999,6 +998,7 @@ describe('SungrowInverter', () => {
         host: 'localhost', clientFactory: factory,
       });
       await inv.connect();
+      connectDone = true;
 
       await expect(async () => {
         for await (const _batch of inv.readStream({ names: DASHBOARD_REGS })) { /* drain */ }

@@ -121,8 +121,11 @@ export class SungrowInverter {
       this.slaveId = await this.probeSlaveId();
     }
 
-    this._serialNumber = await this.detectSerialNumber();
-    this._model = await this.detectModel();
+    // One batch read for all detection data — serial, model, groups, output type, and
+    // master/slave topology all land in one round-trip instead of 5 sequential ones.
+    const detected = await this.detectStartupInfo();
+    this._serialNumber = detected.serialNumber;
+    this._model = detected.model;
     if (this.logger) this.logger(`slave=${this.slaveId}, serial=${this._serialNumber}, model=${this._model}`);
 
     let applicable = this._model
@@ -132,12 +135,17 @@ export class SungrowInverter {
       applicable = this.catalog.applyModelOverrides(applicable, this._model);
     }
 
-    this._activeGroups = await this.detectGroups();
+    this._activeGroups = detected.groups;
+    // A group that was true before (e.g. has_battery) but reads zero now (e.g. at night when
+    // MPPT current is 0) should stay true — the hardware didn't disappear, the value just dropped.
+    if (this.cachedActiveGroups) {
+      for (const [group, active] of Object.entries(this.cachedActiveGroups)) {
+        if (active && this._activeGroups[group] === false) this._activeGroups[group] = true;
+      }
+    }
     if (this.logger) this.logger(`groups=${JSON.stringify(this._activeGroups)}`);
 
     this._applicableRegisters = this.catalog.filterByGroups(applicable, this._activeGroups);
-
-    const outputType = await this.detectOutputType();
 
     this._info = {
       serialNumber: this._serialNumber,
@@ -147,11 +155,21 @@ export class SungrowInverter {
       slaveCount: 0,
       hasBattery: this._activeGroups['has_battery'] === true,
       hasMeter: this._activeGroups['has_meter'] === true,
-      outputType,
+      outputType: detected.outputType,
       setupId: this.computeSetupId(),
     };
 
-    await this.detectMasterSlave();
+    if (detected.masterSlaveMode === 'Enabled') {
+      this._info.slaveCount = typeof detected.inverterCount === 'number'
+        ? detected.inverterCount - 1 : 0;
+      if (detected.masterSlaveRole === 'Master') {
+        this._info.connectionMode = 'master';
+      } else if (detected.masterSlaveRole != null) {
+        this._info.connectionMode = 'slave';
+      }
+    }
+    // Only set after all detection is done — readStream() uses the full catalog while this
+    // is false, so every read during connect goes through the normal path without filtering.
     this._applicableRegistersReady = true;
 
     const isMasterByGroups = this._activeGroups['is_master'] === true;
@@ -450,63 +468,50 @@ export class SungrowInverter {
     return fallback;
   }
 
-  private async detectSerialNumber(): Promise<string | null> {
-    try {
-      const result = await this.read({ names: ['serial_number'] });
-      const v = result.values.get('serial_number');
-      return typeof v?.value === 'string' ? v.value : null;
-    } catch {
-      return null;
-    }
-  }
-
-  private async detectModel(): Promise<string | null> {
-    try {
-      const result = await this.read({ names: ['device_type_code'] });
-      const v = result.values.get('device_type_code');
-      return typeof v?.value === 'string' ? v.value : null;
-    } catch {
-      return null;
-    }
-  }
-
-  private async detectGroups(): Promise<Record<string, boolean>> {
+  private async detectStartupInfo(): Promise<{
+    serialNumber: string | null;
+    model: string | null;
+    outputType: string | null;
+    groups: Record<string, boolean>;
+    masterSlaveMode: DecodedValue;
+    masterSlaveRole: DecodedValue;
+    inverterCount: DecodedValue;
+  }> {
     const indicators = this.catalog.getGroupIndicators();
+    // All names in one read() so computeBlocks can coalesce adjacent addresses into
+    // multi-register blocks rather than issuing one Modbus call per detection method.
+    const result = await this.read({
+      names: [
+        'serial_number', 'device_type_code', 'output_type',
+        'master_slave_mode', 'master_slave_role', 'inverter_count',
+        ...indicators.map((r) => r.name),
+      ],
+    });
+
+    const get = (name: string) => result.values.get(name);
+
     const groups: Record<string, boolean> = {};
-
-    try {
-      const result = await this.read({ names: indicators.map((r) => r.name) });
-      for (const ind of indicators) {
-        const v = result.values.get(ind.name);
-        groups[ind.indicator!] = v != null
-          && v.supported !== 'unsupported'
-          && v.supported !== 'not-applicable'
-          && v.value !== null
-          && v.value !== 0;
-      }
-    } catch {
-      for (const ind of indicators) groups[ind.indicator!] = false;
+    for (const ind of indicators) {
+      const v = get(ind.name);
+      groups[ind.indicator!] = v != null
+        && v.supported !== 'unsupported'
+        && v.supported !== 'not-applicable'
+        && v.value !== null
+        && v.value !== 0;
     }
 
-    if (this.cachedActiveGroups) {
-      for (const [group, active] of Object.entries(this.cachedActiveGroups)) {
-        if (active && groups[group] === false) {
-          groups[group] = true;
-        }
-      }
-    }
-
-    return groups;
-  }
-
-  private async detectOutputType(): Promise<string | null> {
-    try {
-      const result = await this.read({ names: ['output_type'] });
-      const v = result.values.get('output_type');
-      return typeof v?.value === 'string' ? v.value : null;
-    } catch {
-      return null;
-    }
+    return {
+      serialNumber: typeof get('serial_number')?.value === 'string'
+        ? (get('serial_number')!.value as string) : null,
+      model: typeof get('device_type_code')?.value === 'string'
+        ? (get('device_type_code')!.value as string) : null,
+      outputType: typeof get('output_type')?.value === 'string'
+        ? (get('output_type')!.value as string) : null,
+      groups,
+      masterSlaveMode: get('master_slave_mode')?.value ?? null,
+      masterSlaveRole: get('master_slave_role')?.value ?? null,
+      inverterCount: get('inverter_count')?.value ?? null,
+    };
   }
 
   // Attempts to fingerprint the physical inverter setup.
@@ -519,27 +524,6 @@ export class SungrowInverter {
       this._activeGroups['has_meter'],
       this._activeGroups['is_master'],
     ].join(':');
-  }
-
-  private async detectMasterSlave(): Promise<void> {
-    if (!this._info) return;
-
-    try {
-      const result = await this.read({ names: ['master_slave_mode', 'master_slave_role', 'inverter_count'] });
-      if (result.values.get('master_slave_mode')?.value === 'Enabled') {
-        const count = result.values.get('inverter_count')?.value;
-        this._info.slaveCount = typeof count === 'number' ? count - 1 : 0;
-
-        const role = result.values.get('master_slave_role')?.value;
-        if (role === 'Master') {
-          this._info.connectionMode = 'master';
-        } else if (role != null) {
-          this._info.connectionMode = 'slave';
-        }
-      }
-    } catch {
-      // holding registers may not be accessible — assume standalone
-    }
   }
 
   private async reconnectTransport(): Promise<Transport> {
