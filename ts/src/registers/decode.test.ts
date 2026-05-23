@@ -95,7 +95,7 @@ describe('applyMask', () => {
 describe('lookupDecoded', () => {
   const table = { 0xAA: 'Enabled', 0x55: 'Disabled' };
   it('returns decoded string', () => expect(lookupDecoded(0xAA, table)).toBe('Enabled'));
-  it('returns raw value if not in table', () => expect(lookupDecoded(99, table)).toBe(99));
+  it('returns <unknown:N> if not in table', () => expect(lookupDecoded(99, table)).toBe('<unknown:99>'));
 });
 
 describe('isUnsupported', () => {

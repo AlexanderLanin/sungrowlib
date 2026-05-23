@@ -66,8 +66,8 @@ export function applyMask(raw: number, mask: number): boolean {
   return (raw & mask) !== 0;
 }
 
-export function lookupDecoded(raw: number, table: Record<number, string>): string | number {
-  return table[raw] ?? raw;
+export function lookupDecoded(raw: number, table: Record<number, string>): string {
+  return table[raw] ?? `<unknown:${raw}>`;
 }
 
 export function isUnsupported(raw: number, unsupportedValue: number | null | undefined): boolean {

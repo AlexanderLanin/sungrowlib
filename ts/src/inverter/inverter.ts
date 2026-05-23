@@ -4,11 +4,11 @@ import type {
   DecodedValue,
   RegisterValue,
   ModbusTransaction,
-  ReadResult,
   ReadOptions,
   Logger,
   ConnectionState,
 } from '../core/types.js';
+import { ReadResult } from '../core/types.js';
 import type { Transport } from '../transport/transport.js';
 import {
   type ModbusClient,
@@ -160,8 +160,7 @@ export class SungrowInverter {
     };
 
     if (detected.masterSlaveMode === 'Enabled') {
-      this._info.slaveCount = typeof detected.inverterCount === 'number'
-        ? detected.inverterCount - 1 : 0;
+      this._info.slaveCount = detected.inverterCount != null ? detected.inverterCount - 1 : 0;
       if (detected.masterSlaveRole === 'Master') {
         this._info.connectionMode = 'master';
       } else if (detected.masterSlaveRole != null) {
@@ -200,7 +199,7 @@ export class SungrowInverter {
       for (const [name, v] of batch.values) values.set(name, v);
       transactions.push(...batch.transactions);
     }
-    return { values, transactions };
+    return new ReadResult(values, transactions);
   }
 
   /** Streaming read that yields ReadResult batches as each Modbus block completes. */
@@ -302,10 +301,10 @@ export class SungrowInverter {
         this._lastValues = [...allValues];
         this._stats.lastReadTimestamp = new Date().toISOString();
 
-        yield {
-          values: new Map([...decoded, ...incidentals].map((v) => [v.name, v])),
-          transactions: [tx],
-        };
+        yield new ReadResult(
+          new Map([...decoded, ...incidentals].map((v) => [v.name, v])),
+          [tx],
+        );
       } catch (err) {
         this._stats.readCallsFailed++;
         const tx: ModbusTransaction = {
@@ -407,10 +406,10 @@ export class SungrowInverter {
       if (verificationValues.length > 0 || verificationTransactions.length > 0) {
         this._lastRawWords = { ...allRawWords };
         this._lastValues = [...allValues];
-        yield {
-          values: new Map(verificationValues.map((v) => [v.name, v])),
-          transactions: verificationTransactions,
-        };
+        yield new ReadResult(
+          new Map(verificationValues.map((v) => [v.name, v])),
+          verificationTransactions,
+        );
       }
     }
 
@@ -438,10 +437,10 @@ export class SungrowInverter {
 
     if (computedBatch.length > 0) {
       this._lastValues = [...allValues];
-      yield {
-        values: new Map(computedBatch.map((v) => [v.name, v])),
-        transactions: [],
-      };
+      yield new ReadResult(
+        new Map(computedBatch.map((v) => [v.name, v])),
+        [],
+      );
     }
   }
 
@@ -473,9 +472,9 @@ export class SungrowInverter {
     model: string | null;
     outputType: string | null;
     groups: Record<string, boolean>;
-    masterSlaveMode: DecodedValue;
-    masterSlaveRole: DecodedValue;
-    inverterCount: DecodedValue;
+    masterSlaveMode: string | null;
+    masterSlaveRole: string | null;
+    inverterCount: number | null;
   }> {
     const indicators = this.catalog.getGroupIndicators();
     // All names in one read() so computeBlocks can coalesce adjacent addresses into
@@ -488,11 +487,9 @@ export class SungrowInverter {
       ],
     });
 
-    const get = (name: string) => result.values.get(name);
-
     const groups: Record<string, boolean> = {};
     for (const ind of indicators) {
-      const v = get(ind.name);
+      const v = result.values.get(ind.name);
       groups[ind.indicator!] = v != null
         && v.supported !== 'unsupported'
         && v.supported !== 'not-applicable'
@@ -501,16 +498,13 @@ export class SungrowInverter {
     }
 
     return {
-      serialNumber: typeof get('serial_number')?.value === 'string'
-        ? (get('serial_number')!.value as string) : null,
-      model: typeof get('device_type_code')?.value === 'string'
-        ? (get('device_type_code')!.value as string) : null,
-      outputType: typeof get('output_type')?.value === 'string'
-        ? (get('output_type')!.value as string) : null,
+      serialNumber: result.getString('serial_number'),
+      model:        result.getString('device_type_code'),
+      outputType:   result.getString('output_type'),
       groups,
-      masterSlaveMode: get('master_slave_mode')?.value ?? null,
-      masterSlaveRole: get('master_slave_role')?.value ?? null,
-      inverterCount: get('inverter_count')?.value ?? null,
+      masterSlaveMode: result.getString('master_slave_mode'),
+      masterSlaveRole: result.getString('master_slave_role'),
+      inverterCount:   result.getNumber('inverter_count'),
     };
   }
 

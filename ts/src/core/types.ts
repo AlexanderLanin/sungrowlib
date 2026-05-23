@@ -76,9 +76,39 @@ export interface ModbusTransaction {
 }
 
 /** Result of a read operation — values and the Modbus transactions that produced them. */
-export interface ReadResult {
-  values: Map<string, RegisterValue>;
-  transactions: ModbusTransaction[];
+export class ReadResult {
+  constructor(
+    readonly values: Map<string, RegisterValue>,
+    readonly transactions: ModbusTransaction[],
+  ) {}
+
+  getString(name: string): string | null {
+    const v = this.values.get(name);
+    if (!v) return null;
+    if (v.value !== null && typeof v.value !== 'string')
+      throw new Error(`Register '${name}' is not a string register`);
+    return v.value;
+  }
+
+  getNumber(name: string): number | null {
+    const v = this.values.get(name);
+    if (!v) return null;
+    if (v.value !== null && typeof v.value !== 'number')
+      throw new Error(`Register '${name}' is not a number register`);
+    return v.value;
+  }
+
+  getBoolean(name: string): boolean | null {
+    const v = this.values.get(name);
+    if (!v) return null;
+    if (v.value !== null && typeof v.value !== 'boolean')
+      throw new Error(`Register '${name}' is not a boolean register`);
+    return v.value;
+  }
+
+  getValue(name: string): DecodedValue | undefined {
+    return this.values.get(name)?.value;
+  }
 }
 
 export interface ExtendedReadResult {
