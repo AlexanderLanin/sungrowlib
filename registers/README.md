@@ -41,6 +41,42 @@ Each entry:
 | `unsupported_value` | number \| null \| `"None"` | | Raw value that means "not supported". Omit when the value equals the type's implicit N/A sentinel (`0xFFFF` for U16, `0x7FFF` for S16, `0xFFFFFFFF` for U32, `0x7FFFFFFF` for S32) — those are already implied by the type. Only set this field for non-standard sentinels (e.g. `0` meaning absent). |
 | `source` | string[] | | Official protocol document short IDs or direct URLs (issues, PRs) for this register (see below) |
 | `other_registries` | object | | Map of community registry handle → `{name, link}` where `link` is a direct line-anchored URL in that registry's source file. Populated by `compare.py --update`. |
+| `observations` | array | | Real-world observations from community dumps. Populated by `update_observations.py`. See below. |
+
+### Observations
+
+Each entry in `observations` represents one (model, firmware) combination seen in the `dumps/` directory:
+
+```json
+{
+  "model": "SH8.0RT-20",
+  "versions": {
+    "firmware_version_1": "SAPPHIRE-H_01011.95.10",
+    "firmware_version_2": "SAPPHIRE-H_03011.95.10",
+    "firmware_version_3": "BCTL-S_04011.01.01",
+    "firmware_version_4_battery": "CU-S_22011.01.26",
+    "protocol_version": 16781568,
+    "arm_software_version": "ARM_SAPPHIRE-H_V11_V01_B",
+    "dsp_software_version": "MDSP_SAPPHIRE-H_V11_V01_B",
+    "inverter_firmware_version": "SAPPHIRE-H_B001.V000.P019",
+    "communication_module_firmware_version": "WINET-SV200.001.00.P038",
+    "battery_firmware_version": "SBRBCU-S_22011.01.26"
+  },
+  "active_groups": ["has_battery", "has_meter", "is_master", "mppt2"],
+  "connection_mode": "both",
+  "supported": true,
+  "values": [69.7, 94.7, 100]
+}
+```
+
+| Field | Description |
+|-------|-------------|
+| `model` | Inverter model string |
+| `versions` | Dict of version/firmware register values present in the dump |
+| `active_groups` | Feature groups that were active (union across all matching dumps) |
+| `connection_mode` | `"master"` — seen only in system-level read; `"slave"` — seen only in per-inverter read; `"both"` — seen in both |
+| `supported` | `true` — register returned a valid value; `"unknown"` — register returned 0, may be unsupported |
+| `values` | Unique sorted decoded values observed across all matching dumps; omitted for version/firmware registers |
 
 ### Detail Levels
 

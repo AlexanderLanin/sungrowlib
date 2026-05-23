@@ -1,0 +1,25 @@
+schema: 1
+name: dump-standalone-basic
+tags: [dump]
+description: >
+  Dump of a standalone inverter. Validates top-level fields
+  (model, serialNumber, connectionMode, activeGroups), rawWords presence,
+  and decoded register values.
+
+inverters:
+  - id: main
+    fixture: sh8rt20-standalone
+
+expect:
+  dump:
+    info:
+      model: "SH8.0RT-20"
+      serial_number: "A2350415770"
+      connection_mode: standalone
+    active_groups:
+      has_battery: true
+    raw_words_present: true
+    values:
+      battery_soc:  { value: 50.0, unit: "%" }
+      load_power:   { value: 402, unit: W }
+      export_power: { value: -402, unit: W }

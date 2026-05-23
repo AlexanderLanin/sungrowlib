@@ -64,11 +64,12 @@ conformance/
     read/                        # Register decoding, computed values, efficiency
     system/                      # Multi-inverter (master/slave) topology
     error/                       # Fault injection, graceful degradation
+    dump/                        # Raw register dump output
   simulator/                     # Modbus TCP simulator (asyncio, no pymodbus)
   runner/                        # Test orchestrator
 ```
 
-## Scenarios (17)
+## Scenarios (20)
 
 | Scenario | Tags | What it tests |
 |----------|------|---------------|
@@ -85,6 +86,7 @@ conformance/
 | computed-mppt-power | read, computed | V × I for MPPT 1-4 |
 | model-override-s16 | read, decode | SH8.0RT-20: load/export S32 → S16 override |
 | unsupported-sentinels | read, decode | 0xFFFF / 0x7FFF → absent (unsupported) |
+| support-states | read, decode | Supported/unsupported/unknown flags across register types |
 | block-coalescing | read, efficiency | Block combining, max Modbus calls, no single reads |
 | **system/** | | |
 | master-slave-pair | system | Master + slave discovery, read + slave_read |
@@ -93,6 +95,9 @@ conformance/
 | unreachable-host-skip | system, error | Unreachable host skipped, rest works |
 | **error/** | | |
 | unsupported-register-block | error | Modbus exception on one block, other blocks OK |
+| **dump/** | | |
+| standalone-basic | dump | Dump structure: model, serial, connectionMode, activeGroups, rawWords, values |
+| system-dump | dump, system | System dump: master fields + slaveDetails with slave values |
 
 ## YAML Scenario Format
 
@@ -145,6 +150,21 @@ expect:
     has_slaves: true
     slave_count: 1
     error: "multiple masters"          # expected error message (stderr)
+
+  dump:
+    info:
+      model: "SH8.0RT-20"
+      connection_mode: standalone
+    active_groups:
+      has_battery: true
+    raw_words_present: true            # rawWords object must be non-empty
+    values:
+      battery_soc: { value: 50.0, unit: "%" }
+      load_power: any
+    slave_details:                     # system dump only
+      - model: "SH8.0RT-20"
+        values:
+          mppt_1_voltage: any
 ```
 
 ## CLI Contract
@@ -155,8 +175,10 @@ Any conforming implementation must support these commands with `--format json`:
 |---------|--------|---------|
 | `info -H host:port` | `{ model, serialNumber, connectionMode, hasBattery, hasMeter, activeGroups, ... }` | detect, system scenarios |
 | `read -H host:port` | `[{ name, address, type, level, value, unit, supported }, ...]` | read scenarios |
+| `dump -H host:port` | `{ model, serialNumber, connectionMode, activeGroups, rawWords, values: [...] }` | dump scenarios |
 | `info -H host1:port -H host2:port` | Same as info + `slaveDetails: [{ host, slaveId, model }]` | system scenarios |
 | `read -H host1:port -H host2:port` | Master register values | system read scenarios |
+| `dump -H host1:port -H host2:port` | Master dump + `slaveDetails: [{ model, rawWords, values }]` | dump system scenarios |
 
 Multi-host (2+ `-H` flags) triggers system mode with automatic master/slave detection.
 
@@ -185,4 +207,4 @@ Custom Modbus TCP server using Python `asyncio` (no pymodbus dependency). Suppor
      --scenarios conformance/scenarios/ \
      --cli ./your-cli-binary
    ```
-3. All 17 scenarios / 148 checks should pass
+3. All 20 scenarios should pass

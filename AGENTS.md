@@ -6,7 +6,7 @@ Multi-language monorepo for Sungrow inverter communication. Two primary products
 
 - `registers/` — canonical register catalog (`registers-sungrow.json`), standalone product usable from any language
 - `conformance/` — language-agnostic test suite (Python runner + Modbus simulator)
-- `dumps/` — real-world inverter dumps captured via `sungrowlib dump`; useful as development reference and for community contributions
+- `dumps/` — real-world inverter dumps captured via `sungrowlib dump`; useful as development reference and for community contributions. After adding a new dump, run `python3 registers/update_observations.py` to regenerate the `observations` field in the register catalog.
 - `ts/` — TypeScript implementation (library + CLI)
 - `python/` — Python implementation (placeholder)
 

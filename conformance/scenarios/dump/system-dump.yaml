@@ -1,0 +1,31 @@
+schema: 1
+name: dump-system
+tags: [dump, system]
+description: >
+  System dump (master + slave). Validates master top-level fields,
+  slaveDetails presence, and decoded values for both master and slave.
+
+inverters:
+  - id: master
+    fixture: sh8rt20-master-daytime
+
+  - id: slave
+    fixture: sh8rt20-slave-daytime
+
+expect:
+  system:
+    hosts: [master, slave]
+
+  dump:
+    info:
+      model: "SH8.0RT-20"
+      connection_mode: master
+    raw_words_present: true
+    values:
+      battery_soc:  { value: 100.0, unit: "%" }
+      load_power:   { value: 2526, unit: W }
+    slave_details:
+      - model: "SH8.0RT-20"
+        values:
+          mppt_1_voltage: any
+          total_pv_generation: any

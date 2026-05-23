@@ -399,12 +399,16 @@ export class SungrowInverter {
       const result = type === 'hold'
         ? await transport.readHoldingRegisters(address, length)
         : await transport.readInputRegisters(address, length);
+      this._stats.readCallsSuccess++;
+      this._stats.retrievedSignalsSuccess += length;
       this.onBlockRead?.({
         host: this.host, reason: 'connect', type, startAddress: address, length,
         registerNames, durationMs: Date.now() - start, retries: 0, status: 'ok',
       });
       return result;
     } catch (err) {
+      this._stats.readCallsFailed++;
+      this._stats.retrievedSignalsFailed += length;
       this.onBlockRead?.({
         host: this.host, reason: 'connect', type, startAddress: address, length,
         registerNames, durationMs: Date.now() - start, retries: 0, status: 'error',

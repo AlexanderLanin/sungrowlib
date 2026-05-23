@@ -166,6 +166,45 @@ def check_read(read_data: list[dict], expectations: dict) -> list[Check]:
     return checks
 
 
+def check_dump(dump_json: dict, expectations: dict) -> list[Check]:
+    """Check dump output fields."""
+    checks: list[Check] = []
+
+    if "info" in expectations:
+        checks.extend(check_info(dump_json, expectations["info"]))
+
+    if "active_groups" in expectations:
+        checks.extend(check_groups(dump_json.get("activeGroups", {}), expectations["active_groups"]))
+
+    if expectations.get("raw_words_present"):
+        ok = bool(dump_json.get("rawWords"))
+        checks.append(Check("dump.raw_words_present", ok, expected=True, actual=ok))
+
+    if "values" in expectations:
+        checks.extend(check_read(dump_json.get("values", []), expectations["values"]))
+
+    if "slave_details" in expectations:
+        actual_slaves = dump_json.get("slaveDetails", [])
+        for i, slave_expect in enumerate(expectations["slave_details"]):
+            if i >= len(actual_slaves):
+                checks.append(Check(f"dump.slave_details[{i}]", False,
+                                    detail="slave missing", expected="present", actual="absent"))
+                continue
+            slave = actual_slaves[i]
+            if "model" in slave_expect:
+                act = slave.get("model")
+                ok = act == slave_expect["model"]
+                checks.append(Check(f"dump.slave_details[{i}].model", ok,
+                                    expected=slave_expect["model"], actual=act))
+            if "values" in slave_expect:
+                slave_checks = check_read(slave.get("values", []), slave_expect["values"])
+                for c in slave_checks:
+                    c.name = f"dump.slave[{i}].{c.name}"
+                checks.extend(slave_checks)
+
+    return checks
+
+
 def check_modbus_calls(call_log: dict, expectations: dict, inverter_id: str = "") -> list[Check]:
     """Check Modbus call efficiency against expectations."""
     checks: list[Check] = []
@@ -406,6 +445,19 @@ def run_scenario(
                             for c in checks:
                                 c.name = f"slave[{slave_host}].{c.name}"
                             all_checks.extend(checks)
+
+        # --- dump ---
+        if "dump" in expect:
+            hosts = resolve_hosts(expect, port_map)
+            stdout, stderr, rc = run_cli(cli, "dump", hosts)
+            if rc != 0:
+                all_checks.append(Check("cli.dump", False,
+                                        detail=f"exit code {rc}", expected=0, actual=rc))
+                if verbose:
+                    print(f"  stderr: {stderr.strip()}", file=sys.stderr)
+            else:
+                dump_json = json.loads(stdout)
+                all_checks.extend(check_dump(dump_json, expect["dump"]))
 
         return all(c.passed for c in all_checks), all_checks
 

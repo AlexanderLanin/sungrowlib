@@ -267,6 +267,7 @@ async function main(): Promise<void> {
           'slave-id': { type: 'string', short: 's' },
           verbose: { type: 'boolean', short: 'v', default: false },
           level: { type: 'string', short: 'l' },
+          format: { type: 'string', short: 'f' },
         },
         strict: true,
       });
